@@ -5,7 +5,7 @@ Latest Gemini release is v7.2.0 -- download ZIP release or clone this repo.
 Requirements:
 
 - .NET Framework 4.0
-- SQL Server (an edition/version)
+- SQL Server (any edition/version)
 
 ## Self-host
 
