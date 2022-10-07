@@ -19,4 +19,4 @@ For deployment to Azure follow the [instructions](Azure.md).
 
 ## Licensing
 
-See EULA.PDF for licensing.
+See [EULA.pdf](EULA.pdf) for licensing.
