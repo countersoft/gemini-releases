@@ -20,3 +20,7 @@ For deployment to Azure follow the [instructions](Azure.md).
 ## Licensing
 
 See [EULA.pdf](EULA.pdf) for licensing.
+
+## Support
+
+Contact support@countersoft.com for installation help.
