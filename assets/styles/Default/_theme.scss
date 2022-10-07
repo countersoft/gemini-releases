@@ -1,0 +1,65 @@
+﻿$theme: default;
+$theme-base-path: './'; /*RELEASE*/
+//$theme-base-path: '../../'; /*DEBUG*/
+
+/***** Start 2013 *****/
+$primary-color: #356aa0;
+$secondary-color: lighten($primary-color, 20%);
+/***** End 2013 *****/
+
+$font-body: Verdana, Lucida Grande, Calibri, Tahoma, sans-serif;
+$font-header: "Segoe UI", Gill Sans Mt, 'Gill Sans', Century Gothic, Franklin Gothic Book, sans-serif, "Arial Rounded MT Bold";
+$font-aux: calibri, Arial, Helvetica, Univers, Corbel, sans-serif;
+
+$theme-color: $primary-color;
+$theme-color-secondary: $secondary-color;
+$theme-color-gradient: $secondary-color;
+
+$color-green: #41a241;
+$color-red:	  #d42f2f;
+$color-black: #4c4c4c; 
+$color-trueblack: #000000; 
+$color-white: #ffffff; 
+$color-yellow: #ffff00;
+$color-gold: #ffd700;
+$color-orange: #ff7700; 
+
+$color-text:       #4c4c4c;
+$color-grayscale:  #4c4c4c;
+$color-grayscale0: #747474;
+$color-grayscale1: #888888;
+$color-grayscale2: #c4c4c4;
+$color-grayscale3: #e2e2e2;
+$color-grayscale4: #f5f5f5;
+$color-grayscale5: #d6d6d6;
+
+$color-tooltip: #fff7b7;
+$color-tooltip-border: darken($color-tooltip, 20%);
+$color-hover: #fff8dc; 
+
+$color-error:       #fff6f8;
+$color-placeholder: #eeeeee;
+
+/* password colors */
+$color-password-very-weak: #aa0033;
+$color-password-weak:      #f5ac00;
+$color-password-good:      #6699cc;  
+$color-password-strong:    #008000;  
+
+/* Branding */
+$color-countersoft: #562366;
+
+/* Workspace */
+$color-workspace-dashboard: #363636;
+$color-workspace-reports: #9790be;
+$color-workspace-people: #47a956;
+$color-workspace-chat: #2f88b9;
+$color-add-button: #5cb85c;
+$color-add-dropdown: #47a447;
+$color-workspace-cards-background: #29303b;
+
+/* Side Pane */
+$color-side-pane-background: #e4e9f4;
+$color-side-pane-border: #d4d4d4;
+$color-side-pane-collapsed-buttons: #b1b1b1;
+$color-badge-hover: #fa3c45;

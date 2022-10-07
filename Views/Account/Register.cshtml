@@ -1,0 +1,152 @@
+﻿@model UserModel
+
+@{
+    Layout = "~/Views/Shared/_Master.Desktop.External.cshtml";
+    ViewBag.Title = @GetResource(ResourceKeys.Register);
+}
+<div id="login-page" class="clearfix">
+    <table border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            @if(DeviceContext.IsDesktop)
+            {
+            <td class="left-box" style="vertical-align:top">                
+                <table id="welcome-message-zone">
+                    <tr><td><h1 id="welcome-title">@GeminiContext.Config.WelcomeTitle</h1></td></tr>
+                    <tr><td><div id="cs-template"><div id="welcome-message" class="cs-wysiwyg">@Html.Raw(GeminiContext.Config.WelcomeMessage)</div></div></td></tr>
+                </table>                
+            </td>
+            }
+            <td class="right-box">            
+                <table>
+                    @if(!DeviceContext.IsDesktop)
+                    {
+                        <tr><td><div class="gemini-login"><img src="~/assets/images/logo.png"/></div> <div class="divider-login"></div></td></tr> 
+                    }
+                    <tr>
+                        <td>
+                            <table> 
+                                <tr>        
+                                    <td valign="top">    
+                                        <table class="signin-form">
+                                            <tr>
+                                                <td class="regular">
+                                                    <table>
+                                                        <tr>
+                                                            <td>
+                                                                @if(!string.IsNullOrEmpty(Model.ErrorMessage))
+                                                                {
+                                                                    <div class="error" style="color:maroon; padding:5px">@if ( Model.ErrorMessage.Contains( "<" ) ) { 
+                                                                        @Html.Raw( Model.ErrorMessage ) }
+                                                                    else { 
+                                                                        @Model.ErrorMessage 
+                                                                    }
+                                                                    </div>
+                                                                }
+
+                                                                <form action="register" method="post" id="regular-form" autocomplete="off">
+                                                                   
+                                                                    <input type="hidden" name="returnUrl" id="returnUrl" value="@Model.ReturnUrl" />
+                                                                    <table id="regular-credentials" cellpadding="5px" cellspacing="5px">
+                                                                        @if (GeminiContext.Config.IsWindowsAuthentication)
+                                                                        { 
+                                                                            <tr>
+                                                                                <td> <h3>@GetResource(ResourceKeys.Username)</h3></td>
+                                                                            </tr>
+                                                                            <tr>                                                                    
+                                                                                <td><input type="text" id="Username" name="Username" class="input-field required input-size6" value="@User.Identity.Name" disabled="disabled" /></td>
+                                                                            </tr>
+                                                                        }
+
+                                                                        <tr>
+                                                                            <td> <h3>@GetResource(ResourceKeys.Email)</h3></td>
+                                                                        </tr>
+                                                                         <tr>
+                                                                            <td><input type="text" id="Email" name="Email" class="input-size6 required email" value="@Model.User.Email"/> </td>
+                                                                        </tr>
+                                                                        
+                                                                        @if (!GeminiContext.Config.IsWindowsAuthentication)
+                                                                        { 
+                                                                            <tr>
+                                                                                <td> <h3>@GetResource(ResourceKeys.Password)</h3></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td><input type="password" id="regular-password" name="regular-password" class="input-field required input-size6 password"  
+                                                                                            data-pwd-enforce="@GeminiApp.Config.EnforcePasswordPolicy.ToJSBool()" data-pwd-length="@GeminiApp.Config.MinimumLetters" 
+                                                                                            data-pwd-upper="@GeminiApp.Config.UppercaseRequired.ToJSBool()" data-pwd-lower="@GeminiApp.Config.LowercaseRequired.ToJSBool()" 
+                                                                                            data-pwd-symbol="@GeminiApp.Config.SymbolRequired.ToJSBool()" data-pwd-number="@GeminiApp.Config.NumberRequired.ToJSBool()"/> 
+                                                                                    <div class="password-meter">
+                                                                                        <div class="password-meter-bg">
+                                                                                            <div class="password-meter-bar"></div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td> <h3>@GetResource(ResourceKeys.ConfirmPassword)</h3></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <input type="password" id="confirmpassword" name="confirmpassword" class="input-size6 required" />
+                                                                                </td>
+                                                                            </tr>
+                                                                             <tr id="password-rules-regular-password" style="display:none">
+                                                                                <td>
+                                                                                    @Html.Raw(Model.PasswordRules)
+                                                                                </td>
+                                                                            </tr>
+                                                                        }   
+
+                                                                         <tr>
+                                                                            <td> <h3>@GetResource(ResourceKeys.Firstname)</h3></td>
+                                                                        </tr>
+                                                                         <tr>
+                                                                            <td><input type="text" id="Firstname" name="Firstname" class="input-size6 required" value="@Model.User.Firstname"/> </td>
+                                                                        </tr>
+
+                                                                         <tr>
+                                                                            <td> <h3>@GetResource(ResourceKeys.Surname)</h3></td>
+                                                                        </tr>
+                                                                         <tr>
+                                                                            <td><input type="text" id="Surname" name="Surname" class="input-size6 required" value="@Model.User.Surname" /> </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td colspan="2">
+                                                                                
+                                                                                <a class="left" style="line-height: 26px;display:inline-block;" href="~/account/login">Back<a/>
+                                                                                
+                                                                                <input id="regular-signin" type="submit" value='@GetResource(ResourceKeys.Register)' class='button-primary margin-right-5 right' />
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </form>
+                                                            
+
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>                
+                        </td>
+                    </tr>
+                </table>           
+            </td>
+        </tr>
+    </table>
+</div>
+
+@section DocumentReady
+{
+    gemini_account.initRegister();
+    gemini_session.clearSessionTimeOut();
+}
+
+@section JavaScript
+{
+  
+}
+

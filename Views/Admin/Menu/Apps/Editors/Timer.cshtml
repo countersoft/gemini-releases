@@ -1,0 +1,69 @@
+﻿@model TimerEditModel
+<div id="TimerAppsContainer" style="height:65px;width:600px ">
+    <form id="regular-form">
+    <input type="hidden" name="Id" Id="Id" value="@Model.Id" />
+    <table id="table-admin-timeredit" class="admin-data-entry">
+        <tbody>
+            <tr>
+                <td class="field-name">Interval</td>
+                <td>
+                    <input type="radio" id="Minutes" name="interval" value="Minutes" class="input-field fancy" @if(Model.Type == TimerEditModel.IntervalType.Minutes) { <text>checked="checked"</text> } /><label for="Minutes">Minutes</label>
+                    <input type="radio" id="Hours" name="interval" value="Hours" class="input-field fancy" @if(Model.Type == TimerEditModel.IntervalType.Hours) { <text>checked="checked"</text> } /><label for="Hours">Hours</label>
+                    <input type="radio" id="Cron" name="interval" value="Cron" class="input-field fancy" @if(Model.Type == TimerEditModel.IntervalType.Cron) { <text>checked="checked"</text> } /><label for="Cron">Cron</label>
+                </td>
+            </tr>
+            <tr>
+                
+                <td class="field-name"></td>
+                <td>
+                    <input type="text" class=" @if(Model.Type == TimerEditModel.IntervalType.Cron) {<text>hide</text>}" name="intervalvalue" id="intervalvalue" value="@if(Model.Type != TimerEditModel.IntervalType.Cron) {<text>@Model.Interval</text>}" />                
+                    <div id="interval-cron" style="height:24px;margin-top:8px;" class="@if(Model.Type != TimerEditModel.IntervalType.Cron) {<text>hide</text>}"></div>
+                    <input type="hidden" id="interval-cron-value" name="interval-cron-value" value="@if(Model.Type == TimerEditModel.IntervalType.Cron) {<text>@Model.Interval</text>}"/>
+                </td>                    
+            </tr>
+        </tbody>
+    </table>
+    </form>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {     
+
+        $('#table-admin-timeredit #interval-cron').cron({
+            initial: ($('#table-admin-timeredit #interval-cron-value').val() == '' ? "0 7 * * 1" : $('#table-admin-timeredit #interval-cron-value').val()),
+            onChange: function () {
+                $('#table-admin-timeredit #interval-cron-value').val(($(this).cron("value")));
+            }
+        });        
+
+        gemini_ui.fancyInputs('#table-admin-timeredit .fancy');
+
+        $('#table-admin-timeredit .input-field').bind('ifChanged', function () {
+            if ($(this).val() == 'Cron') {
+                $('#table-admin-timeredit #intervalvalue').hide();
+                $('#table-admin-timeredit #interval-cron').show();
+            }
+            else {
+                $('#table-admin-timeredit #intervalvalue').show();
+                $('#table-admin-timeredit #interval-cron').hide();
+            }
+        });
+
+        $("#popup-button-yes").click(function (e) {
+            if ($("#regular-form").valid()) {
+                gemini_ui.startBusy('#colorbox #popup-button-yes');
+                gemini_ajax.postCall("configure/Apps/Timer", "SaveData", function (response) {
+                    
+                    gemini_popup.popupClose(e);
+                    gemini_admin.getPage();
+
+                    gemini_ui.stopBusy('#colorbox #popup-button-yes');
+                }, function () { gemini_ui.stopBusy('#colorbox #popup-button-yes'); }, $("#regular-form").serialize() + gemini_admin.getFormTemplateId(), null, true);
+            }
+            else {
+                $('.error:not(label)', '#cs-popup-content').first().focus();
+            }
+        });
+
+        $("#popup-button-no").click(function (e) { gemini_popup.popupClose(e); });
+    });
+</script>

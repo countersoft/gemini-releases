@@ -1,0 +1,48 @@
+﻿@import "_theme"; 
+
+.theme-color			{ color: $theme-color;}
+.theme-color-secondary	{ color: $theme-color-secondary; }
+.theme-color-gradient	{ color: $theme-color-gradient;	}
+
+.color-green			{ color: $color-green;}
+.color-red			{ color: $color-red;}
+.color-black			{ color: $color-black;}
+.color-white			{ color: $color-white;}
+.color-yellow			{ color: $color-yellow;}
+.color-orange			{ color: $color-orange;}
+
+.color-text			{ color: $color-text;}
+.color-grayscale			{ color: $color-grayscale;}
+.color-grayscale0			{ color: $color-grayscale0;}
+.color-grayscale1			{ color: $color-grayscale1;}
+.color-grayscale2			{ color: $color-grayscale2;}
+.color-grayscale3			{ color: $color-grayscale3;}
+.color-grayscale4			{ color: $color-grayscale4;}
+.color-grayscale5			{ color: $color-grayscale5;}
+
+.color-tooltip			{ color: $color-tooltip;}
+.color-tooltip-border			{ color: $color-tooltip-border;}
+.color-hover			{ color: $color-hover;}
+
+.color-error			{ color: $color-error;}
+.color-placeholder			{ color: $color-placeholder;}
+
+/* password colors */
+.color-password-very-weak		{ color: $color-password-very-weak;}
+.color-password-weak    		{ color: $color-password-weak    ;}
+.color-password-good    		{ color: $color-password-good    ;}
+.color-password-strong  		{ color: $color-password-strong  ;}
+
+.background-grayscale			{ background-color: $color-grayscale;}
+.background-grayscale0			{ background-color: $color-grayscale0;}
+.background-grayscale1			{ background-color: $color-grayscale1;}
+.background-grayscale2			{ background-color: $color-grayscale2;}
+.background-grayscale3			{ background-color: $color-grayscale3;}
+.background-grayscale4			{ background-color: $color-grayscale4;}
+.background-grayscale5			{ background-color: $color-grayscale5;}
+.background-green			{ background-color: $color-green;}
+.background-red			{ background-color: $color-red;}
+.background-black			{ background-color: $color-black;}
+.background-white			{ background-color: $color-white;}
+.background-yellow			{ background-color: $color-yellow;}
+.background-orange			{ background-color: $color-orange;}

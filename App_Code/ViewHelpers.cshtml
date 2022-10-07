@@ -1,0 +1,53 @@
+﻿@using Countersoft.Gemini.Commons
+@using Countersoft.Gemini.Commons.Entity
+@using Countersoft.Gemini.Commons.Dto
+
+@helper CardSystem(NavigationCard card)
+{
+    if (card.CardType == ProjectTemplatePageType.Marketing || card.IsGenerated )
+    {
+@:system
+    }
+}
+
+@helper CardLetters(NavigationCard card)
+{
+    if (card.Key.Length == 2)
+    {
+    @:two-letters
+    }
+    else
+    {
+    @:three-letters
+    }
+}
+
+@helper IssueStriked(IssueDto issue)
+{
+    if (issue.IsClosed)
+    {
+@:strike-through
+    }
+}
+
+@helper ViewItem_SameIssue(IssueDto issue1, IssueDto issue2)
+{
+    if (issue1.Id == issue2.Id)
+    {
+@:current-item-highlight
+    }
+}
+
+@helper IssueTypeImage(IssueDto issue)
+{
+<img src='@issue.TypeImage' />
+}
+
+@helper HighlightIssueRow(IssueDto issue, List<int> ids)
+{
+    if (ids.Contains(issue.Id))
+    {
+@:issue-highlight
+    }
+}
+

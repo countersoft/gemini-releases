@@ -1,0 +1,154 @@
+﻿@model TestRunInfo
+
+<style>
+    .qq-upload-button {
+        display: block;
+        float: right;
+        margin: 2px 0;
+    }
+
+    .qq-upload-drop-area {
+        min-height: 20px;
+    }
+
+</style>
+
+@if (Model.RunInfo.Count > 0)
+{
+    <div id="slider-header">
+        <table class="width-100 properties">
+            <tr>
+                <td style="width:200px;vertical-align:middle !important;">
+                     <span style="vertical-align:middle !important;" class="show-case-details fonticon-arrow-right"></span>
+                    @GetResource(ResourceKeys.Cases)                   
+                    @{
+                        var currentCase = Model.Cases.Find(s => s.Id == Model.Info.CaseId);
+                    }
+                    
+                </td>
+                <td style="vertical-align:middle !important;">
+                    @Html.DropDownList("Case", new SelectList(Model.Cases, "BindingValue", "BindingText", Model.Info.CaseId.ToString()), new {@class="input-size9"})
+                    <a class="action-link right" style="line-height:28px;" target="_blank" href="@NavigationHelper.GetIssueUrl(GeminiContext,currentCase.Item)">@GetResource(ResourceKeys.View)</a>
+                </td>
+            </tr>
+
+            <tr class="additional-case-data">
+                    <td>@GetResource(ResourceKeys.CaseId)</td>
+                    <td>@currentCase.Item.IssueKey</td>
+            </tr>
+
+            @if(currentCase.Item.CustomFields.Any(t => string.Compare(t.Name, "Test Type", StringComparison.InvariantCultureIgnoreCase) == 0))
+            {
+                var testType = currentCase.Item.CustomFields.Find(t => string.Compare(t.Name, "Test Type", StringComparison.InvariantCultureIgnoreCase) == 0);
+                
+                <tr class="additional-case-data">
+                    <td>@testType.Name</td>
+                    <td>@Html.Raw(testType.FormattedData)</td>
+                </tr>
+            }
+
+            
+                <tr class="additional-case-data">
+                    <td>@GetResource(ResourceKeys.Description)</td>
+                    <td>@Html.Raw(currentCase.Item.Description)</td>
+                </tr>
+            
+            
+            @if (currentCase.Item.CustomFields.Any(t => string.Compare(t.Name, "Preconditions", StringComparison.InvariantCultureIgnoreCase) == 0))
+            {
+                <tr class="additional-case-data">
+                    <td>@GetResource(ResourceKeys.Preconditions)</td>
+                    <td>@Html.Raw(currentCase.Item.CustomFields.Find(t => string.Compare(t.Name, "Preconditions", StringComparison.InvariantCultureIgnoreCase) == 0).FormattedData)</td>
+                </tr>
+            }
+            
+            @if (currentCase.Item.CustomFields.Any(t => string.Compare(t.Name, "Expected Results", StringComparison.InvariantCultureIgnoreCase) == 0))
+            {
+                <tr class="additional-case-data">
+                    <td>@GetResource(ResourceKeys.ExpectedResults)</td>
+                    <td>@Html.Raw(currentCase.Item.CustomFields.Find(t => string.Compare(t.Name, "Expected Results", StringComparison.InvariantCultureIgnoreCase) == 0).FormattedData)</td>
+                </tr>
+            }
+
+        </table>
+    </div>
+
+     <div class="clearfix">
+        <ol id="steps">
+            @{
+        var pos = 0;
+        foreach (var s in Model.RunInfo)
+        {
+            var current = s.CurrentStep ? "current" : string.Empty;
+            var active = s.Active ? " active" : " inactive";
+            var state = string.Format("status{0}", s.State);
+            
+                <li data-stepId="@s.StepId" id='@string.Format("step-{0}", s.StepId)' title='@Html.Raw(s.Title)' class='@string.Format("{0} {1}{2}", state, current, active)' >
+                    <a rel='@pos' href="javascript:void(0);">@(pos + 1)</a>
+                </li>
+            
+            pos = pos + 1;
+        }
+            }
+        </ol>
+    </div>
+
+    <div id="inner" class="clearfix">
+        <div id="attachment" class="test-run-uploader"></div>
+        @foreach (var x in Model.RunInfo)
+{
+    <div class='step' data-stepid="step-@(x.StepId)" data-current='@string.Format("{0}", x.CurrentStep ? "true" : "false")' data-reset='@string.Format("{0}", x.AllowReset ? "true" : "false")'>
+        <table class="width-100 properties">
+            <tr>
+                <td style="width:200px;" class="step">
+                    @GetResource(ResourceKeys.Step)
+                </td>
+                <td>@Html.Raw(x.Description)</td>
+            </tr>
+            <tr>
+                <td class="no-wrap">
+                    @GetResource(ResourceKeys.ExpectedResults)
+                </td>
+                <td id="expected-@(x.StepId)">@Html.Raw(x.ExpectedResults)</td>
+            </tr>
+            <tr>
+                <td class="no-wrap">
+                    @GetResource(ResourceKeys.ActualResults)
+                </td>
+                <td>
+                    <textarea style="width:99%" rows="10" id='actual-@(x.StepId)'>@Html.Raw(x.ActualResult)</textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @GetResource(ResourceKeys.Attachments)
+                </td>
+                <td id="runner-attachment-container-@(x.StepId)">
+                    @Html.Partial("~/Views/Testing/_Attachments.cshtml", x.Attachments)
+                </td>
+            </tr>
+        </table>
+    </div>
+}
+        
+    </div>
+    <div class="clearfix runner-controls margin-top-20">
+  
+        <!-- needs a style for this -->
+        <input id='run-pass' type='button' class='button button-green' value='@GetResource(ResourceKeys.Pass)' />
+        <!-- needs a style for this -->
+        <input id='run-fail' type='button' class='button button-red' value='@GetResource(ResourceKeys.Fail)' />
+        <!-- needs a style for this -->
+        <input id='run-fail-create' type='button' class='button button-primary' value='@GetResource(ResourceKeys.FailedCreateItem)' />
+        <!-- needs a style for this -->
+        @if(Model.RunInfo.Any(rs=>rs.State == 2))
+        {
+            <input id='run-fail-run' type='button' class='button button-primary' value='@GetResource(ResourceKeys.FailRun)' />
+        }
+        
+        <input id='run-reset' type='button' class='button button-disabled right' value='@GetResource(ResourceKeys.Reset)' />
+        <input id='run-cancel' type='button' class='button button-secondary right' value='@GetResource(ResourceKeys.Cancel)' />        
+    </div>
+    
+   
+}

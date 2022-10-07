@@ -1,0 +1,218 @@
+﻿@model TemplatesCustomFieldsLookupModel
+
+<div id="custom-field-lookup">
+    
+    <div id="cs-adhoc-page" class="margin-bottom-20">
+        <form id="customfield-lookup-form">
+            <input type="hidden" name="customfieldid" value="@Model.CustomFieldId"/>
+            @Html.Hidden("hideProject", Model.HideProjects)
+            <table class="data-entry-box margin-zero-auto">
+                @if (Model.CanEditIdField)
+                {
+                    <tr>
+                        <td class="input-size3">@GetResource(ResourceKeys.Id)</td>
+                        <td><input type="text" name="id" id="add-customfield-property-id" class="input-size3 required" /></td>
+                    </tr>
+                }
+                @if (Model.HasProjectId && !Model.HideProjects)
+                {
+                    <tr>
+                        <td class="input-size3">@GetResource(ResourceKeys.Project)</td>
+                        <td>@Html.DropDownList("projectid", Model.Projects, new { @class = "input-size9" })</td>
+                    </tr>
+                }
+                else if (Model.HideProjects && Model.SelectedProject > 0)
+                {
+                    <tr>
+                        <td class="input-size3">
+                            @Html.Hidden("projectid", Model.SelectedProject)
+                        </td>
+                    </tr>
+                }
+                @if (Model.CascadingParentLookupData != null)
+                {
+                    <tr>
+                        <td class="input-size3">@Model.CascadingLookupFieldName (Cascading)</td>
+                        <td>@Html.DropDownList("parentkey", Model.CascadingParentLookupData, new { @class = "input-size9" })</td>
+                    </tr>
+                }
+                <tr>
+                    <td class="input-size3">@GetResource(ResourceKeys.Description)</td>
+                    <td class="input-size9"><input type="text" name="description" id="add-customfield-property-description" class="input-size9 required" /></td>
+                </tr>
+
+                <tr><td colspan="2"><div class="divider"></div></td></tr>
+
+                <tr>
+                    <td colspan="2" align="right">
+                        <input id="add-lut-data" type="button" value='@GetResource(ResourceKeys.Add)' class='button-primary' />
+                    </td>
+                </tr>
+
+            </table>
+        </form>
+    </div>
+
+    <div id="custom-field-lookup-container" class="admin-datatable-holder">
+        <table id="custom-field-lookup-table" data-customFieldId="@Model.CustomFieldId" style="width: 100%;" class="basic">
+            <thead>
+                <tr data-edit='false'>
+                    <th data-field="id" class="align-left">@GetResource(ResourceKeys.Id)</th>
+                    @if (Model.HasProjectId & !Model.HideProjects )
+                    { <th data-field="projectid" class="align-left" data-edit-type="select">@GetResource(ResourceKeys.Project)</th> }
+                    @if (Model.CascadingParentLookupData != null)
+                    {
+                        <th data-field="parentkey" class="align-left" data-edit-type="select">@Model.CascadingLookupFieldName</th>
+                    }
+                    <th data-field="description" class="align-left">@GetResource(ResourceKeys.Description)</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var row in Model.DataRows)
+                {
+                    <tr data-id="@row.Key">
+                        <td class="no-width no-wrap align-left" @if (!Model.CanEditIdField){<text>data-edit='false'</text>}>@row.Key</td>
+                        @if(Model.HasProjectId & !Model.HideProjects) { <td class="no-width no-wrap align-left">@row.ProjectName</td> }
+                        @if (Model.CascadingParentLookupData != null) { <td class="no-width no-wrap align-left">@row.ParentValue</td> }                                                                                                                                    
+                        <td>@row.Value</td>
+                        <td class="no-width no-wrap align-left" data-edit='false'><span title="@GetResource(ResourceKeys.Delete)" class="action-button-delete cursor-pointer"></span></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var origDataTable;
+    var jscrollPaneApi;
+
+    $(document).ready(function () {
+        @if(Model.HasProjectId && !Model.HideProjects)
+        {
+            <text>gemini_ui.chosen("#projectid", null, true);</text>
+        }
+
+        @if(Model.CascadingParentLookupData != null)
+        {
+            <text>
+            gemini_ui.chosen("#custom-field-lookup #parentkey", null, true);
+            $("#custom-field-lookup-container").css("height", "350px"); //make space for extra drop down
+            </text>
+        }
+
+
+        inlineEdit($("#custom-field-lookup-container table tbody td:not([data-edit='false'])"), 'configure/Templates/CustomFields/getproperty?', 'configure/Templates/CustomFields/saveproperty?');
+
+        $('#add-customfield-property-description').on('keydown', function(e) {
+            if (e.which == 13) {
+                $("#add-lut-data", "#custom-field-lookup").click();
+                gemini_commons.stopClick(e);
+                return false;
+            }
+        });
+
+        $("#add-lut-data", "#custom-field-lookup").click(function ()
+        {
+            if ($('#customfield-lookup-form').valid())
+            {
+                gemini_ajax.postCall("configure/Templates/CustomFields", 'add', function(response) 
+                { 
+                    if(response.success)
+                    {
+                        $('#custom-field-lookup').html(response.Result.Html);
+                      
+                        jscrollPaneApi.data('jsp').reinitialise();                        
+                    }
+                    else
+                    {
+                        gemini_popup.toast(response.Message, true);
+                    }
+                },null, $('#custom-field-lookup #customfield-lookup-form').serialize(), null, true);
+            }
+        });
+
+        if(origDataTable == null || origDataTable == undefined)
+        {
+            origDataTable = gemini_admin.currentTable;
+        }
+
+        var option_column = 2;
+
+        @if(Model.HasProjectId && !Model.HideProjects && Model.CascadingParentLookupData != null)
+        {
+            <text>option_column = 4;</text>
+        }
+        else if (Model.HasProjectId && !Model.HideProjects || Model.CascadingParentLookupData != null)
+        {
+           <text>option_column = 3;</text> 
+        }
+        
+        gemini_admin.initDatatables("#custom-field-lookup-table", { "aoColumnDefs": [{ "bSortable": false, "aTargets": [option_column] }] });
+
+        $("#custom-field-lookup-container").on('click', '.action-button-delete', function () {
+
+            gemini_ajax.postCall("configure/Templates/CustomFields", 'Delete', 
+                function (response) {
+                    $("#custom-field-lookup-container table [data-id='" + response.Result + "']").remove();
+                    jscrollPaneApi.data('jsp').reinitialise();
+                }, 
+                null,
+                {
+                    id: $(this).parents('tr:eq(0)').attr('data-id'), 
+                    customfieldid: $('#custom-field-lookup-container table').attr('data-customfieldid'), 
+                    projectId:@(Model.SelectedProject),
+                    hideProject: @Model.HideProjects.ToJSBool()
+                }, null, true);
+        });
+
+        function inlineEdit(selector, getUrl, saveUrl) {
+            $(selector).editable(csVars.Url + saveUrl, {
+                placeholder: '',
+                detectType: function(elem) {
+                    var th = gemini_ui.getTableTHForTD(elem);
+                    return $(th).data('edit-type');
+                },
+                validationRequired: function(elm) {
+                    var th = gemini_ui.getTableTHForTD(elm);
+                    return $(th).data('required');
+                },
+                validationEmail: function(elm) {
+                    var th = gemini_ui.getTableTHForTD(elm);
+                    return $(th).data('email');
+                },
+                loadurl: csVars.Url + getUrl,
+                loaddata: function() {
+                    var th = gemini_ui.getTableTHForTD(this);
+                    var field = $(th).data('field');
+                    return {
+                        id: $(this).parent().data('id'),
+                        cfproperty: field,
+                        customfieldid: $(this).parents('table:eq(0)').attr('data-customfieldid')
+                            
+                    };
+                },
+                submitdata: function() {
+                    var th = gemini_ui.getTableTHForTD(this);
+                    var field = $(th).data('field');
+                    return {
+                        id: $(this).parent().data('id'),
+                        cfproperty: field,
+                        customfieldid: $(this).parents('table:eq(0)').attr('data-customfieldid')
+                    };
+                },
+                "height": "14px"
+            });
+        };
+        $("#popup-button-no").click(function (e) 
+        { 
+            gemini_admin.currentTable = origDataTable;
+            gemini_popup.popupClose(e); 
+        });
+        setTimeout(function() { 
+            $('#add-customfield-property-description').focus();
+            jscrollPaneApi = $("#custom-field-lookup-container").jScrollPane({ autoReinitialise: true, autoReinitialiseDelay: 250 });
+        }, 250);
+    });
+</script>

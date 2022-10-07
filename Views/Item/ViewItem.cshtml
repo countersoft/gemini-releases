@@ -1,0 +1,125 @@
+﻿@model ViewIssueModel
+
+<div id="view-item" class="clearfix">
+    
+    <!-- ATTRIBUTES PANE -->    
+    <div class="left-zone">
+        <div id="mobile-view-item-details">
+
+            <div id="mobile-filter-navigator-container" class="right"></div>
+
+            <div class="item-title" data-attribute-id="@ItemAttributeVisibility.Title.ToString()">
+                <span class="code">@Model.Issue.IssueKey</span> <span class="title">@Model.Issue.Title</span>
+            </div>
+
+            @{Html.RenderPartial( "_TouchInfo" );}
+        </div>
+
+
+        <div id='item-attributes' class="attributes-pane item-pane">
+            @{Html.RenderPartial( "ItemAttributesPane" );}
+        </div>
+    </div>
+
+    <!-- CONTENT PANE -->    
+    <div class="right-zone">
+        @{Html.RenderPartial( "_Toolbar" );}
+        <div id="filter-navigator-container"></div>
+
+        <div class="clear-both margin-20"></div>
+
+
+            <div id="viewing-container" class="right">
+
+            </div>
+            <div class="item-title" data-attribute-id="@ItemAttributeVisibility.Title.ToString()">
+                <span class="code">@Model.Issue.IssueKey</span> <span class="title">@Model.Issue.Title</span>
+            </div>
+
+            <div class="project-info">
+                <a href="@(GeminiContext.Url)workspace/0/items?projects=@(Model.Issue.Project.Id)">@(Model.Issue.Project.Name)</a>
+            </div>
+
+            <div id="touch-info-container">
+                @{Html.RenderPartial( "_TouchInfo" );}
+            </div>
+
+            <div class="margin-top-20">
+                @{Html.RenderPartial( "_ProgressInfo" );}
+            </div>
+        
+        <div class="clearfix"></div>
+        @{Html.RenderPartial( "_Collapse" );}
+
+        <div id="links-find-item-container" class="hide">
+            <input type="hidden" id="links-find-item-id" />
+            <form name="links-form">
+                <span class="left">@GetResourceTemplate( ResourceKeys.Link )</span>
+                <input class="left input-size6 required" id="links-find-item" name="linksFindItem" type="text" />
+                @Html.DropDownList( "linktypes", Model.IssueLinkTypes, new { @class = "input-size5 left" } )
+                <span class="fonticon-tick left"></span>
+                <span class="fonticon-cross left"></span>
+            </form>
+        </div>
+
+        <div id="dependencies-find-item-container" class="hide">
+            <span>@GetResourceTemplate( ResourceKeys.Dependency )</span>
+            <input id="dependencies-find-item" name="dependencies-find-item" type="text" class="input-size7" />
+        </div>
+
+        <div id="view-item-collapse">
+            @{Html.RenderPartial( "IssueDescription" );}
+
+            @if ( Model[ItemAttributeVisibility.AssociatedLinks] && Model.Issue.Links.Count > 0 )
+            {
+                <div class="see-also-container margin-top-10 margin-bottom-10">
+                    @{Html.RenderPartial( "_SeeAlso" );}
+                </div>
+            }
+            else
+            {
+                <div class="see-also-container">@{Html.RenderPartial( "_SeeAlso" );}</div>
+            }
+
+            @if ( Model[ItemAttributeVisibility.AssociatedHierarchy] )
+            {
+                <div class="margin-top-20 margin-left-30">
+                    @{Html.RenderPartial( "IssueDependencies" );}
+                </div>
+            }
+
+            <div class="margin-top-20 margin-left-30">
+                @{Html.RenderPartial( "IssueAttachments" );}
+            </div>
+        </div>
+        <div class="clearfix"></div>
+
+        <!--- ATTRIBUTES -->
+        <div id='view-item-content-pane' class="contents-pane item-pane margin-top-10">
+
+            <div class="clearfix"></div>
+
+            <div id='cs-template' class="margin-bottom-20">
+                <div id='cs-sections' class="tabs">
+                    @Html.Raw( Model.ContentData )
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clearfix"></div><br />
+
+@if(Model.RunJS) 
+{
+    <script type="text/javascript">
+        
+        $(document).ready(function () {
+            // Changes here needs to be replicated in Item.cshtml
+            $('#colorbox, #cs-popup,#cs-popup-add').addClass('z-index-max');
+            @{
+                var dropZoneText =  String.Format("{0} - {1} {2}", GetResource(ResourceKeys.DropZoneText), Model.MaxFileUpload.ToFileSize(), GetResource(ResourceKeys.Maximum));
+        }
+            gemini_item.initItem('@GeminiContext.Project.Entity.Id', '@GeminiContext.Project.Entity.Code', @Model.Issue.Entity.Id, @((int)ProjectTemplatePageType.Item), @GeminiContext.PermissionsManager.CanEditItem(Model.Issue).ToJSBool(),'@dropZoneText', '@GetResource(ResourceKeys.Delete)');
+        });
+    </script>
+}

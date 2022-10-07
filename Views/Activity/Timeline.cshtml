@@ -1,0 +1,25 @@
+﻿@model ActivityTimelineModel
+
+@{
+    Layout = "~/Views/Shared/_Master.Desktop.Project.cshtml";
+}
+
+@section JavaScript
+{
+}
+
+@section DocumentReady
+{
+    gemini_activity.initTimeline();
+    gemini_filter.init(@((int)ProjectTemplatePageType.Calendar), @Html.Raw(Model.Filter.AvailableFields.ToJson()));
+}
+
+<div class="filter-container">
+    @{Html.RenderPartial("InstantFilter", Model.Filter);}	   
+</div>
+<div id="contents-wrapper" class="clearfix">
+    <div id="activity-timeline" class="clearfix">    
+        @Html.Partial("~/views/activity/_Timeline.cshtml", Model)
+   </div>
+</div>
+

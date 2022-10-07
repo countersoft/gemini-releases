@@ -1,0 +1,8 @@
+﻿input[type=text], input[type=password]
+{
+    line-height:32px;
+}
+#user-box
+{
+    width: 220px;
+}

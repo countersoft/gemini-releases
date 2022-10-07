@@ -1,0 +1,35 @@
+﻿@model ViewIssueModel
+
+
+@if (Model[ItemAttributeVisibility.AssociatedLinks] && Model.Issue.Links.Count > 0)
+{
+    <div class='margin-bottom-5 see-also'>@GetResourceTemplate(ResourceKeys.SeeAlso, Resourcing.Colon)&nbsp;
+        @foreach (var link in Model.Issue.Links)
+        {
+            var issue = link.Issue.Id == Model.Issue.Id ? link.OtherIssue : link.Issue;
+            <div class="see-also-value">
+                <a class='@ViewHelpers.IssueStriked(issue)' href='@Url.Action("Item", "Item", new RouteValueDictionary(new { id = GeminiContext.Card.Id, issueid = issue.Id }))' title='@(link.LinkType):&nbsp;@issue.Title'>@issue.IssueKey</a> 
+                
+                @{
+                    var status = link.LinkType;
+
+                if (GeminiContext.PermissionsManager.CanSeeAttribute(ItemAction.View, ItemAttributeVisibility.Status, issue.Project, issue))
+                {
+                   status = string.Concat(status, ", ", issue.Status);
+                }
+                
+                <span class="link-status">(@status)</span>
+
+                if (CanDoItemAction(UserAction.Delete, ItemAttributeVisibility.AssociatedLinks) && !GeminiContext.PermissionsManager.IsHelpdeskUser())
+                { 
+                    <span data-id="@issue.Id" class="delete-link fonticon-cross"></span>
+                }
+                }
+            </div>
+        }
+    </div>
+}
+else
+{
+    
+}

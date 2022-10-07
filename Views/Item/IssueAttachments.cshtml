@@ -1,0 +1,47 @@
+﻿@model ViewIssueModel
+
+<div id="item-attachments">
+    @{
+        bool canDelete = CanDoItemAction(UserAction.Delete, ItemAttributeVisibility.AssociatedAttachments);
+    }
+
+
+    @if (Model[ItemAttributeVisibility.AssociatedAttachments])
+    {
+        if (CanDoItemAction(UserAction.Create, ItemAttributeVisibility.AssociatedAttachments))
+        {
+            <div id="phantom-fileuploader"></div>
+        }
+
+        <table cellpadding="3" cellspacing="3">
+            <tbody>
+                @foreach (var attachment in Model.Issue.Attachments)
+                {
+                    <tr data-id="@attachment.Entity.Id">
+                        
+                            <td>
+                                @if (attachment.IsImage)
+                                {
+                                    @:<a target="_blank" href='@(GeminiContext.Url)project/@Model.Issue.Project.Id/item/attachment/preview?issueid2=@(Model.Issue.Entity.Id)&fileid=@(attachment.Entity.Id)&height=0&width=0'>
+                                }
+                                <img alt='@attachment.Entity.ShortFileName' title="@attachment.Entity.Size - @attachment.CreatedRelative" src='@Html.Raw(@attachment.IconPath)' />
+                                @if (attachment.IsImage)
+                                {
+                                    @:</a>
+                                }
+                            </td>
+                            <td class="data">@attachment.Entity.Created.ToShortDateString()</td>
+                            <td class="data">@attachment.Entity.Size</td>
+                            <td class="@(attachment.IsImage ? "image-preview":"")">
+                                <a href='@(GeminiContext.Url)project/@Model.Issue.Project.Id/item/attachment?issueid=@(Model.Issue.Entity.Id)&fileid=@(attachment.Entity.Id)'>@attachment.Entity.ShortFileName</a>
+                                @if (canDelete)
+                                {<span class="thumbnail-close-image" data-id="@attachment.Entity.Id" title="@GetResource(ResourceKeys.Delete) @GetResource(ResourceKeys.Attachments)"><a href="#"><span class="fonticon-cross middle"></span></a></span>}
+                            </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    <div class="hide" id="attachment-preview"><img id="attachment-preview-img" /></div>
+    <div class="clearfix @if(Model.Issue.Attachments.Count == 0){<text>margin-bottom-60</text>}"></div>
+</div>

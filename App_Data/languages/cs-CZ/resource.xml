@@ -1,0 +1,554 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Resource>
+  <!-- Misc -->
+  <item id="Thanks">Děkuji</item>
+  <item id="Yes">Ano</item>
+  <item id="No">Ne</item>
+  <item id="Cancel">Zrušit</item>
+  <item id="Create">Vytvořit</item>
+  <item id="Theme">Téma</item>
+  <item id="Item">Položka</item>
+  <item id="Items">Položky</item>
+  <item id="Help">Nápověda</item>
+  <item id="Settings">Nastavení</item>
+  <item id="Alerts">Upozornění</item>
+  <item id="Login">Přihlásit</item>
+  <item id="Logout">Odhlásit</item>
+  <item id="User">Uživatel</item>
+  <item id="Username">Jméno</item>
+  <item id="Password">Heslo</item>
+  <item id="ApiKey">Klíč API</item>
+  <item id="Reset">Resetovat</item>
+  <item id="Register">Registrovat</item>
+  <item id="Profile">Profil</item>
+  <item id="Picture">Obrázek</item>
+  <item id="Preferences">Předvolby</item>
+  <item id="Timezone">Časová zóna</item>
+  <item id="Culture">Formát data</item>
+  <item id="Language">Jazyk</item>
+  <item id="Configure">Nastavit</item>
+    <item id="Customize">Přizpůsobit</item>
+    <item id="ConfirmPassword">Potvrdit heslo</item>
+  <item id="Email">Email</item>
+  <item id="EmailMe">Přijímat emailová upozornění</item>
+  <item id="EmailMeMyChanges">Přijímat emailem mé změny</item>
+  <item id="Surname">Příjmení</item>
+  <item id="Firstname">Jméno</item>
+
+  <item id="TryOpenId">Please try logging in using openid</item>
+  <item id="AccountLockedError">Account is locked. Please contact your Gemini administrator and close the browser.</item>
+  <item id="PasswordRuleNew">Password must be new and not previously used</item>
+  <item id="PasswordRuleLength">Password must be {0} characters long</item>
+  <item id="PasswordRuleUpper">Password must contain one upper case letter</item>
+  <item id="PasswordRuleLower">Password must contain one lower case letter</item>
+  <item id="PasswordRuleNumber">Password must contain one number</item>
+  <item id="PasswordRuleCharacters">Password must contain one of these symbols</item>
+  <item id="SelfRegistrationRestricted">Self registration is not permitted</item>
+  
+  <item id="Open">Otevřeno</item>
+  <item id="Page">Stránka</item>
+  <item id="Of">z</item>
+  <item id="Change">Změnit</item>
+  <item id="Changed">Změněno</item>
+  <item id="From">Od</item>
+  <item id="Removed">Odstraněno</item>
+  <item id="Locked">Zamčeno</item>
+  <item id="Archived">Archivováno</item>
+  <item id="Released">Uvolněno</item>
+  <item id="Now">Nyní</item>
+  <item id="To">Do</item>
+  <item id="Collapse">Sbalit</item>
+  <item id="Expand">Rozbalit</item>
+  <item id="Clear">Vymazat</item>
+  <item id="Close">Zavřít</item>
+  <item id="Closed">Zavřeno</item>
+  <item id="Total">Celkem</item>
+  <item id="Summary">Shrnutí</item>
+  <item id="SeeAlso">Viz také</item>
+  <item id="Description">Popis</item>
+  <item id="Other">Další</item>
+  <item id="View">Zobrazit</item>
+  <item id="Title">Titulek</item>
+  <item id="Any">Vše</item>
+  <item id="Age">Stáří</item>
+  <item id="Keywords">Klíčová slova</item>
+  <item id="ItemId">Id položky</item>
+  <item id="ItemKey">Klíč položky</item>
+  <item id="RevisedTime">Revised Time</item>
+  <item id="CreatedTime">Created Time</item>
+  <item id="RevisedTimestamp">Revised Timestamp</item>
+  <item id="CreatedTimestamp">Created Timestamp</item>
+  <item id="ReportedBy">Reportoval</item>
+  <item id="FollowedBy">Sledovaný kým</item>
+  <item id="GroupDependencies">Seskupit závislosti</item>
+  <item id="Grouped">Seskupené</item>
+  <!--B.E. - GDO - BEGIN-->
+  <item id="GroupDependenciesOpen">Exclude closed items</item>
+  <item id="GroupedOpen">Grouped (Open)</item>
+  <!--B.E. - GDO - END-->
+  <item id="ShowSequence">Oddělené položky</item>
+  <!--B.E. - SSO - BEGIN-->
+  <item id="SequencedOpen">Exclude closed items</item>
+  <!--B.E. - SSO - END-->
+  <item id="NoZone">Hide zones</item>
+  <item id="ShowSLA">Show SLA zone</item>
+  <item id="FilterNoType">Všechny položky</item>
+  <item id="FilterIncludeClosed">Včetně zavřených</item>
+  <item id="FilterOpenIssues">Otevřené</item>
+  <item id="FilterClosedIssues">Zavřené</item>
+  <item id="FilterLateIssues">Pozdější</item>
+  <item id="FilterRecentlyCreatedIssues">Nedávno vytvořené</item>
+  <item id="FilterRecentlyUpdatedIssues">Nedávno aktualizované </item>
+  <item id="FilterRecentlyClosedIssues">Nedávno zavřené</item>
+  <item id="FilterDueYesterdayIssues">Do včerejšího dne</item>
+  <item id="FilterDueTodayIssues">Do dnešního dne</item>
+  <item id="FilterDueTomorrowIssues">Do zítřejšího dne</item>
+  <item id="FilterDueNext7DaysIssues">Během následujících 7 dní</item>
+  <item id="FilterDueNext14DaysIssues">Během následujících 14 dní</item>
+  <item id="FilterDueNext30DaysIssues">Během následujících 30 dní</item>
+  <item id="FilterSubmittedByMeIssues">Vložené mnou</item>
+  <item id="None">Žádný</item>
+  <item id="Milestones">Milníky</item>
+  <item id="Milestone">Milník</item>
+
+  <item id="Assigned">Přiřazené</item>
+  <item id="Following">Sledované</item>
+
+  <item id="New">Nový</item>
+  <item id="ProjectCode">Kód projektu</item>
+  <item id="Project">Projekt</item>
+  <item id="Projects">Projekty</item>
+  <item id="AllProjects">Všechny projekty</item>
+  <item id="VersionUnscheduled">Nenaplánovaný</item>
+  <item id="VersionUnaffected">Nezměněný</item>
+  <item id="ResourceUnassigned">Nepřiřazený</item>
+  <item id="Unassigned">** Nepřiřazený **</item>
+
+  <item id="More">Více</item>
+  <item id="Find">Najít</item>
+  <item id="Search">Vyhledat</item>
+  <item id="Date">Datum</item>
+  <item id="TimeType">Typ času</item>
+  <item id="Hours">Hodiny</item>
+  <item id="Minutes">Minuty</item>
+  <item id="Days">Dny</item>
+  <item id="Day">Den</item>
+  <item id="Comment">Komentář</item>
+  <item id="Field">Pole</item>
+  <item id="Before">Před</item>
+  <item id="After">Po</item>
+  <item id="Name">Název</item>
+  <item id="UserAlreadyExists">Uživatel je již zaregistrován</item>
+  
+  <!-- Tester additional -->
+  <item id="Details">Detaily</item>
+  <item id="Plans">Plány</item>
+  <item id="Plan">Plán</item>
+  <item id="PlanId">Id</item>
+  <item id="Cases">Případy</item>
+  <item id="LinkedCases">Testovací případy</item>
+  <item id="LinkedItems">Odkazované položky</item>
+  <item id="Links">Odkazy</item>
+  <item id="LinkType">Typ odkazu</item>
+  <item id="Link">Odkaz</item>
+  <item id="Case">Případ</item>
+  <item id="CaseDetail">Detail případu</item>
+  <item id="CaseId">Id</item>
+  <item id="TestSteps">Testovací kroky</item>
+  <item id="TestPlans">Testovací plány</item>
+  <item id="CaseNoPlans">Případ není v žádném plánu</item>
+  <item id="Runs">Spuštění</item>
+  <item id="RunHistory">Historie spuštění</item>
+  <item id="Run">Spuštění</item>
+  <item id="RunDetail">Detaily spuštění</item>
+  <item id="RunId">Id</item>
+  <item id="NoRuns">Žádné předchozí spuštění</item>
+  <item id="NoRelatedItems">Žádné odkazované položky</item>
+  <item id="Steps">Kroky</item>
+  <item id="Step">Krok</item>
+  <item id="StepId">Id</item>
+  <item id="AffectedArea">Zasažená oblast</item>
+  <item id="Preconditions">Předpoklady</item>
+  <item id="ExpectedResults">Očekávané výsledky</item>
+  <item id="ActualResults">Aktuální výsledky</item>
+  <item id="AssignedResource">Přiřazené zdroje</item>
+  <item id="RunStatistics">Statistiky spuštění</item>
+  <item id="Pending">Čeká</item>
+  <item id="Failed">Neúspěšný</item>
+  <item id="Fail">Neúspěch</item>
+  <item id="Passed">Provedeno</item>
+  <item id="Pass">Provést</item>
+  <item id="FailedCreateItem">Neúspěch &amp; záznam</item>
+  <item id="FailRun">Chyba spuštění</item>
+  <item id="CaseRunner">Spouštěč případů</item>
+  <item id="TestStepRunner">Spouštěč testů</item>
+  <item id="Inactive">před čekajícími testy</item>
+  <item id="PlanItems">Naplánovat testovací položky</item>
+  <item id="RemoveStep">Odebrat krok</item>
+  <item id="RemoveCase">Odebrat případ</item>
+  <item id="RemoveLink">Odebrat odkazovanou položku</item>
+  <item id="FromCase">od případu</item>
+  <item id="FromPLan">od plánu</item>
+  <item id="NoCasesOrSteps">Žádné případy nebo kroky ke spuštění v tomtu plánu</item>
+  <item id="FailRunMessage">Ukončit spuštění jako neúspěšné?</item>
+  <item id="RunName">Název spuštění</item>
+  <item id="ItemsTested">Testované položky</item>
+  <item id="NewRun">Nové spuštění</item>
+  <item id="ItemCases">Položky testované v případu</item>
+  <item id="ItemsRaised">Zvýrazněné položky</item>
+  <item id="ResetConfirm">Resetovat tento a následné kroky v tomto případu, POZNÁMKA: všechny přílohy v následných krocích budou smazány.  Pokračovat?</item>
+
+
+  <!-- Table / Grid / Records -->
+  <item id="NoData">Žádná data</item>
+  <item id="Select">&lt;Vybrat&gt;</item>
+
+  <!-- Planner  -->
+  <item id="SaveAs">Uložit jako</item>
+  <item id="Zoom">Zvětšit</item>
+  <item id="GroupBy">Seskupit podle</item>
+  <item id="Rows">Řádky</item>
+  <item id="Columns">Sloupce</item>
+  <item id="Limit">Počet pruhů</item>
+  <item id="AutoLimit">Počet karet</item>
+  <item id="OrderBy">Seřadit podle</item>
+  <item id="ThenBy">Pak podle</item>
+  <item id="Color">Barva</item>
+  <item id="Filter">Filtr</item>
+  <item id="Options">Možnosti</item>
+  <item id="DateRanges">Rozsahy dat</item>
+  <item id="Totting">Seřadit podle</item>
+
+  <!-- Additional Planner -->
+  <item id="Nothing">Nic</item>
+  <item id="NotOrdered">Žádné řazení</item>
+  <item id="Informal">Neformální</item>
+  <item id="Formal">Formální</item>
+  <item id="ItemCount">Počet položek</item>
+  <item id="AsIs">Jak je</item>
+  <item id="Daily">Denní</item>
+  <item id="Weekly">Týdenní</item>
+  <item id="Monthly">Měsíční</item>
+  <item id="Effort">Pracnost</item>
+
+  <!-- Calendar-->
+  <item id="Duration">Doba trvání</item>
+  <item id="Start">Začátek</item>
+  <item id="Due">Konec</item>
+
+  <!-- Documents -->
+  <item id="DropZoneText">Pro nahrání přetáhněte soubory sem</item>
+  <item id="Folders">Složky</item>
+  <item id="File">Soubor</item>
+  <item id="FileId">ID souboru</item>
+  <item id="FileName">Název souboru</item>
+  <item id="FileSize">Velikost souboru</item>
+  <item id="Upload">Nahrát</item>
+  <item id="Maximum">Maximum</item>
+
+  <!-- general Terms -->
+  <item id="Created">Vytvořeno</item>
+  <item id="Revised">Aktualizováno</item>
+  <item id="Source">Zdroj</item>
+  <item id="Type">Typ</item>
+  <item id="Priority">Priorita</item>
+  <item id="Severity">Závažnost</item>
+  <item id="Status">Stav</item>
+  <item id="Resolution">Řešení</item>
+  <item id="Resources">Zdroje</item>
+  <item id="Resource">Zdroj</item>
+  <item id="Component">Komponenta</item>
+  <item id="Components">Komponenty</item>
+  <item id="FixedInVersionNone">Žádná</item>
+  <item id="FixedInVersion">Opraveno ve verzi</item>
+  <item id="FixedInVersions">Opraveno ve verzích</item>
+  <item id="Versions">Verze</item>
+  <item id="Version">Verze</item>
+  <item id="AffectedVersions">Zasažené verze</item>
+  <item id="Estimated">Odhadovaný</item>
+  <item id="Remaining">Zbývající</item>
+  <item id="Logged">Vykázaný</item>
+  <item id="StartDate">Datum začátku</item>
+  <item id="DueDate">Datum konce</item>
+  <item id="ReleaseDate">Datum uvolnění</item>
+  <item id="ClosedDate">Zavřeno</item>
+  <item id="ResolvedDate">Vyřešeno</item>
+  <item id="Visibility">Viditelnost</item>
+  <item id="CommentVisibility">Viditelnost komentáře</item>
+  <item id="Repeat">Opakovat</item>
+  <item id="Votes">Hlasy</item>
+  <item id="Followers">Sledující</item>
+  <item id="FollowUnfollow">Sledovat / Nesledovat</item>
+  <item id="Time">Čas</item>
+  <item id="SourceControl">Zdrojové soubory</item>
+  <item id="History">Historie</item>
+  <item id="ExcessTime">Překročit čas</item>
+  <item id="TimeRemaining">Zbývající čas</item>
+  <item id="TimeExceeded">Překročený čas</item>
+  <item id="TimeLogged">Vykázaný čas</item>
+  <item id="EstimatedEffort">Pracnost</item>
+  <item id="ItemsRemaining">Zbyvající položky</item>
+  <item id="Planner">Plánovač</item>
+  <item id="Activity">Aktivita</item>
+  <item id="Changelog">Seznam změn</item>
+  <item id="Documents">Dokumenty</item>
+  <item id="Document">Dokument</item>
+  <item id="Reports">Reporty</item>
+  <item id="Roadmap">Plán vývoje</item>
+  <item id="Testing">Testování</item>
+  <item id="Tests">Testy</item>
+  <item id="Burnup">Burn-up</item> <!-- ??? -->
+  <item id="Burndown">Burndown</item> <!-- ??? -->
+  <item id="AdditionalInformation">Další informace</item>
+  <item id="Comments">Komentáře</item>
+  <item id="Attachments">Přílohy</item>
+  <item id="AttachmentSizeExceeded">{file} is too large, maximum file size is {sizeLimit}.</item>
+  <item id="AttachmentsSizeExceeded">file(s) are too large, maximum combined file size is {sizeLimit}.</item>
+  
+  <item id="Dependencies">Závislosti</item>
+  <item id="Timeline">Časová osa</item>
+  <item id="Calendar">Kalendář</item>
+
+  <item id="Untitled">Bez jména</item>
+  <item id="MissingData">Chybějící data</item>
+
+  
+  <!--Report Specific-->
+  <item id="AvgCloseTime">Průměrný čas k uzavření</item>
+  <item id="GroupByName">Report podle skupiny</item>
+  <item id="TimeReportProjectName">Časový report - Projekt</item>
+  <item id="TimeReportUserName">Časový report - Moje</item>
+  <item id="ActivityByComponentName">Aktivita podle komponenty</item>
+  <item id="ActivityByTypeName">Aktivita podle typu</item>
+  <item id="ActivityByPriorityName">Aktivita podle priority</item>
+  <item id="ActivityByResourceName">Aktivita podle zdroje</item>
+  <item id="ActivityBySeverityName">Aktivita podle závažnosti</item>
+  <item id="ActivityByVersionName">Aktivita podle verze</item>
+  <item id="SummaryByComponentName">Aktivita podle komponenty</item>
+  <item id="SummaryByTypeName">Přehled podle typu</item>
+  <item id="SummaryByVersionName">Přehled podle verze</item>
+  <item id="ResourceAllocationName">Přehled alokace</item>
+  <item id="ProjectSummaryName">Přehled projektu</item>
+
+  <item id="Release">Uvolnění</item>
+  <item id="NextRelease">Další uvolnění</item>
+  <item id="TypeInformation">Informace o typu</item>
+  <item id="StatusInformation">Informace o stavu</item>
+  <item id="Loading">Načítání...</item>
+  
+  <!-- Actions -->
+  <item id="Update">Aktualizovat</item>
+  <item id="Updates">Aktualizace</item>
+  <item id="Updated">Aktualizováno</item>
+  <item id="Apply">Použít</item>
+  <item id="Save">Uložit</item>
+  <item id="Saved">Uloženo</item>
+  <item id="Edit">Editovat</item>
+  <item id="Move">Přesunout</item>
+  <item id="Copy">Kopírovat</item>
+  <item id="Delete">Smazat</item>
+  <item id="Deleted">Smazáno</item>
+  <item id="Add">Přidat</item>
+  <item id="Added">Přidáno</item>
+  <item id="Vote">Hlasovat</item>
+  <item id="Print">Vytisknout</item>
+  <item id="SaveAsPDF">Uložit jako PDF</item>
+  <item id="Follow">Sledovat</item>
+  <item id="Unfollow">Nesledovat</item>
+  <item id="Share">Sdílet</item>
+  <item id="Subscribe">Odebírat</item>
+  <item id="NobodyToShareWith">Nemáš nikoho ke sdílení :(</item>
+  <item id="Pin">Připnout kartu</item>
+  <item id="PinUnPin">Připnout kartu / Odepnout kartu</item>
+  <item id="SetAsHome">Nastavit jako domácí</item>
+  <item id="Rename">Přejmenovat</item>
+  <item id="Remove">Odebrat</item>
+
+  <item id="Progress">Průběh</item>
+
+  <item id="Overdue">Zpoždění</item>
+  <item id="Today">Dnes</item>
+  <item id="Tomorrow">Zítra</item>
+  <item id="OpenedRecently">10:08 11.3.2013ené nedávno</item>
+  <item id="ClosedRecently">Zavřené nedávno</item>
+
+  <item id="Points">Body</item>
+  <item id="Elapsed">Uplynulý</item>
+  <item id="Found">Nalezeno</item>
+  <item id="ItemsFound">Nalezeno položek</item>
+  <item id="PercentComplete">% hotovo</item>
+  <item id="Complete">Hotovo</item>
+  <item id="Prev">Předchozí</item>
+  <item id="Next">Další</item>
+  <item id="Successful">Úspěšný</item>
+  <item id="GlobalGroups">Globální skupiny</item>
+  <item id="ProjectGroups">Skupiny projektů</item>
+  <item id="Parent">Rodič</item>
+  <item id="Child">Dítě</item>
+  <item id="Repository">Repozitář</item>
+  <item id="FilePath">Cesta k souboru</item>
+  <item id="EntryDate">Datum záznamu</item>
+  <item id="DragDropAdminTip">Tažením myší uspořádej položky</item>
+  <item id="TopThree">Top 3</item>
+  <item id="SubscribeTip">Vyberte pokud si přejete přijímat upozornění emailem pokud dojde ke změně.</item>
+  <item id="Defaults">Výchozí</item>
+  <item id="All">Vše</item>
+  <item id="Voted">Hlasováno</item>
+  <item id="Id">ID</item>
+  <item id="CustomLookupData">Uživatelská data pro vyhledávání</item>  
+  <item id="ImportWizard">Průvodce importem</item>
+  <item id="SchedulesReports">Scheduled Reports</item>
+  <item id="ReportsAttached">Attached are your reports.</item>
+
+  <item id="Empty">Empty</item>
+  <item id="Populated">Populated</item>
+  <item id="Display">Display</item>
+  <item id="Dependency">Dependency</item>
+  
+  <item id="Show">Show</item>
+  <item id="Hide">Hide</item>
+  <item id="EstimatedReleaseDate">Estimated Release Date</item>
+  <item id="Excess">Excess</item>
+
+  <item id="Dashboard">Dashboard</item>
+  <item id="Chat">Chat</item>
+  <item id="Workspace">Workspace</item>
+  <item id="TeamWorkspace">Team Workspace</item>
+  <item id="CreateWorkspace">New Workspace</item>
+  <item id="LockSync">Lock and sync changes</item>
+  <item id="EnableTeamChat">Enable team chat</item>
+  <item id="EnableOthersToSequence">Allow members to sequence items</item>
+  <item id="HighlightChanges">Highlight changes</item>
+  <item id="ShowBadgeCounts">Show badge counts</item>
+  <item id="SelectCharts">Select the charts and numbers you would like to show</item>
+  <item id="CurrentPassword">Current Password</item>
+  <item id="NewPassword">New Password</item>
+  <item id="ConfirmNewPassword">Confirm New Password</item>
+
+
+  <item id="Notifications">Notifications</item>
+  <item id="Unknown">Unknown</item>
+  <item id="FilterAssignedToMeIssues">Assigned to me</item>
+  <item id="TimeLogger">Time Logger</item>
+  <item id="FilterTimeLoggedByMeIssues">Time logged by me</item>
+  <item id="FilterFollowedByMeIssues">Followed by me</item>
+  <item id="TeamChat">Team Chat</item>
+  <item id="Workspaces">Workspaces</item>
+  <item id="Metrics">Metrics</item>
+  <item id="CreateWorkspaceCaption">Workspaces enable collaboration across multiple projects with co-workers. Use metrics, team chat, email notifications and reporting to manage your work.</item>
+
+  <item id="Send">Send</item>
+
+  <item id="NewProject">New Project</item>
+  <item id="NewProjectCaption">Projects contain work items of different types with associated workflow, customfields and data capture screens to suit your business. Select the project's template type.</item>
+
+  <item id="NewCoWorkers">Invite Co-workers</item>
+  <item id="CreateCoWorkersCaption">Invite co-workers to test out Gemini. They will each receive an email containing user credentials as well as the Gemini instance URL.</item>
+
+  <item id="WorkSpaceAlerts">Workspace Alerts</item>
+
+  <item id="People">People</item>
+  <item id="NewLogo">New Logo</item>
+  <item id="NewLogoCaption">Upload your own logo (max. 160px x 40px), use the Gemini logo or remove the logo completely.</item>
+
+  <item id="TotalPoints">Total Points</item>
+  <item id="OpenedToday">Opened Today</item>
+  <item id="ClosedToday">Closed Today</item>
+  <item id="OpenSummary">Open Summary</item>
+  <item id="ClosedSummary">Closed Summary</item>
+  <item id="TotalSummary">Total Summary</item>
+  <item id="ProgressPercentage">Progress Percentage</item>
+  <item id="EndDate">End Date</item>
+  <item id="MetricEstimatedEffort">Estimated Effort</item>
+  <item id="MetricTimeRemaining">Time Remaining</item>
+  <item id="CompletionDate">Completion Date</item>
+  <item id="EstCompletionDate">Est. Completion Date</item>
+  <item id="Velocity">Velocity</item>
+  <item id="TypeChart">Type Chart</item>
+  <item id="SeverityChart">Severity Chart</item>
+  <item id="PriorityChart">Priority Chart</item>
+  <item id="StatusChart">Status Chart</item>
+  <item id="ResolutionChart">Resolution Chart</item>
+  <item id="ResourceChart">Resource Chart</item>
+  <item id="VersionChart">Version Chart</item>
+  <item id="ComponentChart">Component Chart</item>
+  <item id="BurndownItems">Burndown by Items</item>
+  <item id="BurndownHours">Burndown by Hours</item>
+  <item id="BurndownPoints">Burndown by Points</item>
+  <item id="BurnupItems">Burn-up by Items</item>
+  <item id="BurnupHours">Burn-up by Hours</item>
+  <item id="BurnupPoints">Burn-up by Points</item>
+  <item id="VelocityItems">Velocity by Items</item>
+  <item id="VelocityHours">Velocity by Hours</item>
+  <item id="VelocityPoints">Velocity by Points</item>
+
+  <item id="DeleteTeamChatsAndScheduledReports">All associated team chats and scheduled reports will be removed.</item>
+  <item id="OrTransferWorkspace">Or transfer the workspace to someone else</item>
+
+  <item id="SLA">SLA</item>
+  <item id="Breached">Breached</item>
+  <item id="Paused">Paused</item>
+  <item id="Finished">Finished</item>
+
+  <item id="ReceiveIndividualEmailAlerts">Receive individual email alerts per item (not batched)</item>
+  <item id="SubscribeOthers">Subscribe others</item>
+  <item id="Users">Users</item>
+  <item id="Groups">Groups</item>
+  <item id="Subject">Subject</item>
+  <item id="Message">Message</item>
+
+  <item id="FirstRowMustBeColumnHeader">The first row in your file must contain column headers (e.g. Title, Priority, Status). Excel is recommended where you have HTML or multi-line data.</item>
+  <item id="SupportedUploadFormats">Select a project and a file to upload - supported formats: Microsoft Excel and CSV (text files delimited by PIPE, COMMA or TAB).</item>
+  <item id="MapImportedColumns">Map imported columns to Gemini data fields</item>
+  <item id="SourceColumn">Source Column</item>
+  <item id="SampleData">Sample Data</item>
+  <item id="TargetColumn">Target Column</item>
+  <item id="Ignore">Ignore</item>
+  <item id="MapImportedColumnValues">Map incoming column values to Gemini field values</item>
+  <item id="ImportWizardResult">Import Wizard Results</item>
+  <item id="ImportWizardRowsFound">ROWS FOUND</item>
+  <item id="ImportWizardRowsImported">ROWS IMPORTED</item>
+  <item id="ImportWizardRowsSkipped">ROWS SKIPPED</item>
+  <item id="ImportWizardTypeAdded">A Type was added. Please go to Customize -> Templates -> Process, select your Project Template and update the 'Screen' settings for your Type.</item>
+  <item id="ImportWizardAccessProblem">There seems to be a problem accessing the 'app_data/imports' folder. Please ensure you have given 'everyone' modify access to this folder.</item>
+  <item id="DependencyTree">Dependency tree</item>
+  
+  <item id="ClearAll">Clear All</item>
+  <item id="ChooseYourTerminology">Choose your terminology</item>
+  <item id="ChooseYourViews">Choose your views</item>
+  <item id="FirstTask">First Task</item>
+  <item id="LastTask">Last Task</item>
+  <item id="SharedBy">Shared by</item>
+  <item id="Test">Test</item>
+  <item id="Key">Key</item>
+  <item id="IssueTracking">Issue Tracking</item>
+  <item id="InlineEditingOnTheGrid">Inline Editing on the Grid</item>
+  <item id="SelectItemWorkspaceTickCheckboxes">Select the ITEM workspace (left sidebar). Tick a few checkboxes and click on any field to change its value. Watch what happens when you save it.</item>
+  <item id="ManualWorkPrioritization">Manual Work Prioritization</item>
+  <item id="SelectSeqWorkspace">Select the SEQ workspace. Notice the Sequence Zone at the top of the grid. Drag-drop any item into the Zone using its handle. The Zone lets you prioritize work for everyone.</item>
+  <item id="Filtering">Filtering</item>
+  <item id="SelectTheAllWorkspace">Select the ALL workspace. Notice it has work items from different projects. Click in the "Search" box (top middle) and filter for Status "In Progress".</item>
+  <item id="UseTheSidebar">Use the Sidebar</item>
+  <item id="ClickOnThePeopleTabForThisWorkspace">Click on the People tab for this workspace (right sidebar). Notice it shows you who is doing what and when. Click on a name to filter by co-worker.</item>
+  <item id="CancelRun">Do you wish to stop and delete this Test Run?</item>
+  <item id="SaveChanges">Save Changes</item>
+  <item id="Coworkers">Co-workers</item>
+  <item id="Schedule">Schedule</item>
+  <item id="SeparateAlertFollowed">Receive separate email alert for every followed item</item>
+
+  <item id="DefaultOrganization">Výchozí organizace</item>
+  <item id="Organization">Organizace</item>
+  <item id="EmailReply">Email Reply</item>
+
+  <item id="NotFilter">Not</item>
+  <item id="Sequence">Sequence</item>
+  <item id="TrackedProgress">Tracked Progress</item>
+  <item id="OutOfHours">Out Of Hours</item>
+  <item id="TemplatedContent">Templated Content</item>
+  <item id="SlaBreachDate">Breach Date</item>
+
+  <item id="AnotherUserModified">Tuto položku změnila jiná osoba</item>
+  <item id="ReviewAndClickSend">Zkontrolujte změny a znovu odešlete</item>
+  <item id="NowViewing">Nyní se dívám</item>
+
+</Resource>

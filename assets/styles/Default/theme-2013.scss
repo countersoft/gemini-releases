@@ -1,0 +1,1320 @@
+@import "../mixin", "_theme", "theme-mixin", "../gemini7.scss"; 
+
+#footer 
+{
+    height: 30px;
+    z-index: 99999;
+    font-family: $font-aux;
+    font-size: 13px;
+    background-color: $color-grayscale2;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+
+    #appnav-toolbar
+    {
+        width: 500px;
+        font-weight: bold;
+        font-size: 15px;
+        display: none;
+        color: $color-white;
+        height: 30px;
+		position: fixed;
+        left:0;
+		bottom: 0;
+
+        .code
+        {
+            padding: 5px 0 0 0;
+            display: inline-block;
+            font-weight: bold;
+            margin: 0 0 0 10px;
+            overflow: hidden;
+			white-space: nowrap; 
+			text-overflow: ellipsis;  
+			text-overflow: ellipsis-word;
+        }
+
+        .title
+        {
+            @extend .code;
+            font-weight:normal;
+            max-width:335px;
+        }
+
+		.badge
+		{
+			background-color: $color-badge-hover;
+			color: $color-white;
+			font-size: 11px;
+			text-align: center;
+			padding: 4px 0 0 0;
+			@include rounded(50%);
+			width: 20px;
+			height: 16px; 
+			z-index: 99999;
+            cursor: pointer;
+            
+            &:hover
+            {
+                background-color: $color-badge-hover;
+
+                span
+                {
+                    display: none;
+                }               
+                
+                &:after
+                {
+                    color:$color-white;
+                    content:'X';
+                }
+            }
+		}
+
+		#appnav-toolbar-badge-changes
+		{
+			@extend .badge;
+            background-color: darken($color-black, 100%);
+			position: absolute;
+			left: 10px;
+			top: -10px;
+		}
+
+		#appnav-toolbar-save
+		{
+			height:30px;
+			padding:5px 40px 4px 10px !important;
+			background-color: #131313;
+			@include rounded(0%);
+			position:relative;
+			&:hover
+			{
+				+ .save-small
+				{
+					background-color:darken($color-green, 8%) !important;
+				}
+			}
+		}
+		
+		.save-small
+		{
+			position: absolute;
+			display:block;
+			right: 8px;
+			top: -1px;
+			background-position: -580px 2px;
+			padding-top: 4px;
+			@include rounded(50%);
+			&:hover
+			{
+				background-color:darken($color-green, 8%) !important;
+			}
+		}
+    }
+
+	.actions
+    {
+        float: right;
+
+		.appnav-toolbar-icon
+		{
+            background-color: $color-black;
+			width: 35px;
+			text-align: center;
+
+            .spinner
+            {
+                height: 2px;
+            }
+		}
+
+        #appnav-toolbar-dashboard
+        {
+			@extend .appnav-toolbar-icon;
+
+			 background-color: $color-workspace-dashboard;
+        }
+				
+		#appnav-toolbar-notifications
+		{
+			background-color: $color-black;
+			width: 35px;
+			text-align: center;
+
+            .spinner
+            {
+                height: 2px;
+            }
+
+			background-color: $color-black;
+		}
+    }
+
+    #footer-messaging
+    {
+        padding-top: 7px;
+        float: right;
+        font-size: 13px;
+        color: $color-grayscale0;
+		
+        a
+	    {
+		    text-decoration: none;
+            color: $color-grayscale0;
+
+		    &:hover
+		    {
+			    text-decoration: underline;
+		    }
+	    }
+
+        .registered
+        {
+            color: $color-black;
+            display: inline-block;
+            font-weight: bold;
+            padding: 0 10px 0 10px;
+            margin-right:10px;
+        }
+    }
+}
+
+#dashboard-zone
+{
+    background-color: $color-side-pane-background; 
+    height: 185px; 
+    z-index: 9999; 
+    overflow-y: hidden;
+    color: red;
+	padding:20px;
+
+    #dashboard-wrapper
+    {
+        text-align:center;
+		overflow: hidden;
+		outline:none;
+    }   
+	    
+    .label
+    {
+        color: $color-grayscale1;
+        font-size:13px;
+        text-transform:uppercase;
+        margin:0 0 10px 0;
+    }
+
+    .data
+    {
+        font-size:32px;
+    }
+
+    .metric
+    {
+        width: 80px;
+		margin: 15px 0 15px 0;
+    }
+
+    .metric-large
+    {
+        width: 150px;
+		margin: 15px 0 15px 0;
+    }
+
+    .metric-chart
+    {
+        height: 170px;
+		margin: 15px 0 15px 0;
+    }
+}
+
+.workspace-pane-chrome
+{
+	//width: 100%; 
+    z-index: 9999; 
+    
+	color: $color-black;
+    background-color: $color-side-pane-background; 
+	position:relative;
+	padding:20px;
+
+	.header
+	{
+		background-color: $color-black;
+		height: 35px;
+		width: 100%;
+
+		.minimize 
+		{
+			display: inline-block;
+			cursor: pointer;
+			width: 50px;
+			height: 35px;
+
+			&:hover 
+			{
+				opacity: 0.5 !important;
+			}
+
+			.icon
+			{
+				margin: 20px 0 0 17px;
+				height:3px;
+				width: 13px;
+				background-color: $color-white;
+			}
+		}
+
+		.title
+		{
+			display:  inline-block;
+			float: right;
+			margin: 10px 15px 0 0;
+
+			color: $color-white;
+			font-size: 12px;
+		}
+	}
+}
+
+#workspace-people-zone
+{
+    @extend .workspace-pane-chrome;
+
+	.header
+	{
+		background-color: $color-workspace-people;
+	}
+
+	.the-people 
+	{
+		height: 349px;
+		//width: 95%;
+		overflow: hidden;
+		
+		.person
+		{
+			position: relative;
+			height: 130px;
+			width:350px;
+			cursor: pointer;
+			background-color:$color-white;
+			border: 1px solid $color-grayscale3;
+			margin-bottom:20px;
+			
+
+			&:hover
+			{
+				background-color: $color-hover;
+			}
+
+			.gravatar
+			{
+				display: inline;
+				position: absolute;
+				overflow:hidden;
+				top: 10px;
+				left: 20px;
+
+				height: 40px;
+				width: 40px;
+
+				@include rounded(50%);
+
+				img
+				{
+					height: 40px;
+					width: 40px;
+				}
+			}
+
+			.fullname
+			{
+				display: inline;
+				position: absolute;
+				top: 11px;
+				left: 80px;
+				overflow:hidden;
+				width:200px;
+				white-space:nowrap;
+
+				font-size: 14px;
+				font-weight: bold;
+			}
+
+			.available
+			{
+				display: inline;
+				position: absolute;
+				top: 31px;
+				left: 80px;
+
+				font-size: 11px;
+			}
+
+			.estimated-label
+			{
+				display: inline;
+				position: absolute;
+				top: 61px;
+				left: 80px;
+
+				font-size: 11px;
+				text-transform: uppercase;
+				width:150px;
+			}
+
+			.estimated
+			{
+				float:right;
+				font-size: 11px;
+				font-weight: bold;
+			}
+
+			.logged-label
+			{
+				display: inline;
+				position: absolute;
+				top: 81px;
+				left: 80px;
+				width:150px;
+
+				font-size: 11px;
+				text-transform: uppercase;
+			}
+
+			.logged
+			{
+				float:right;
+				font-size: 11px;
+				font-weight: bold;
+			}
+
+			.tasks
+			{
+				position: absolute;
+				top: 11px;
+				right: 25px;
+				text-align: right;
+				width: 80px;
+				height: 53px;
+
+				.number
+				{
+					display: block;
+
+					font-size: 20px;
+					font-weight: bold;
+				}
+
+				.label
+				{
+					display: block;
+
+					font-size: 11px;
+					text-transform: uppercase;
+				}
+			}
+
+			.points
+			{
+				@extend .tasks;
+				top: 78px;
+				right: 25px;
+			}
+
+			.remaining
+			{
+				display: inline;
+				position: absolute;
+				width: 150px;
+				text-align: right;
+			
+				top: 101px;
+				left: 80px;
+
+				font-size: 13px;
+			}
+		}
+	}
+
+	.footer
+	{
+		background-color: $color-grayscale4;
+		height: 95px;
+		position: relative;
+		color: $color-black;
+		cursor:pointer;
+		border:1px solid $color-grayscale3;
+		width:350px;
+		margin-bottom:20px;
+		
+		.gravatar
+		{
+			display: inline;
+			position: absolute;
+			top: 10px;
+			left: 20px;
+			overflow:hidden;
+
+			height: 40px;
+			width: 40px;
+
+			@include rounded(50%);
+
+			img
+			{
+				height: 40px;
+				width: 40px;
+			}
+		}
+
+		.fullname
+		{
+			display: inline;
+			position: absolute;
+			top: 11px;
+			left: 80px;
+
+			font-size: 14px;
+			font-weight: bold;
+		}
+
+		.tasks
+		{
+			position: absolute;
+			top: 38px;
+			left: 82px;
+			text-align: left;
+			width: 80px;
+			height: 53px;
+
+			.number
+			{
+				display: block;
+
+				font-size: 20px;
+				font-weight: bold;
+			}
+
+			.label
+			{
+				display: block;
+
+				font-size: 11px;
+				text-transform: uppercase;
+			}
+		}
+
+		.points
+		{
+			@extend .tasks;
+			left: 167px;
+		}
+
+		.first-date
+		{
+			position: absolute;
+			top: 11px;
+			right: 25px;
+
+			text-align: right;
+			font-size: 11px;
+		}
+
+		.last-date
+		{
+			position: absolute;
+			top: 39px;
+			right: 25px;
+
+			text-align: right;
+			font-size: 11px;
+		}
+
+		.estimated
+		{
+			position: absolute;
+			top: 67px;
+			right: 25px;
+
+			text-align: right;
+			font-size: 11px;
+		}
+	}
+}
+
+#workspace-signup-zone
+{
+    @extend .workspace-pane-chrome;
+				
+	.content
+	{
+		background-color: $color-side-pane-background;
+		outline: none;
+
+		.title
+		{
+			font-weight: bold;
+			line-height: 25px;
+			margin-bottom: 30px;
+		}
+
+		.more
+		{
+			@extend .title;			
+			margin-top: 50px;
+			margin-bottom: 10px;
+		}
+
+		.quote
+		{
+			font-size: 16px;
+			color: $color-grayscale0;
+			margin: 30px 20px;
+			font-style: italic;
+			text-align: center;
+			text-shadow: 0px 1px 0px $color-white;
+		}
+
+		.contact-info
+		{
+			font-weight:bold;
+			font-size:14px;
+			text-align:center;
+			margin-top:10px;
+			color:$color-green;
+			a
+			{
+				font-weight:bold;
+				font-size:14px;
+				text-align:center;
+				color:$color-green;
+				padding:0;
+			}
+		}
+
+		#sign-up-cta-button
+		{
+			height: 45px;
+			width: 360px;
+
+			background-color: $color-green;
+
+			&:hover, &:active
+			{
+				background-color: lighten($color-green, 5%);
+			}
+		}
+
+		a, a.visited 
+		{
+			text-decoration: underline;
+			padding-top: 20px;
+			display: block;
+			text-align: center;
+			font-size: 13px;
+			color: $color-grayscale0;
+
+			&:hover 
+			{
+				text-decoration: none;
+			}
+		}
+	}
+}
+
+#workspace-chat-zone
+{
+    @extend .workspace-pane-chrome;
+
+	.header
+	{
+		background-color: $color-workspace-chat;
+	}
+		
+	.content
+	{
+		height: 380px;
+		overflow: hidden;
+		background-color: $color-side-pane-background;
+		outline: none;
+
+		.chat-box
+		{
+			position: relative;
+			margin: 0px 0 20px 0;
+            transition: background-color 3s ease-in-out;
+						
+			.gravatar
+			{
+				display: inline;
+				position: absolute;
+				top: 10px;
+				left: 20px;
+				overflow: hidden;
+
+				height: 40px;
+				width: 40px;
+
+				@include rounded(50%);
+
+				img
+				{
+					height: 40px;
+					width: 40px;
+				}
+			}
+
+			.chat-pointer
+			{
+				position: absolute;
+				top: 24px;
+				left: 71px;
+
+				height: 19px;
+				width: 15px;
+				background-image: url("images/chat-pointer.png");
+				z-index: 9999;
+			}
+
+			.message
+			{
+				display: block;
+				width: 265px;
+				margin: 0 0 0 85px;
+                transition: background-color 3s ease-in-out;
+				background-color: $color-white;
+				color: $color-black;
+				border: 1px solid $color-grayscale3 !important;
+
+				.fullname
+				{
+					display: inline-block;
+					margin: 10px 0 0 10px;
+					font-size: 13px;
+					color: $primary-color;
+                    max-width: 170px;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+				}
+
+				.time 
+				{
+					display: inline;
+					float:right;
+                    margin: 10px 10px 0 0;
+					color: $color-grayscale1;
+					font-size: 11px;
+					text-align: right;
+				}
+
+				.text
+				{
+					display: inline-block;
+					width: 240px;
+					white-space: normal;
+					color: $color-black;
+					font-size: 12px;
+					line-height: 18px;
+					margin: 10px 0 10px 10px;
+					overflow-x: hidden;
+				}
+			}
+		}
+
+        .new-chat > .message, .not-seen > .message
+        {
+            background-color: $color-hover;
+        }
+	}
+
+	.footer
+	{
+		background-color: $color-grayscale2;
+		height: 50px;
+		position: absolute;
+		bottom:20px;
+		color: $color-black;
+
+		#workspace-chat-zone-input
+		{
+			margin: 7px;
+			width: 324px;
+			height: 17px;
+			padding: 9px;
+			overflow: hidden;
+			resize: none; 
+		}
+	}
+}
+
+#side-pane .side-pane-toolbar
+{
+	// Chat
+	.range
+	{
+		background-color: $color-grayscale3;
+		width: 100%;
+		color: $color-black;
+
+		.go-back
+		{
+			display: inline;
+			position: absolute;
+			left: 20px;
+			top: 15px;
+			font-size: 13px;
+			color: $color-black;
+			cursor: pointer;
+
+			&:hover 
+			{
+				opacity: 0.5;
+			}
+
+			[class*="fonticon-"]  
+			{
+				cursor: pointer;
+			}
+		}
+
+		.go-forward
+		{
+			@extend .go-back;
+
+			left: auto;
+			right: 20px;
+		}
+
+		.go-label
+		{
+			text-align: center;
+			font-size: 13px;
+			font-weight: bold;
+		}
+	}
+
+	// Reports
+	.footer
+	{
+		width: 100%;
+		color: $color-black;
+		font-size: 12px;
+		font-weight: bold;
+		text-align: center;
+		a
+		{
+			color: $color-black;
+			text-decoration: none;
+
+			&:hover 
+			{
+				text-decoration: underline;
+			}
+		}
+
+		.csv
+		{
+			float: left;
+			margin: 0 0 0 30px;
+		}
+
+		.html
+		{
+			float: right;
+			margin: 0 30px 0 0;
+		}
+
+		.excel
+		{
+			display: inline-block;
+			margin: 0 auto;
+		}
+	}
+
+	// Metrics
+	.configure
+    {
+        width: 20px;
+        height: 16px;
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        background: url('images/toolbar.png') no-repeat -60px -16px;
+        cursor: pointer;
+		
+        &:hover
+        {
+            opacity: 0.5;
+        }
+    }
+}
+
+#workspace-reports-zone
+{
+    @extend .workspace-pane-chrome;
+			
+	.content
+	{
+		height: 415px;
+		width: 100%;
+		overflow: hidden;
+		background-color: $color-side-pane-background;
+		outline: none;
+
+		font-size: 12px;
+
+		.report
+		{
+			position: relative;
+			margin: 15px 0 15px 0px;
+
+			a
+			{
+				margin: 0 0 10px 10px;
+
+				text-decoration: none;
+
+				&:hover 
+				{
+					text-decoration: underline;
+				}
+			}
+		}
+		.report:first-child
+		{	
+			margin-top:0;
+		}
+	}
+}
+
+#workspace-notifications-zone
+{
+    @extend .workspace-pane-chrome;
+	position: fixed;
+	top: 20px;
+	right:-21px;
+	display:none;
+	background-color:transparent;
+	.notification-container
+	{
+		width: 375px;
+		//height: 370px;
+		background-color: $color-black;
+		padding: 10px;
+        text-align:left;
+	}
+
+	.title
+	{
+		font-size: 14px;
+		padding: 10px;
+		color: $color-white;
+	}
+
+	ul
+	{
+		list-style-type: none;
+
+		li 
+		{
+			font-size: 0.7em;
+			padding: 10px 10px 10px 30px;
+			overflow: hidden;
+			white-space: nowrap; 
+			text-overflow: ellipsis;  
+			text-overflow: ellipsis-word;
+
+			a, a:visited
+			{
+				text-decoration: none;
+				color: $color-white;
+
+				&:hover 
+				{
+					color: $color-white;
+					text-decoration: underline;
+				}
+			}
+		}
+	
+		.nothing
+		{
+			color: $color-white;
+			font-size: 1em;
+			font-style: italic;
+			padding: 10px;
+			text-align: center;
+		}
+	}
+	div.arrow-container
+	{
+		height: 10px;
+		background-color: transparent;
+		width: 395px;
+		position: relative;
+	}
+	div.arrow
+	{
+			width: 0px;
+			height: 0px;
+			border-left: 10px solid transparent;
+			border-right: 10px solid transparent;
+			border-bottom: 9px solid $color-black;
+			position: absolute;
+			right: 75px;
+			top: 1px;
+	}
+}
+
+.workspace-notifications-zone-last-item
+{
+	height: 30px !important;
+}
+
+#personal-dashboard
+{
+	#summary
+	{
+		width: 100%;
+		height: 100px;
+		background-color: $color-grayscale4;
+		@include border();
+
+		.person-box
+		{
+			position: relative;
+			float: left;
+			display: inline-block;
+
+			width: 40%;
+			height: 60px;
+			margin: 20px;
+
+			.gravatar
+			{
+				display: inline;
+				position: absolute;
+				top: 10px;
+				left: 20px;
+				overflow:hidden;
+
+				height: 40px;
+				width: 40px;
+
+				@include rounded(50%);
+
+				img
+				{
+					height: 40px;
+					width: 40px;
+				}
+			}
+
+			.name
+			{
+				margin: 10px 0 0 100px;
+				font-size: 18px;
+			}
+
+			.email
+			{
+				margin: 5px 0 0 100px;
+				font-size: 15px;
+			}
+		}
+
+		.stats-box
+		{
+			position: relative;
+			float: right;
+			display: inline-block;
+
+			width: 50%;
+			height: 60px;
+			margin: 20px;
+
+			ul
+			{
+				list-style-type: none;
+
+				li
+				{
+					list-style-type: none;
+					float: right;
+					text-align: center;
+					margin: 0 20px;
+
+					.label
+					{
+						font-size: 13px;
+						text-transform: uppercase;
+						margin-top: 8px;
+					}
+
+					.value
+					{
+						font-size: 27px;
+						font-weight: bold;
+					}
+				}
+			}
+		}
+	}
+
+	#workload
+	{
+		margin: 30px 0 30px 0;
+
+		.left-zone
+		{
+			float: left;
+			width: 49%;
+		}
+
+		.right-zone
+		{
+			float: right;
+			width: 49%;
+
+			#projectDropdown
+			{
+				float: right;
+				margin-right: 10px;
+			}
+		}
+
+		.table-header
+		{
+			height: 40px;
+			background-color: $color-grayscale4;
+			border-top: 1px solid $color-grayscale3;
+			border-right: 1px solid $color-grayscale3;
+			border-left: 1px solid $color-grayscale3;
+			text-align: left;
+			padding: 20px 0 0 40px;
+			color: $color-black;
+			font-size: 15px;
+			font-weight: bold;
+		}
+
+		.table-scroll
+		{
+			height: 300px;
+
+			overflow: hidden;
+			@include border();
+		}
+
+		table
+		{
+			color: $color-black;
+			font-size: 15px;
+			border-collapse: collapse;
+			padding: 0;
+
+			td.key
+			{
+				padding: 5px 20px 5px 40px;
+				font-size: 13px;
+				white-space: nowrap;
+				width: 1%;
+			}
+
+			td.title
+			{
+				font-size: 13px;
+				padding: 5px 40px 5px 0;
+			}
+
+			tr:first-child td
+			{
+				padding-top: 15px;
+			}
+
+			tr:last-child td
+			{
+				padding-bottom: 15px;
+			}
+		}
+
+		table.projects
+		{
+			@include border();
+
+			.label 
+			{
+				font-size: 11px;
+				margin-left: 15px;
+				color: $color-grayscale1;
+			}
+		}
+	}
+}
+
+.popup-header
+{
+	.header 
+	{
+		position: absolute;
+		top: -10px;
+		left: 0px;
+		padding: 15px 40px 0 40px;
+		height: 100px;
+		width:100%;
+
+		background-color: $color-grayscale4;
+
+		.title
+		{
+			color: $primary-color;
+			font-weight: bold;
+			font-size: 16px;
+		}
+
+		.text
+		{
+			color: $color-grayscale1;
+			font-size: 13px;
+			width:90%;
+			padding: 15px 0 0 0;
+		}
+	}
+
+	.content
+	{
+		padding: 115px 0 0 40px;
+	}
+}
+
+#delete-workspace
+{
+	.title
+	{
+		font-weight: bold;
+		font-size: 14px;
+	}
+}
+
+.emoticon-happy
+{
+	display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: url('images/emoticons.png') no-repeat 0 0;
+    background-position: 0 0;
+	vertical-align: text-top;
+}
+.emoticon-sad
+{
+	@extend .emoticon-happy;
+	background-position: -16px 0;
+}
+.emoticon-wink
+{
+	@extend .emoticon-happy;
+	background-position: -32px 0;
+}
+.emoticon-angry
+{
+	@extend .emoticon-happy;
+	background-position: -48px 0;
+}
+.emoticon-shock
+{
+	@extend .emoticon-happy;
+	background-position: -64px 0;
+}
+.emoticon-confused
+{
+	@extend .emoticon-happy;
+	background-position: -80px 0;
+}
+.emoticon-grin
+{
+	@extend .emoticon-happy;
+	background-position: -96px 0;
+}
+.emoticon-tongue
+{
+	@extend .emoticon-happy;
+	background-position: -112px 0;
+}
+.emoticon-unsure
+{
+	@extend .emoticon-happy;
+	background-position: -128px 0;
+}
+
+
+#appnav-toolbar-badge-chat, #appnav-toolbar-badge-chat2
+{
+	background-color: $color-badge-hover;
+	color: $color-white;
+	font-size: 11px;
+	text-align: center;
+	padding: 4px 0 0 0;
+	@include rounded(50%);
+	width: 20px;
+	height: 16px; 
+	z-index: 99999;
+    cursor: pointer;
+	font-weight:bold;
+	font-family: calibri,Arial,Helvetica,Univers,Corbel,sans-serif;
+            
+    &:hover
+    {
+        background-color: $color-badge-hover;
+
+        span
+        {
+            display: none;
+        }               
+                
+        &:after
+        {
+            color:$color-white;
+            content:'X';
+        }
+    }
+	position: absolute;
+	right: 0px;
+	top: -10px;
+}
+
+#appnav-toolbar-badge-chat2
+{
+	position:relative;
+	right: 7px;
+	top: -1px;
+}
+
+#edit-logo
+{
+	.content
+	{
+		.file
+		{
+			position:relative;
+			top:-7px;
+			margin-left:10px;
+		}
+	}
+}
+
+div.logo
+{
+	background-color:$theme-color;
+	padding: 0 10px 0 10px;
+	height:40px;
+	img
+	{
+		vertical-align: middle;
+		height: 25px;
+		max-width:500px;
+		background-color:$theme-color;
+		margin-top:7px;
+	}
+}

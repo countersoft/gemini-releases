@@ -1,0 +1,17 @@
+﻿@model ViewIssueModel
+
+<div id='additional-section' data-contentid="additional-content" class="left tab normal">
+    <h3><i class="fad fa-list-alt"></i> @GetResourceTemplate(ResourceKeys.AdditionalInformation)</h3>
+</div>
+    
+    <div id="additional-content" class="tab-content hide additional">
+    	<table class="cs-properties cursor-pointer">
+        @foreach (var customField in Model.ContentCustomFields)
+        {
+            <tr class="attribute-header attribute" data-attribute-id='cf_@customField.Entity.CustomFieldId'>
+                <td valign="top">@Html.Raw(customField.Title)</td>
+                <td valign="top" @if (customField.Type == Constants.CUSTOM_FIELD_TYPE_RICHTEXT){ <text>class="cs-wysiwyg"</text>} >@Html.Raw(customField.FormattedData)</td>
+            </tr>
+        }
+        </table>
+    </div>

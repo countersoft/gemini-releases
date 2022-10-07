@@ -1,0 +1,41 @@
+﻿@model ViewIssueModel
+
+
+
+<div id='watchers-section' data-contentid="watchers-content" class="left tab normal">
+    <h3><i class="fad fa-map-marker-check"></i> @GetResourceTemplate(ResourceKeys.Followers)&nbsp;(@Model.Issue.Watchers.Count)</h3>
+</div>
+        
+<div class="tab-content watchers hide" id="watchers-content">
+    <div id="watchers-find-item-container" class="hide">
+        <span>@GetResourceTemplate(ResourceKeys.User)</span>
+        <input id="watchers-find-item" name="watchers-find-item" type="text" class="input-size7"/>
+    </div>
+
+    @if (CanDoItemAction(UserAction.Create, ItemAttributeVisibility.AssociatedWatchers))
+    {
+    <div class="toolbar actions">
+        <a class="button add" href="#" title="@GetResource(ResourceKeys.Add) @GetResource(ResourceKeys.Followers)">@GetResource(ResourceKeys.Add)</a>
+    </div>
+    }
+    @if (Model.Issue.Watchers.Count() > 0) {
+        <table>
+            <tr>
+                <th>@GetResourceTemplate(ResourceKeys.Name)</th>
+                <th>@GetResourceTemplate(ResourceKeys.Username)</th>
+                <th>@GetResourceTemplate(ResourceKeys.Email)</th>
+                <th></th>
+            </tr>
+        @foreach (var watcher in Model.Issue.Watchers)
+        {
+            var trData = watcher.Entity.UserId != null ? string.Concat("data-id=\"", watcher.Entity.UserId.Value,'"') : string.Concat("data-id=\"", watcher.Entity.Id, "\" data-email=\"", watcher.Entity.Email, '"');
+            <tr @Html.Raw(trData)>
+                <td>@watcher.Fullname</td>
+                <td>@watcher.Username</td>
+                <td>@watcher.Email</td>
+                <td>@if(CanDoItemAction(UserAction.Delete, ItemAttributeVisibility.AssociatedWatchers)){<span class="cursor-pointer action-button-delete" title="@GetResource(ResourceKeys.Delete) @GetResource(ResourceKeys.Followers)"></span>}</td>
+            </tr>
+        }         
+        </table>
+    }
+</div>

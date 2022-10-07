@@ -1,0 +1,143 @@
+﻿@model ViewIssueModel
+@{
+    var formUrl = Url.Action("addcomment", "AjaxItem", new RouteValueDictionary(new { id = Model.Issue.Project.Id, issueid = Model.Issue.Id }));
+    if(!formUrl.HasValue())
+    {
+        formUrl = string.Concat(GeminiContext.Url, "workspace/", Model.Issue.Project.Id, "/item/addcomment?issueid=", Model.Issue.Id);
+    }
+}
+<div class="comments-wysiwyg-container" data-id="@Model.Issue.Id" data-controller="@Model.Controller">
+    <h2>@Model.Issue.IssueKey</h2>
+    <form class="comments-form"  action="@formUrl" method="post" enctype="multipart/form-data">
+        <div class='wysiwyg-container'>
+            <textarea id="comments-wysiwyg-content" name="commentsWysiwygContent"></textarea>         
+        </div> 
+        <div class="comment-extra-options">
+            <div class="option-row">
+                <span class="left comment-label">@GetResource(ResourceKeys.Attachments)</span>  
+                <input type="file" class="file-upload-button" name="comment-attachment"/>
+                (@Model.MaxFileUpload.ToFileSize() @GetResource(ResourceKeys.Maximum))
+            </div>
+            @if (Model.CanUserSeeCommentVisibility)
+            {
+            <div class="option-row">
+                <span class="left comment-label">@GetResource(ResourceKeys.Visibility)</span> @Html.DropDownList("visibility", Model.Groups, new {@class="input-size8"})
+            </div>
+            }
+        </div>
+        <div class="cs-comment-wysiwyg-option">
+            <div class="buttons">
+                    <input type="button" value="@GetResourceTemplate(ResourceKeys.Cancel)" class="button-secondary button-popup cs-comment-add-close right">
+                    <input type="submit" value="@GetResourceTemplate(ResourceKeys.Add)" class="button-primary button-popup cs-comment-add-save right">                                
+            </div>
+        </div>
+        <input type="hidden" name="items" id="items" />
+    </form>
+</div>
+
+<script type="text/javascript">
+    
+    $(document).ready(function () {
+        //Check if it is in the popup comment creator (eg from the grid)
+        if ($("#cs-popup-center .comments-wysiwyg-container").attr("data-controller") == "items") { 
+
+            if ($('.checked-items:checked', $('#items-grid')).length > 0) {
+                var checked_items = new Array();
+                var index = 0;
+                $('.checked-items:checked', $('#items-grid')).each(function (index, value) {
+                    checked_items[index++] = $(value).val();
+                });
+                $('#items','.comments-form').val(checked_items);
+            }
+
+            setTimeout(function () {
+                var issueId = $("#cs-popup-center-content .comments-wysiwyg-container").attr('data-id');
+                gemini_ui.templatedContentPlugin(gemini_ui.templateContentAreas.Comment, @Model.Issue.Project.Id, issueId, function (area) {
+                    gemini_ui.htmlEditor("#comments-wysiwyg-content", null, "", true, 0, 0, "templatedcontent_" + gemini_ui.templateContentAreas.Comment);
+                }, true);
+            }, 25);
+
+            gemini_ui.chosen("#cs-popup-center-content .comments-wysiwyg-container .option-row .input-size8", null, true);
+
+            $("#popup-button-yes").click(function (e) {
+                gemini_ui.startBusy('#colorbox #popup-button-yes');
+                $(".cs-comment-wysiwyg-option .cs-comment-add-save").click();
+            });
+
+            var options = {
+                dataType: "json",
+                success: function (responseText, statusText, xhr, $form) {
+                    if (responseText.success) {
+                        /*** WIZARD ***/
+                        if (gemini_wizard.active)
+                        {
+                            try
+                            {
+                                var wizardVal = $('#cs-popup-center-content #comments-wysiwyg-content').val();
+                                if (wizardVal && wizardVal.length)
+                                {
+                                    if (wizardVal.toLowerCase().indexOf('pause') != -1)
+                                    {
+                                        $.publish('wizard-action', ['commentpause']);
+                                    }
+                                    else if (wizardVal.toLowerCase().indexOf('resume') != -1)
+                                    {
+                                        $.publish('wizard-action', ['commentresume']);
+                                    }
+                                }
+                            }
+                            catch (err)
+                            {
+                                var x = 0;
+                            }
+                        }
+                        /*** WIZARD ***/
+                        gemini_popup.popupClose();
+                        gemini_ui.destroyHtmlEditor("#cs-popup-center-content #comments-wysiwyg-content");
+                        var issueId = $("#cs-popup-center-content .comments-wysiwyg-container").attr('data-id');
+                        $("#cs-popup-center-content .comments-wysiwyg-container").remove();
+                        
+                        if ($('.checked-items:checked', $('#items-grid')).length > 0) {
+                            gemini_filter.getFilteredItemsCurrentPage();
+                        }
+                        else {
+                            var pageType = '@((int)Model.PageType)';
+                            gemini_ajax.call('items', 'refreshrow?issueid=' + issueId + '&viewtype=' + pageType, function (response) {
+                                if (response.success) {
+                                    gemini_items.refreshRow(response, issueId, true);
+                                    $('#tr-issue-' + issueId, '#data').addClass('view-issue-highlight');                               
+                                }
+                            });
+                        }
+                    }
+                    else 
+                    {
+                        if (responseText.Message && responseText.Message.length)
+                        {
+                            gemini_popup.toast(responseText.Message, true);
+                        }
+                        else
+                        {
+                            gemini_popup.toast("Couldn't save changes", true);
+                        }
+                    }
+                    gemini_ui.stopBusy('#colorbox #popup-button-yes');
+                },
+                error: function (responseText, statusText) {
+                    gemini_ui.stopBusy('#colorbox #popup-button-yes');
+                }// post-submit callback
+
+            };
+            $(".comments-form").ajaxForm(options);
+
+            $("#popup-button-no").click(function (e) {
+                gemini_popup.popupClose(e);
+                gemini_ui.destroyHtmlEditor("#cs-popup-center-content #comments-wysiwyg-content");
+                $("#cs-popup-center-content .comments-wysiwyg-container").remove();
+            });
+
+            gemini_ui.validateFileSize($("#cs-popup-center-content .comments-form .file-upload-button"), @Model.MaxFileUpload);
+        }
+
+    });
+</script>

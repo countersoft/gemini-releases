@@ -1,0 +1,52 @@
+﻿@model PlannerModel
+
+@{
+    Layout = "~/Views/Shared/_Master.Desktop.Project.cshtml";
+}
+
+<div id="filter" class="filter-container">
+    @{Html.RenderPartial( "InstantFilter", Model.Filter );}
+</div>
+
+<div id="cs-template">
+
+<div id='planner-control-box'>
+    <form id = "PlanForm">
+        
+    <div id="page-options-box" class="right">
+       @{Html.RenderPartial("_Options", Model);}
+    </div>
+
+    <!-- Hidden: the current selected view (shared view card or default)-->
+    @Html.HiddenFor(m => m.SaveViewSelected)
+    </form>
+</div>
+
+<div id="planner-box" class="clearfix"></div>
+
+@if (IsAuthenticated)
+{
+    <ul id="planner-context-menu" class="cs-menu-context">
+        <li><a href="#view">@GetResource(ResourceKeys.View)</a></li>
+        <li><a href="#comment">@GetResource(ResourceKeys.Comment, Resourcing.Dotted)</a></li>
+        <li><a href="#edit">@GetResource(ResourceKeys.Edit, Resourcing.Dotted)</a></li>
+        <li><a href="#time">@GetResource(ResourceKeys.Time, Resourcing.Dotted)</a></li>
+        <li><a href="#delete">@GetResource(ResourceKeys.Delete, Resourcing.Dotted)</a></li>
+        @if (!Model.CurrentPageCard.Locked) 
+        {
+            <li class="highlight"><a href="#new">@GetResource(ResourceKeys.New, Resourcing.Dotted)</a></li>
+        }
+    </ul>
+}
+
+<div id="planner-context-popup-new-card">
+    <div class="caption">@(GetResource(ResourceKeys.New))</div>
+    <textarea class="card-title" placeholder="@GetResource(ResourceKeys.Title, Resourcing.Dotted)"></textarea>
+</div>
+</div>
+<div id='dropTip' class='tooltip'><div id='dropTipText'></div></div>
+@section DocumentReady
+{
+    planner.initialize(@Model.CurrentPageCard.Locked.ToJSBool());
+    gemini_filter.init(@((int) ProjectTemplatePageType.Planner), @Html.Raw(Model.Filter.AvailableFields.ToJson()));
+}

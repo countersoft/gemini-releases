@@ -1,0 +1,18 @@
+﻿@model ViewIssueModel
+
+@{
+    Layout = "~/Views/Shared/_Master.Desktop.Project.cshtml";
+    ViewBag.Title = string.Format("{0} - {1}", Model.Issue.IssueKey, Model.Issue.Title);   
+}
+
+@{Html.RenderPartial("ViewItem");}
+
+@section DocumentReady
+{
+    // Changes here needs to be replicated in ViewItem.cshtml
+    $('#colorbox, #cs-popup,#cs-popup-add').addClass('z-index-max');
+    @{
+        var dropZoneText =  String.Format("{0} - {1} {2}", GetResource(ResourceKeys.DropZoneText), Model.MaxFileUpload.ToFileSize(), GetResource(ResourceKeys.Maximum));
+    }
+    gemini_item.initItem('@GeminiContext.Project.Entity.Id','@GeminiContext.Project.Entity.Code', @Model.Issue.Entity.Id, @((int)ProjectTemplatePageType.Item), @GeminiContext.PermissionsManager.CanEditItem(Model.Issue).ToJSBool(),'@dropZoneText', '@GetResource(ResourceKeys.Delete)');
+}

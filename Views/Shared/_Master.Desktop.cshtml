@@ -1,0 +1,94 @@
+@model BaseModel
+@{
+    Layout = "_Master.Base.cshtml";
+}
+
+@section Head
+{
+    @{Html.RenderPartial("_Styles");}
+    <style>@Html.Raw(Model.Styles)</style>
+    <!--[if IE 8]>
+    <style>#pageSizeContainer #pageSize, #search-form #search {line-height:20px;}</style>
+    <![endif]-->
+}
+
+@RenderSection("ZoneHeaderBar", false)
+
+@RenderSection("ZoneSideBar", false)
+
+<div id="page-content-zone">
+    <section id="contents" class="clearfix">
+        <div class="layout">
+            @if(IsHelpDeskMode())
+            {
+                <div id="helpdesk-message-zone">
+                    <h1>@GeminiContext.Config.HelpDeskWelcomeTitle</h1>
+                    @Html.Raw(GeminiContext.Config.HelpDeskWelcomeMessage)
+                </div>
+            }
+            @RenderBody()
+        </div>
+    </section>
+</div>
+@if (Model.HasSidebar && Model.CurrentPageCard.UserId == GeminiContext.User.Entity.Id)
+{
+    var hideClass = "hide";
+    var showClass = string.Empty;
+    var widthClass = string.Empty;
+    if (!Model.CurrentPageCard.CardData.State.AlwaysShow)
+    {
+        hideClass = string.Empty;
+        showClass = "hide";
+        widthClass = "collapsed";
+    }
+
+    //TODO This is ready to be removed, check functionality
+    <div id="side-pane" class="@widthClass hide">
+        <div class="side-pane-toolbar"><div id="expand-collapse" @if ( !Model.CurrentPageCard.CardData.State.AlwaysShow ) { <text> class="collapsed" data-collapsed="1" </text> }><div></div></div><div id="toolbar-contents" class="@showClass"></div></div>
+        <div class="@hideClass side-collapsed" data-action="reports"><div class="side-collapsed-image side-collapsed-reports"></div><div class="text">@GetResource( ResourceKeys.Reports )</div></div>
+        @if ( GeminiApp.LicenseSummary.IsGeminiTrial() || GeminiApp.GeminiLicense.IsFree )
+        {<div class="@hideClass side-collapsed signup-background" data-action="sign-up"><div class="side-collapsed-image side-collapsed-signup"></div><div class="text color-white">Sales</div></div>}
+        <div class="contents"></div>
+        <div class="side-pane-tabs no-select @showClass">
+            <div class="tab" data-action="reports" data-params="gemini_people.getPostParams()">@GetResource( ResourceKeys.Reports )</div>
+            @if ( GeminiApp.LicenseSummary.IsGeminiTrial() || GeminiApp.GeminiLicense.IsFree )
+            {<div class="tab" data-action="sign-up">Sales</div>}
+        </div>
+        @if (Model.CurrentPageCard.IsExisting)
+        {
+            <div class="workspace-actions toolbar-icons @hideClass">
+                @if (!Model.NoPortalWorkspaceMgmt)
+                {
+                    <div id="appnav-toolbar-copy" class="wrapper" title="@GetResource(ResourceKeys.Copy)"><div class="action copy black"></div></div>
+                }
+                @if (!Model.CurrentPageCard.Locked && !Model.NoPortalWorkspaceMgmt)
+                {
+                    <div id="appnav-toolbar-delete" class="wrapper" title="@GetResource(ResourceKeys.Delete)"><div class="action delete black"></div></div>
+                }
+                @if (!Model.NoPortalWorkspaceMgmt)
+                {
+                    <div id="appnav-toolbar-configure" class="wrapper" title="@GetResource(ResourceKeys.Configure)"><div class="action configure black"></div></div>
+                }
+            </div>
+        }
+    </div>
+}
+<footer id="footer" class="clearfix">
+    @{Html.RenderPartial("Footer", Model);}
+</footer>
+
+@section DocumentReady
+{
+    gemini_sizing.stretchWindow();
+    @RenderSection("DocumentReady", false)
+}
+
+@section WindowReady
+{
+    @RenderSection("WindowReady", false)
+}
+
+@section JavaScript
+{
+    @RenderSection("JavaScript", false)
+}

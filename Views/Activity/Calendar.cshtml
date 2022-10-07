@@ -1,0 +1,78 @@
+﻿@model ActivityCalendarModel
+@{
+    Layout = "~/Views/Shared/_Master.Desktop.Project.cshtml";
+}
+
+@Html.Raw(Model.Styles)
+<div id="Colors">
+    
+</div>
+
+<div class="filter-container">
+    @{Html.RenderPartial("InstantFilter", Model.Filter);}	   
+</div>
+<div class="clearfix"></div>
+<div id="calendar-title" class="left">
+</div>
+<div id="calendar-control-box">
+    <div id="page-options-box" class="right">
+        <div class="box-right">
+            <div>
+            <div class="option vertical-align">
+                <input class="button-primary button-small" id='calendar-prev' type="button" title="@GetResource(ResourceKeys.Prev)" value="@GetResource(ResourceKeys.Prev)" />
+                <input class="button-primary button-small" id='calendar-next' type="button" title="@GetResource(ResourceKeys.Next)" value="@GetResource(ResourceKeys.Next)" />
+            </div>
+            <div class="divider">
+            </div>
+            <div class="option vertical-align">
+                <div id="calendar-month" class="control-icon month" title="@GetResource(ResourceKeys.Monthly)"></div>
+                <div id="calendar-basicweek" class="control-icon basicweek" title="@GetResource(ResourceKeys.Weekly)"></div>
+                <div id="calendar-agendaweek" class="control-icon agendaweek hide"></div>
+                <div id="calendar-basicday" class="control-icon basicday" title="@GetResource(ResourceKeys.Daily)"></div>
+            </div>
+            <div class="divider">
+            </div>
+                <div class="option vertical-align">
+                    <div class="control-icon gear" title="@GetResource(ResourceKeys.Filter)"></div>
+                    <div class="options">
+                        <div class="break">&nbsp;</div>
+                        <div class="break">&nbsp;</div>
+                        <div class="clearfix">
+                            @Html.CheckBox("IncStartDate", false, new { @class = "fancy" })
+                            @Html.Label("IncStartDate", GetResource(ResourceKeys.StartDate),new { @class = "checkbox valign-top" })
+                        </div>
+                        <div class="break">&nbsp;</div>
+                        <div class="break">&nbsp;</div>
+                        <div class="clearfix">
+                            @Html.CheckBox("IncDueDate", false, new { @class = "fancy" })
+                            @Html.Label("IncDueDate", GetResource(ResourceKeys.DueDate), new { @class = "checkbox valign-top" })
+                        </div>
+                        <div class="break">&nbsp;</div>
+                        <div class="break">&nbsp;</div>
+                        <div class="clearfix">
+                            @Html.CheckBox("IncGantt", false, new { @class = "fancy" })
+                            @Html.Label("IncGantt", GetResource(ResourceKeys.Duration), new { @class = "checkbox valign-top" })
+                        </div>
+                        <div class="break">&nbsp;</div>
+                        <div class="break">&nbsp;</div>
+                        <div class="clearfix">
+                            @Html.LabelFor(m => m.ColorBySelected, @GetResource(ResourceKeys.Color))
+                            @Html.DropDownListFor(m => m.ColorBySelected, new SelectList(Model.ColorByValues, "Value", "Text", Model.ColorBySelected))
+                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id='loading' style='display: none'>
+    loading...</div>
+<div id='widget-calendar'>
+</div>
+
+@section DocumentReady
+{
+    gemini_activity.initCalendar();
+    gemini_filter.init(@((int)ProjectTemplatePageType.Calendar), @Html.Raw(Model.Filter.AvailableFields.ToJson()));
+}

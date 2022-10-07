@@ -1,0 +1,25 @@
+@{
+    Layout = "_Master.Desktop.cshtml";
+}
+
+@section ZoneHeaderBar
+{
+    @{ Html.RenderPartial("ZoneHeaderBar"); }
+}
+
+@section ZoneSideBar
+{
+    @{ Html.RenderPartial("ZoneSideBar"); }
+}
+
+@section DocumentReady
+{
+    @RenderSection("DocumentReady", false);
+}
+
+@section JavaScript
+{
+    @RenderSection("JavaScript", false);
+}
+
+@RenderBody()

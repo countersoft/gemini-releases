@@ -1,0 +1,34 @@
+﻿@model ComboBoxFieldModel
+
+@{
+    bool wasOptionGroup = false;
+}
+
+<select title="@Model.Tooltip" id="@Model.Id" data-project-id="@Model.ProjectId" data-input-type="combobox" name="@Model.Id" data-original="@Model.Value" data-trigger='@Model.TriggerValues' 
+        data-customfield-trigger='@Model.CustomFieldTriggerValues' data-dependent="@Model.DependentOnField"
+        class="inline-editing input-tall input-size6 @Model.Classes @(Model.Required ? "required" : "")" >
+    @foreach (var item in Model.Values)
+    {
+        if (item.IsOptionGroup)
+        {
+            if (wasOptionGroup)
+            { @Html.Raw("</optgroup>") }
+            <text><optgroup label="@item.ItemText"></text>
+            wasOptionGroup = true;
+        }
+        else
+        {
+            <option @if (Model.Value == item.ItemId)
+                    { <text>selected="selected"</text> } @if(item.Disabled) { <text>disabled="disabled"</text> } value="@item.ItemId">@item.ItemText</option>
+        }
+    }
+    @if (wasOptionGroup)
+    { @Html.Raw("</optgroup>") }
+</select>@if (Model.Extra.HasValue()) { <span id="@(Model.Id)_Plus" data-id="@Model.Id" data-action="@Model.Extra" class="field-extra-details no-select">[+]</span> 
+<script type="text/javascript">
+    $('.field-extra-details').click(function()
+    {
+        eval($(this).attr('data-action'));
+    });
+</script>
+}

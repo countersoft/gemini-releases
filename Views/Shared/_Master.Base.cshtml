@@ -1,0 +1,193 @@
+﻿@model BaseModel
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="ie6 oldie" lang="en" data-root="~/"> <![endif]-->
+<!--[if IE 7]>    <html class="ie7 oldie" lang="en" data-root="~/"> <![endif]-->
+<!--[if IE 8]>    <html class="ie8 oldie" lang="en" data-root="~/"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="en" data-root="~/">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <meta name="gemini:version" content="@GeminiContext.Config.DBVersion" />
+    <title>@ViewBag.Title</title>
+    @if (HttpContext.Current.IsDebuggingEnabled)
+    {
+        @Countersoft.Gemini.Infrastructure.Helpers.MiniProfilerHelper.RenderIncludes(MvcMiniProfiler.RenderPosition.Right)
+    }
+    @RenderSection("Head")
+    @{Html.RenderPartial("_Scripts");}
+</head>
+<body>
+    <script type="text/javascript">window.jQuery || document.write('<script src="@Url.Content("~/assets/all.min.js?v=1")"><\/script>')</script>
+    @RenderBody()
+    <script type="text/javascript">
+    var csVars = {
+        Url: "@GeminiContext.Url",
+        ProjectUrl: "project/@GeminiContext.Project.Entity.Id/",
+        WorkspaceUrl: "workspace/@(Model.CurrentPageCard.UrlId )/",
+        ProjectId: @GeminiContext.Project.Entity.Id,
+        AssetsPath: "@AssetsPath/",
+        IEVersion: @Url.GetInternetExplorerVersion(),
+        IsOpera: @Url.IsOpera().ToJSBool(),
+        IsSafari: @Url.IsSafari().ToJSBool(),
+        IsFireFox: @Url.IsFireFox().ToJSBool(),
+        FirstDayOfWeek: @((int)GeminiContext.User.CultureInfo.DateTimeFormat.FirstDayOfWeek),
+        Licensed: @((GeminiApp.GeminiLicense.LicenseType == Rhino.Licensing.LicenseType.Standard && !GeminiApp.GeminiLicense.InvalidInstance).ToJSBool()),
+        DontUseInlineEdit: @GeminiContext.Config.NoInlineEdit.ToJSBool(),
+        MaxFileSize: @Model.MaxFileUpload,
+        AjaxPollInterval: @GeminiApp.Config.AjaxPollInterval
+    };
+    </script>
+    <script type="text/javascript">
+    $(document).ready(function () {
+
+            @if (DeviceContext.IsMobile)
+            {
+                <text>
+        $(".dropdown").click(function()
+        {
+            $(this).find("ul.inner").toggleClass("show");
+                });
+        </text>
+            }
+
+            @if (DeviceContext.IsDesktop)
+            {
+                <text>
+        </text>
+            }
+
+            gemini_session.init(@GeminiApp.Config.SessionTimeOut);
+
+            @if (Model.HasCurrentPageCard)
+            {
+                @:gemini_appnav.pageCard = @Html.Raw(Model.CurrentPageCard.ToJson());
+                        @:gemini_appnav.previousCards = @Html.Raw(Model.SavedCards.Select(x => x.Id).ToJson());
+                    }
+
+        gemini_master.initBase(@Model.DisplayPageActions.ToJSBool(), @Model.ModelStatus, @Html.Raw(Model.AllProjectsLight.ToJson()), @Model.NewWorkspace.ToJSBool(), @GeminiContext.User.IsGlobalAdmin.ToJSBool());
+
+        @RenderSection("DocumentReady", false)
+
+        @if(Model.CID.HasValue())
+            {
+                <text>gemini_wizard.init();</text>
+            }
+    });
+
+    $(window).load(function() {
+        gemini_master.initTabs();
+        @RenderSection("WindowReady", false)
+        @if (GeminiContext.User.Entity.IsExisting && !GeminiContext.User.Entity.Fullname.HasValue())
+        {
+            <text>
+        setTimeout(function() 
+        {
+            $('.open-profile', '#user-menu').click();
+            $('.cs-menu-dropdown', '#user-menu').hide();
+        }, 200);
+            </text>
+        }
+    });
+    @RenderSection("JavaScript", false)
+    </script>
+    <div class="hide">
+        <div id="modal-confirm" class="pad-10">
+            <p class="message margin-bottom-20 margin-top-10">
+            </p>
+            <div class="margin-top-10">
+                &nbsp;</div>
+            <div class="modalar-confirm-buttons" style="position: absolute; bottom: 10px; right: 10px;">
+                <input id="modal-button-yes" type="button" class="button-primary button-small button-modal" value="@GetResource(ResourceKeys.Yes)"/>
+                <input id="modal-button-no" type="button" class="button-secondary button-small button-modal" value="@GetResource(ResourceKeys.No)"/>
+            </div>
+        </div>
+    </div>
+    <div id="cs-popup">
+        <div id="cs-popup-zone">
+            <div id='cs-popup-content'>
+            </div>
+            <div id="cs-popup-buttons" class='margin-top-20'>
+                @if (GeminiApp.GeminiLicense.InvalidInstance)
+                {
+                    <div id="invalid-instance" class="left margin-top-15 margin-left-15">
+                        No more than @GeminiApp.GeminiLicense.Users users permitted with this license
+                    </div>
+                }
+                else
+                {
+                    <div id="server-validation-error" class="hide left margin-top-15 margin-left-15"></div>
+                }
+                <div class="buttons right">
+                    @if (!GeminiApp.GeminiLicense.InvalidInstance)
+                    {
+                        <input id="cs-popup-save" type="button" class="button-primary button-popup" value="@GetResource(ResourceKeys.Save)"/>
+                    }
+                    <input id="cs-popup-close" type="button" class="button-secondary button-popup" value="@GetResource(ResourceKeys.Close)"/>
+                </div>
+            </div>
+        </div>
+        <div class='clearfix'>
+        </div>
+    </div>
+    <div id="cs-popup-add" class='clearfix'>
+        <div id="cs-popup-add-zone">
+            <div id="cs-popup-add-header">
+                <div class="tabs left" >
+                    <span class="tab selected" data-tab-id="full-item">
+                        @GetResource(ResourceKeys.Item)
+                    </span>
+                </div>
+            </div>
+            <div class="clearfix">
+            </div>
+            <div id='cs-popup-add-content'>
+            </div>
+            <div id="cs-popup-add-buttons" class='margin-top-15'>
+                @if (GeminiApp.GeminiLicense.InvalidInstance)
+                {
+                    <div id="invalid-instance" class="left margin-top-15 margin-left-15">
+                        No more than @GeminiApp.GeminiLicense.Users users permitted with this license
+                    </div>
+                }
+                else
+                {
+                    <div id="server-validation-error" class="hide left margin-top-15 margin-left-15"></div>
+                }
+                <div class="buttons right">
+                    @if (!GeminiApp.GeminiLicense.InvalidInstance)
+                    {
+                       <input id="cs-popup-add-save" type="button" class="button-primary button-popup" value="@GetResource(ResourceKeys.Add)"/>
+                    }
+                    <input id="cs-popup-add-close" type="button" class="button-secondary button-popup" value="@GetResource(ResourceKeys.Cancel)"/>
+                </div>
+            </div>
+        </div>
+        <div class='clearfix'>
+        </div>
+    </div>
+    @*<div class="hide">*@
+        <div id="cs-popup-center" style="display:none">
+            <div id="cs-popup-center-zone">
+                <div id='cs-popup-center-content' class="pad-10">
+                </div>
+                <div id="cs-popup-center-buttons" class="margin-top-20">
+                    <div id="server-validation-error" class="hide left margin-top-15 margin-left-15"></div>
+                    <div class="buttons right">
+                        <input id="popup-button-yes" type="button" class="button-primary button-small button-modal" value="@GetResource(ResourceKeys.Save)"/>
+                        <input id="popup-button-no" type="button" class="button-secondary button-small button-modal" value="@GetResource(ResourceKeys.Cancel)"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @*</div>*@
+    <div id="toast-popup" class="toast-good">
+        <div class="toast-message"></div>
+    </div>
+    <div id="progress-indicator" class='hide' style="width:100px;max-width:100px;position:absolute;left:-200px;top:-200px;"></div>
+    <div id="wizard-placeholder" class="hide"></div>
+</body>
+</html>

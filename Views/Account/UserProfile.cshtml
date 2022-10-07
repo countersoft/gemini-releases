@@ -1,0 +1,155 @@
+﻿@model UserProfileModel
+
+@{
+    Layout = "~/Views/Shared/_Master.Desktop.Project.cshtml";
+    ViewBag.Title = Model.User.Fullname + " | " + @GetResource(ResourceKeys.Preferences);
+}
+   
+<div id="cs-adhoc-page">
+    <form action="profile" method="post" id="regular-form" autocomplete="off" enctype="multipart/form-data">
+        <input type="hidden" id="Id" name="Id" value="@Model.User.Entity.Id" />
+        <input type="hidden" id="returnurl" name="returnurl" value="@Model.ReturnUrl" />
+
+        <table id="regular-credentials" class="data-entry-box margin-zero-auto">
+
+            <tr>
+                <td>@GetResource(ResourceKeys.Firstname)</td>
+                <td><input type="text" id="Firstname" name="Firstname" class="input-size6 required" value="@Model.User.Entity.Firstname"/> </td>
+            </tr>
+            <tr>
+                <td>@GetResource(ResourceKeys.Surname)</td>
+                <td><input type="text" id="Surname" name="Surname" class="input-size6 required" value="@Model.User.Entity.Surname" /> </td>
+            </tr>
+            <tr><td colspan="2"><div class="divider"></div></td></tr>
+            
+
+            <tr>
+                <td>@GetResource(ResourceKeys.Username)</td>
+                <td><input type="text" class="input-size6 disabled" value="@Model.User.Entity.Username" disabled="disabled"/> </td>
+            </tr>
+            <tr>
+                <td>@GetResource(ResourceKeys.Email)</td>
+                <td><input type="text" id="Email" name="Email" class="input-size6 required email" value="@Model.User.Entity.Email" /> </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td><input class="fancy" type="checkbox" id="EmailMe" name="EmailMe" @if(Model.User.Entity.EmailMe){ <text>checked="checked"</text> } /><label class="valign-top">@GetResource(ResourceKeys.EmailMe)</label></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input class="fancy" type="checkbox" id="EmailMeMyChanges" name="EmailMeMyChanges" @if(Model.User.Entity.EmailMeMyChanges){ <text>checked="checked"</text> } /><label class="valign-top">@GetResource(ResourceKeys.EmailMeMyChanges)</label></td>
+            </tr>
+            <tr><td colspan="2"><div class="divider"></div></td></tr>
+
+            <tr>
+                <td>@GetResource(ResourceKeys.Timezone)</td>
+                <td>@Html.DropDownList("Timezone", Model.Timezones, new {@class="input-size8"})</td>
+            </tr>
+            <tr>
+                <td>@GetResource(ResourceKeys.Culture)</td>
+                <td>@Html.DropDownList("Culture", Model.Cultures, new {@class="input-size8"})</td>
+            </tr>
+            <tr>
+                <td>@GetResource(ResourceKeys.Language)</td>
+                <td>@Html.DropDownList("Language", Model.Languages, new {@class="input-size8"})</td>
+            </tr>
+            <tr>
+                <td>@GetResource(ResourceKeys.Theme)</td>
+                <td>@Html.DropDownList("Theme", Model.Themes, new {@class="input-size8"})</td>
+            </tr>
+            <tr><td colspan="2"><div class="divider"></div></td></tr>
+           
+            
+            <tr>
+               <td>@GetResource(ResourceKeys.ApiKey)</td>
+                <td>
+                    <input type="text" id="ApiKey" name="ApiKey" class="input-size6" disabled="disabled" value="@Model.User.Entity.ApiKey" />
+                    <input type="button" id="api-key" class="button-secondary button-small" value="@GetResource(ResourceKeys.Change)" />
+                </td>
+            </tr>
+            @if (!GeminiContext.Config.IsWindowsAuthentication)                                                                                                                               
+            { 
+            <tr><td colspan="2"><div class="divider"></div></td></tr>
+               
+            if (ViewBag.Error)
+            {
+                <tr><td colspan="2" style="color:red;">@Html.Raw(ViewBag.ErrorMessage)</td></tr>
+            }
+                
+            <tr>
+                <td>@GetResource(ResourceKeys.CurrentPassword)</td>
+                <td><input type="password" id="current-password" name="current-password" class="input-size6" /></td>
+            </tr>
+                
+            <tr>
+                <td>@GetResource(ResourceKeys.NewPassword)</td>
+                <td><input type="password" id="the-password" name="the-password" class="input-size6" /> 
+                    <div class="password-meter">
+                        <div class="password-meter-bg">
+                            <div class="password-meter-bar"></div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>@GetResource(ResourceKeys.ConfirmNewPassword)</td>
+                <td><input type="password" id="confirm-password" name="confirm-password" class="input-size6" /> </td>
+            </tr>
+            }
+            
+            <tr><td colspan="2"><div class="divider"></div></td></tr>
+
+            <tr>
+                <td valign="top">@GetResource(ResourceKeys.Picture)</td>
+                <td>
+                    <img src="~/account/picture/@Model.User.Entity.Id" alt="Gravatar" width="64" height="64" />
+                </td>
+            </tr>            
+
+             <tr>
+                <td valign="top"></td>
+                <td>
+                    <input type="radio" id="option-gravatar" value="1" name="gravatar" class="avatar-option fancy" @if(Model.User.GetSettings().UseGravatar) {<text>checked="checked"</text>}/>
+                    <label for="option-gravatar">Gravatar</label>
+                    <input type="radio" id="option-upload" value="2" name="gravatar" class="margin-left-10 avatar-option fancy" @if(!Model.User.GetSettings().UseGravatar) {<text>checked="checked"</text>}/>
+                    <label for="option-upload">@GetResource(ResourceKeys.Upload, Resourcing.Dotted)</label>
+                </td>
+            </tr>
+            
+            <tr id="upload-avatar" @if(Model.User.GetSettings().UseGravatar) {<text>class="invisible"</text>} >
+                <td valign="top"></td>
+                <td>
+                    <input type="file" name="avatar" id="avatar"/>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2" align="right">
+                    <input id="regular-signin" type="submit" value='@GetResource(ResourceKeys.Save)' class='button-primary' />
+                </td>
+            </tr>
+           
+        </table>
+        @if (ViewBag.SendHome)
+        {
+            <input type="hidden" name="sendhome" value="1" />
+        }
+    </form> 
+</div>
+
+<br/>
+<br/>
+<br/>
+
+@section DocumentReady
+{
+    @if (ViewBag.Saved)
+    {
+        <text>gemini_account.initProfile("@GetResource(ResourceKeys.Saved)", "@ViewBag.Error");</text>
+    }
+    else
+    {
+        <text>gemini_account.initProfile(false,"@ViewBag.Error");</text>
+    }
+}

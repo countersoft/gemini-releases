@@ -1,0 +1,115 @@
+﻿@model ViewIssueModel
+
+        
+                <div id='comments-section' data-contentid="comments-content" class="left tab normal" title="@GetResourceTemplate(ResourceKeys.Comments)">
+                    <h3 title="@Model.Issue.Comments.Count"><i class="fad fa-comments"></i> @GetResourceTemplate(ResourceKeys.Comments)&nbsp;(@Model.Issue.Comments.Count)</h3>
+                </div>
+        <div class="tab-content hide" id="comments-content">
+                
+            <div class="toolbar actions">
+                @if ( CanDoItemAction( UserAction.Create, ItemAttributeVisibility.AssociatedComments ) )
+                {
+                    <a class="button add" href="#" title="@GetResource(ResourceKeys.Add) @GetResource(ResourceKeys.Comment)">@GetResource( ResourceKeys.Add )</a>
+                }
+                <a class="button collapse" href="#" title="@GetResource(ResourceKeys.Collapse) @GetResource(ResourceKeys.Comments)">@GetResource( ResourceKeys.Collapse )</a>
+                <a class="button expand" href="#" title="@GetResource(ResourceKeys.Show) @GetResource(ResourceKeys.Comments)" style="display:none">@GetResource( ResourceKeys.Show )</a>
+            </div>
+            @if(Model.RenderCommentEditor) 
+            {
+            @Html.Partial("~/Views/Item/EditCommentsEditor.cshtml", Model)
+            }
+
+            <div class="section-content comments expanded cs-wysiwyg">
+                @foreach (var comment in Model.Issue.Comments)
+                {
+                    <article data-id="@comment.Entity.Id">
+                        <div class="clear-both"></div>
+                        <div class="comment-wrapper">
+                            <span class="author-box">
+                            <span class ="comment-expandedOrcollapsed">
+                            <span class="expander fonticon-arrow-down" style="color:#4c4c4c"></span>
+                                @{
+                                    var voteClass = "vote";
+                                }
+
+                                @if (comment.Entity.Visibility == Constants.GlobalGroupEveryone || comment.Entity.Visibility == Constants.GlobalGroupEveryoneAuthenticated)
+                                {
+                                    voteClass = "";
+                                }
+                                <span title="@comment.Visibility" class="control-icon @voteClass" data-group="@comment.Entity.Visibility"></span>
+                                <span class="author">@if(comment.Entity.OriginatorType != IssueOriginatorType.Email && comment.Entity.OriginatorData.HasValue()){ <text>@IssueHelper.DisplayCommentOwner(comment.Entity.OriginatorData)</text> } else { <text>@comment.Entity.Fullname</text> } </span>
+                                <span class="dated" data-date-format="@GeminiContext.User.GeminiDateFormat" title="@comment.Entity.Created.ToString()">@comment.Entity.Created.ToString()</span>
+                                </span>
+                                @if(CanDoItemAction(UserAction.Edit, ItemAttributeVisibility.AssociatedComments, comment.Entity.Id))
+                                {
+                                <div class="action-button-edit" title="@GetResource(ResourceKeys.Edit) @GetResource(ResourceKeys.Comment)"></div>
+                                }
+                                @if(CanDoItemAction(UserAction.Delete, ItemAttributeVisibility.AssociatedComments, comment.Entity.Id))
+                                {
+                                <span class="delete" data-id="@comment.Entity.Id" title="@GetResource(ResourceKeys.Delete) @GetResource(ResourceKeys.Comment)"><a class="button fonticon-cross" href="#"></a></span>
+                                }
+                            </span>
+                            @if (comment.Entity.OriginatorType == IssueOriginatorType.Email)
+                                {
+                                  <div class="no-select comment-type @if(comment.Entity.OriginatorData.HasValue()) {<text>email-header cursor-pointer</text>}" data-id="@comment.Entity.Id">Email Reply</div>
+                            }
+                            else if (comment.Entity.OriginatorType == IssueOriginatorType.Breeze)
+                            {
+                                var commentMeta = comment.Entity.IsClosing ? "Closing Comment" : "Email";
+                                <div class="no-select comment-type @if(comment.Entity.OriginatorData.HasValue()) {<text>email-header cursor-pointer</text>}" data-id="@comment.Entity.Id">@commentMeta</div>
+                            }
+                            <div class="section-content expanded">
+                                @{
+                                    var formUrl = Url.Action("updatecomment", "AjaxItem", new RouteValueDictionary(new { id = Model.Issue.Project.Id, issueid = Model.Issue.Id, commentid = comment.Entity.Id }));
+                                    if (!formUrl.HasValue())
+                                    {
+                                        formUrl = string.Concat(GeminiContext.Url, "workspace/", Model.Issue.Project.Id, "/item/updatecomment?issueid=", Model.Issue.Id,"&commentid=",comment.Entity.Id);
+                                    }
+                                 }
+                            <div class="comment" data-id="@comment.Entity.Id" data-url="@formUrl" >
+                                @Html.Raw(comment.Entity.Comment)
+
+                                <div class="attachment">
+                                    @if (comment.Attachments != null && comment.Attachments.Count > 0)
+                                    {
+                                        <table cellpadding="3" cellspacing="3">
+                                            <tbody>
+                                                @foreach (var attachment in comment.Attachments)
+                                                {
+                                                    <tr data-id="@attachment.Entity.Id">
+                        
+                                                            <td>
+                                                                @if (attachment.IsImage)
+                                                                {
+                                                                    @:<a target="_blank" href='@(GeminiContext.Url)project/@Model.Issue.Project.Id/item/attachment/preview?issueid2=@(Model.Issue.Entity.Id)&fileid=@(attachment.Entity.Id)&height=0&width=0'>
+                                                                }
+                                                                <img alt='@attachment.Entity.ShortFileName' title="@attachment.Entity.Size - @attachment.CreatedRelative" src='@Html.Raw(@attachment.IconPath)' />
+                                                                @if (attachment.IsImage)
+                                                                {
+                                                                    @:</a>
+                                                                }
+                                                            </td>
+                                                            <td class="data">@attachment.Entity.Created.ToShortDateString()</td>
+                                                            <td class="data">@attachment.Entity.Size</td>
+                                                            <td class="@(attachment.IsImage ? "image-preview":"")">
+                                                                <a href='@(GeminiContext.Url)project/@Model.Issue.Project.Id/item/attachment?issueid=@(Model.Issue.Entity.Id)&fileid=@(attachment.Entity.Id)'>@attachment.Entity.ShortFileName</a>
+                                                                @if (CanDoItemAction(UserAction.Edit, ItemAttributeVisibility.AssociatedComments, comment.Entity.Id))
+                                                                {<span class="thumbnail-close-image" data-id="@attachment.Entity.Id" title="@GetResource(ResourceKeys.Delete) @GetResource(ResourceKeys.Attachments)"><a href="#"><span class="fonticon-cross middle"></span></a></span>}
+                                                            </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    }
+                                </div>
+                            </div>
+                           </div>
+                        </div>
+                    </article>        
+                }
+            </div>
+        @if (Model.ShowCommentWatermark)
+        {
+            <a target="_blank" href='http://docs.countersoft.com/adding-comments/'>@{Html.RenderPartial("~/Views/Shared/EmptyState/_ViewItemImage.cshtml", "no-comments.png");}</a>
+        }
+</div>

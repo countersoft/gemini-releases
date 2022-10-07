@@ -1,0 +1,26 @@
+﻿@model RoadmapModel
+@using Countersoft.Foundation.Commons.Extensions
+
+@{
+    Layout = "~/Views/Shared/_Master.Desktop.Project.cshtml";
+}
+<div id="progress-container">
+    <div class="filter-container">
+	    @{Html.RenderPartial("InstantFilter", Model.Filter);}	   
+    </div>
+    <div class="clearfix"></div>
+    <div id="progress">
+        @{Html.RenderPartial("_Burndown");}
+    </div>
+</div>
+
+@section DocumentReady
+{
+    gemini_filter.init(@((int)ProjectTemplatePageType.Burndown), @Html.Raw(Model.Filter.AvailableFields.ToJson()));
+    gemini_ui.fancyInputs('#burndown-form .fancy');
+    gemini_progress.init();
+    $.subscribe('items-grid-filter-executed.burndown', function (_, result) {
+        gemini_progress.executeFilter();
+     
+    });
+}
