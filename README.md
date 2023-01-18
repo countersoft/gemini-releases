@@ -1,11 +1,11 @@
 # Countersoft Gemini
 
-Latest Gemini release is v7.2.0 -- download ZIP release or clone this repo.
+Latest Gemini release is v7.3.0 -- download ZIP release or clone this repo.
 
 Requirements:
 
-- .NET Framework 4.0
-- SQL Server (any edition/version)
+- .NET Framework 4.7.2 or above
+- SQL Server (any edition/version but preferably 2012 or above)
 
 ## Self-host
 
