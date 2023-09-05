@@ -323,7 +323,7 @@ gemini_edit = {
                         '<h2 class="margin-bottom-10">' +
                         response.Result.IssueKey +
                         ' ' +
-                        response.Result.Property +
+                        gemini_commons.htmlEncode(response.Result.Property) +
                         '</h2>';
                     newContent += response.Result.Html + '</form>';
                     response.Result.Html = newContent;
