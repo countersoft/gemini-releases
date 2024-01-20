@@ -502,4 +502,6 @@
   <item id="TypeChart">Graphique de type</item>
   <item id="VersionChart">Graphique des versions</item>
   <item id="SlaBreachDate">Date de manquement</item>
+  <item id="AsOf">As Of</item>
+  <item id="ViewingAsOf">Viewing As Of</item>
 </Resource>

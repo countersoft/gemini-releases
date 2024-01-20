@@ -502,4 +502,6 @@
   <item id="AnotherUserModified">Outra pessoa modificou este item</item>
   <item id="NowViewing">Agora vendo</item>
   <item id="ReviewAndClickSend">Revisar alterações e reenviar</item>
+  <item id="AsOf">As Of</item>
+  <item id="ViewingAsOf">Viewing As Of</item>
 </Resource>

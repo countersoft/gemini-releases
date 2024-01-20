@@ -502,4 +502,6 @@
   <item id="CustomLookupData">benutzerdefinierte Daten</item>
   <item id="NowViewing">Jetzt ansehen</item>
   <item id="ReviewAndClickSend">Änderungen überprüfen und erneut senden</item>
+  <item id="AsOf">As Of</item>
+  <item id="ViewingAsOf">Viewing As Of</item>
 </Resource>

@@ -554,4 +554,6 @@
   <item id="AnotherUserModified">Друг човек е променил този елемент</item>
   <item id="ReviewAndClickSend">Прегледайте промените и изпратете отново</item>
   <item id="NowViewing">Сега гледаме</item>
+  <item id="AsOf">As Of</item>
+  <item id="ViewingAsOf">Viewing As Of</item>
 </Resource>

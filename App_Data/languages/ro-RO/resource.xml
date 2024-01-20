@@ -553,4 +553,6 @@
   <item id="AnotherUserModified">O altă persoană a modificat acest articol</item>
   <item id="ReviewAndClickSend">Examinați modificările și trimiteți din nou</item>
   <item id="NowViewing">Acum vizionarea</item>
+  <item id="AsOf">As Of</item>
+  <item id="ViewingAsOf">Viewing As Of</item>
 </Resource>
