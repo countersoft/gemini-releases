@@ -1,0 +1,197 @@
+﻿       <div id="diffBox">
+
+        <div class="codereview-header">
+            <div class="codereview-header-filename"></div>
+            <div class="codereview-header-date"></div>
+        </div>
+
+        <div id="leftPane">
+             <div class="diffHeader">Previous</div>            
+            <div class="diffPane">
+                <table class="diffTable">
+                    @foreach (var diffLine in Model.data.OldText.Lines)
+                    { 
+                        <tr class="cs-no-hover codereview-diff-line">
+                            <td class="lineNumber">
+                                @Html.Raw( ((int?)diffLine.Position).HasValue ? diffLine.Position.ToString() : "&nbsp;")
+                            </td>
+                            <td class="line @diffLine.Type.ToString()Line">
+                                <span class="lineText">@Html.Partial(Countersoft.Gemini.Infrastructure.Apps.AppManager.Instance.GetAppUrl("F473D13E-19B7-45F3-98ED-6ED77B6BAB0A", "views/diffLine.cshtml"), (object)diffLine)</span>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+
+        </div>
+        <div id="rightPane">
+           <div class="diffHeader">New</div>
+              <div class="diffPane">
+                <table class="diffTable">
+                    @foreach (var diffLine in Model.data.NewText.Lines)
+                    {
+                        var lineComment = string.Empty;
+                        var linenumber = "&nbsp;";
+                        <tr class="cs-no-hover codereview-diff-line">
+                            <td class="lineNumber" data-linenumber="@(((int?)diffLine.Position).HasValue ? diffLine.Position.ToString() : "")">
+                                
+                                    @if (((int?)diffLine.Position).HasValue)
+                                    {
+                                        linenumber = diffLine.Position.ToString();                
+                                        foreach (var comment in  Model.comments)
+                                        {
+                                            
+                                            if (comment.LineNumber == diffLine.Position.ToString().Trim())
+                                            {
+                                                linenumber = "<span class='commentexist fonticon-flag'></span>";
+                                                break;
+                                            }
+                                        }   
+                                    }         
+                                
+                                @Html.Raw(linenumber)
+                            </td>
+                            <td class="line @diffLine.Type.ToString()Line">
+                                <span class="lineText">@Html.Partial(Countersoft.Gemini.Infrastructure.Apps.AppManager.Instance.GetAppUrl("F473D13E-19B7-45F3-98ED-6ED77B6BAB0A", "views/diffLine.cshtml"), (object)diffLine)</span>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+       
+        <div class="clearfix">
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $(function () {
+                InitializeDiffPanes();
+            });
+
+            function InitializeDiffPanes() {
+                var diffBox = $("#diffBox");
+                var parent = diffBox.parent();
+                var diffPane = $(".diffPane", diffBox);
+                var leftTable = $(".diffTable", diffPane[0]);
+                var rightTable = $(".diffTable", diffPane[1]);
+                var diffPaneLinesLeft = $("td.line", leftTable);
+                var diffPaneLineHeight = diffPaneLinesLeft.outerHeight();
+                var scrollBarsActive = false;
+
+                SizeDiffTablesEqually();
+                SizeDiffPanesToWindow();
+
+
+                // synchronize the scroll bars
+                $(diffPane[0]).scroll(OnLeftDiffPaneScroll);
+                $(diffPane[1]).scroll(OnRightDiffPaneScroll);
+
+
+                $(window).resizeComplete(function () {
+                    SizeDiffTablesEqually();
+                    SizeDiffPanesToWindow();
+
+                });
+
+
+                function SizeDiffPanesToWindow() {
+                    var lineCount = diffPaneLinesLeft.length;
+                    var contentHeight = lineCount * diffPaneLineHeight;
+
+                    diffPane.hide();
+                    var parentHeight = parent.outerHeight(true);
+                    var parentTop = parent.offset().top;
+                    var windowHeight = $(window).height();
+                    var newHeight = windowHeight - (parentHeight + parentTop);
+                    diffPane.show();
+
+                    if (contentHeight < newHeight) {
+                        newHeight = contentHeight;
+                        if (scrollBarsActive)
+                            newHeight += diffPaneLineHeight + 3;
+                    }
+
+                    if (newHeight > 0) {
+                        //diffPane.height(newHeight);
+                        diffPane.css("min-height", newHeight + "px");
+                    }
+                }
+
+                function SizeDiffTablesEqually() {
+                    var maxWidth = Math.max(leftTable.width(), rightTable.width());
+                    var maxHeight = Math.max(leftTable.height(), rightTable.height());
+
+
+                    leftTable.height(maxHeight);
+                    rightTable.height(maxHeight);
+
+                    if (diffPane.width() < maxWidth) {
+                        leftTable.width(maxWidth);
+                        rightTable.width(maxWidth);
+                        scrollBarsActive = true;
+                    }
+                }
+
+                function OnLeftDiffPaneScroll(e) {
+                    var left = this.scrollLeft;
+                    var top = this.scrollTop;
+                    if (top != diffPane[1].scrollTop) diffPane[1].scrollTop = top;
+                    if (left != diffPane[1].scrollLeft) diffPane[1].scrollLeft = left;
+                }
+
+                function OnRightDiffPaneScroll(e) {
+                    var left = this.scrollLeft;
+                    var top = this.scrollTop;
+                    if (top != diffPane[0].scrollTop) diffPane[0].scrollTop = top;
+                    if (left != diffPane[0].scrollLeft) diffPane[0].scrollLeft = left;
+                }
+            }
+
+
+            jQuery.fn.resizeComplete = function(callback) {
+
+                var element = this;
+                var height = element.height();
+                var width = element.width();
+                var monitoring = false;
+                var timer;
+
+                function monitorResizing() {
+
+                    if (!same()) {
+                        height = element.height();
+                        width = element.width();
+                        timer = setTimeout(function () { monitorResizing(); }, 500);
+                    } else {
+                        clearTimeout(timer);
+                        callback();
+                        monitoring = false;
+                    }
+                }
+
+                function same() {
+                    var newHeight = element.height();
+                    var newWidth = element.width();
+
+                    return newHeight == height && newWidth == width;
+                }
+
+                function onResize() {
+                    if (monitoring) return;
+                    if (same()) return;
+                    monitoring = true;
+                    monitorResizing();
+                }
+
+                if ($.browser.mozilla) {
+                    element.resize(callback);
+                } else {
+                    element.resize(onResize);
+                }
+            };
+
+        });
+    </script>

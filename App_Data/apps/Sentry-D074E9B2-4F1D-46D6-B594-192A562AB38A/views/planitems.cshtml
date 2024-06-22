@@ -1,0 +1,47 @@
+﻿@using System.Web.Mvc.Html;
+@using System.Linq;
+@using Countersoft.Gemini.Models;
+@using Countersoft.Gemini;
+@model Countersoft.Gemini.Models.PlanInfo
+
+<div class="AppStore testing">
+    <style>
+    @Html.Raw(Countersoft.Gemini.Infrastructure.Managers.ScriptManager.Instance.GetImageStyles("Planner", "background-image"))
+        </style>
+    @if (Model.Items.Any())
+    {
+
+        <table id="case-details" data-id='@Model.Info.PlanId' class="grid">
+            <thead>
+                <tr>
+                    <th class="no-wrap">@GetResource(ResourceKeys.ItemKey)</th>
+                    <th>@GetResource(ResourceKeys.Title)</th>
+                    <th>@GetResource(ResourceKeys.Assigned)</th>
+                    <th>@GetResource(ResourceKeys.Status)</th>
+                    
+                </tr>
+            </thead>
+            <tbody class="grid">
+                @foreach (Countersoft.Gemini.Commons.Dto.IssueDto x in Model.Items)
+                {
+
+                    <tr id='item-@x.Entity.Id'>
+                        <td class='no-width no-wrap'>@Html.Partial("~/views/testing/_ItemLink.cshtml", x)</td>
+                        <td class=''>@Html.Raw(x.Title)</td>
+                        <td class='no-width no-wrap'>@Html.Raw(x.ResourceNames)</td>
+                        <td class='no-wrap'>@Html.Partial("~/views/testing/_TestItemState.cshtml", new TestType() { Id = x.Entity.StatusId, Type = x.Status, TypeImage = x.StatusImage })</td>
+                        
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    }
+    
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#section-widget-D8DECEB7-BA6D-4A3F-A4A7-C79A5A5585BA h3").html("@GetResource(ResourceKeys.PlanItems) (@Model.Items.Count())");
+        });
+
+</script>

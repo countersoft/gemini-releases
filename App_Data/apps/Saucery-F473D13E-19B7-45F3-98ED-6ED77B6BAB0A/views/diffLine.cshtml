@@ -1,0 +1,19 @@
+﻿@if (!string.IsNullOrEmpty(Model.Text))
+{
+    string spaceValue = "\u00B7";
+    string tabValue = "\u00B7\u00B7";
+
+    spaceValue = "\u00A0";
+    tabValue = "\u00A0\u00A0";
+    
+    if ((int)Model.Type == 1 || (int)Model.Type == 2|| (int)Model.Type == 0)
+    {
+        @Model.Text.Replace(" ", spaceValue).Replace("\t", tabValue)
+    }
+    else if ((int)Model.Type == 4)
+    {
+        foreach (var character in Model.SubPieces)       { if ((int)character.Type == 3){continue;}<span class="@character.Type.ToString()Character">@character.Text.Replace(" ",spaceValue.ToString())</span>}
+    }
+
+}
+  

@@ -1,0 +1,70 @@
+﻿@model ItemRepeater.RepeaterModel
+
+@if (Model.Items.Count > 0)
+{ 
+<div id="items-grid">
+        <div id="grid-pager" class="left pad-top-20">
+            @Model.ItemCount @GetResource(ResourceKeys.ItemsFound, Resourcing.Lower)
+        </div>
+    <div class="clearfix"></div>
+        <table id="tabledata" border="0">
+            <thead>
+                <tr>
+                    <th class="align-left">@GetResource(ResourceKeys.Item)</th>
+                    <th class="align-left">@GetResource(ResourceKeys.Title)</th>
+                    <th class="align-left">@GetResource(ResourceKeys.Repeat)</th>
+                    <th class="align-left">Last Repetition</th>
+                    <th class="align-left">Next Repetition</th>
+                    <th class="align-left">@GetResource(ResourceKeys.StartDate)</th>
+                    <th class="align-left">@GetResource(ResourceKeys.DueDate)</th>
+                    <th class="align-left">@GetResource(ResourceKeys.Created)</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var issue in Model.Items)
+                {
+                    <tr id='tr-issue-@issue.MasterItem.Id' class="repeating" data-issue-id='@issue.MasterItem.Id' data-project-code='@issue.MasterItem.ProjectCode' data-project-id='@issue.MasterItem.Project.Id'>
+                        <td class="align-left no-wrap read-only">
+                            <a href="@(Model.BaseUrl)item/@issue.MasterItem.Entity.Id"><text>@issue.MasterItem.IssueKey</text></a> @if (issue.RepeatedItems.Count > 0)
+                            {<span class='fonticon-arrow-up expander'></span>}
+                        </td>
+                        <td class="align-left no-wrap">@issue.MasterItem.Entity.Title</td>
+                        <td class="align-left no-wrap">@issue.MasterItem.Repeated</td>
+                        <td>@issue.LastRepitition</td>
+                        <td>@issue.NextRepitition</td>
+                        <td class="align-left no-wrap">@issue.MasterItem.StartDate.GetDateString()</td>
+                        <td class="align-left no-wrap">@issue.MasterItem.DueDate.GetDateString()</td>
+                        <td class="align-left no-wrap">@issue.MasterItem.Created.GetDateString()</td>
+                        <td class="no-width no-wrap">
+                            <a href="#" class="edit">Edit</a> |
+                            <a href="#" class="schedule bold">Schedule</a>
+                        </td>
+                    </tr>
+
+                    foreach (var item in issue.RepeatedItems)
+                    {
+                        <tr id='tr-issue-@item.Id' data-issue-id='@item.Id' class="repeating repeat-of-@issue.MasterItem.Id @{if (item.Entity.Id == 0) {<text>ghost</text>}}">
+                            <td class="align-left no-wrap read-only indent">@if (item.Entity.Id > 0)
+                            {<a href="@(Model.BaseUrl)item/@item.Entity.Id"><text>@item.IssueKey</text></a>}</td>
+                            <td class="align-left no-wrap">@item.Entity.Title</td>
+                            <td class="align-left no-wrap">@item.Repeated</td>
+                            <td></td>
+                            <td></td>
+                            <td class="align-left no-wrap">@item.StartDate.GetDateString()</td>
+                            <td class="align-left no-wrap">@item.DueDate.GetDateString()</td>
+                            <td class="align-left no-wrap">@item.Entity.Created.GetDateString()</td>
+                            <td class="no-width no-wrap">                             
+                                <a href="#" class="edit">Edit</a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    Html.RenderPartial("~/Views/Shared/EmptyState/_Image.cshtml", "no-issues.png"); // Already created an item
+}

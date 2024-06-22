@@ -1,0 +1,4 @@
+﻿.changelog #tabledata tbody tr td:first-child .icheckbox_minimal,.changelog #tabledata thead tr th:first-child .icheckbox_minimal
+{
+    visibility:hidden;
+}

@@ -1,0 +1,72 @@
+﻿@model Countersoft.Gemini.Breeze.BreezeCloseTicketModel
+
+@{
+    Layout = "~/Views/Shared/_Master.Base.cshtml";
+    ViewBag.Title = "Close Ticket";
+
+    var logo = GeminiContext.Config.Logo;
+    var logoEmpty = !logo.HasValue();
+    if(logoEmpty)
+    {
+        logo = "gemini.png";
+    }
+}
+
+@section Head
+{
+    @{Html.RenderPartial("_Styles");}
+    <!--[if IE 8]>
+    <style>#pageSizeContainer #pageSize, #search-form #search {line-height:20px;}</style>
+    <![endif]-->
+}
+
+
+<header id="header">
+
+    <div id="zone-header-bar" class="flex-grid">
+        <div class="header-left">
+            <span id="product-logo">
+                <img src="@(GeminiContext.AssetsUrl)/images/logo/@logo" />
+            </span>
+
+        </div>
+    </div>
+
+</header>
+
+<div id="page-content-zone">
+    <section id="contents" class="clearfix">
+        <div class="layout">
+            @Html.Raw(Model.Data)
+            @if(Model.AddComment)
+            {
+                <form class="comments-form" action="@Model.Url" method="post">
+                    <div class='wysiwyg-container margin-top-20 margin-bottom-20'>
+                        <textarea id="comments-wysiwyg-content" name="commentsWysiwygContent" class="required"></textarea>
+                    </div>
+                    <input id="comment-button" type="submit" value="@Model.CommentButtonText" class='button-primary'/>
+                </form>
+            }
+        </div>
+    </section>
+</div>
+
+<footer id="footer" class="clearfix">
+    @{Html.RenderPartial("Footer", Model);}
+</footer>
+<script type="text/javascript">
+    $(document).ready(function () {
+        gemini_ui.htmlEditor('#comments-wysiwyg-content');
+        $('#comment-button').click(function (e) {
+            if (!$(".comments-form").valid()) {
+                $('.mce-tinymce.mce-container').addClass('error');
+                gemini_commons.stopClick(e);
+                return;
+            }
+            $('.mce-tinymce.mce-container').removeClass('error');
+            $('#comment-button').attr('disabled', 'disabled');
+            gemini_ui.startBusy('#comment-button');
+            $(".comments-form").submit();
+        });
+    });
+</script>

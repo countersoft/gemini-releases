@@ -1,0 +1,70 @@
+﻿@model AdminAudit.AdminAuditModel
+
+<script src="~/assets/scripts/apps/DA83F146-8C92-49AB-97C1-83EEDCCD3910/AdminAudit.js" type="text/javascript"></script>
+<link rel="stylesheet" href="~/assets/styles/apps/DA83F146-8C92-49AB-97C1-83EEDCCD3910/AdminAudit.css" media="screen, projection" />
+
+<div id="configure-page-content" class="margin-20">
+    <p id="tab-help-message"><strong>»</strong> View a list of all admin actions</p>
+    
+    <div class="clearfix"></div>
+
+    <div id="filter-container">
+        <form class="filter-form">
+            <div id="page-options-box" class="left margin-right-10">
+                <div class="option vertical-align">
+                    <div class="control-icon gear" title="User"></div>
+                    <div class="options ordering">
+                        <div class="break">&nbsp;</div>
+                        <label>Users</label>
+                        @Html.ListBox("userids", Model.Users, new { Multiple = "Multiple", @class = "input-size6" })
+                        <input type="button" value="Apply" id="filter-by-user" class="button-primary right margin-top-10">
+                    </div>
+                </div>
+            </div>
+            <input type="text" name="dateFrom" id="date-from" value="@DateTime.Today.AddDays(-14).ToShortDateString()" class="datepicker" data-date-format="@Model.DateFormat" />
+            <input type="text" name="dateTo" id="date-to" value="@DateTime.Today.ToShortDateString()" class="datepicker" data-date-format="@Model.DateFormat" />
+        </form>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="admin-datatable-holder">
+        <table id="table-admin-audit" class="basic">
+            <thead>
+                <th>Date</th>
+                <th>User</th>
+                <th>Action</th> 
+                <th>Area</th>
+                <th>Name</th>
+                <th>Field</th>
+                <th>Before</th>
+                <th>After</th>
+            </thead>
+            <tbody>
+                @foreach (var audit in Model.data)
+                {
+                    <tr id="row-@audit.Id">
+                        <td>@audit.Created.ToString()</td>
+                        <td>@audit.Fullname</td>
+                        <td>@audit.Action.ToString()</td>
+                        <td>@audit.AdminArea.ToString()</td>
+                        <td>@audit.RowNameDisplay</td>
+                        <td>@audit.FieldChangedDisplay</td>
+                        <td style=" word-break: break-all;">@audit.ValueBefore.ToString()</td>
+                        <td style=" word-break: break-all;">@audit.ValueAfter.ToString()</td>                        
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        admin_audit_app.init();
+
+        $("#table-admin-audit_wrapper").prepend($('#filter-container'));
+    });
+
+</script>

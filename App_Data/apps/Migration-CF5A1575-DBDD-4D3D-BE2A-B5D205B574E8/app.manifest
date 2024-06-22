@@ -1,0 +1,12 @@
+﻿<app>
+    <guid>CF5A1575-DBDD-4D3D-BE2A-B5D205B574E8</guid>
+    <name>Migration</name>
+    <description>Migrate Gemini Projects</description>
+    <version-major>1</version-major>
+    <version-minor>0</version-minor>
+    <version-patch>6</version-patch>
+    <publisher>Countersoft</publisher>
+    <released>2015-11-23T11:31:00Z</released>
+    <javascript></javascript>
+    <debug>false</debug>
+</app>

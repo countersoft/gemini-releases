@@ -1,0 +1,11 @@
+﻿<app>
+    <guid>DA83F146-8C92-49AB-97C1-83EEDCCD3910</guid>
+    <name>AdminAudit</name>
+    <description>View a history of all admin actions</description>
+    <version-major>7</version-major>
+    <version-minor>0</version-minor>
+    <version-patch>0</version-patch>
+    <publisher>Countersoft</publisher>
+    <released>2020-04-10T09:00:00Z</released>
+    <debug>false</debug>
+</app>

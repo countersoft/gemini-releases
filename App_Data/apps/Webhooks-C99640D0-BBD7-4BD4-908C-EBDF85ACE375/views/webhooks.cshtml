@@ -1,0 +1,51 @@
+﻿@model List<Webhooks.WebhooksData>
+
+<script src="~/assets/scripts/apps/C99640D0-BBD7-4BD4-908C-EBDF85ACE375/webhooks.js" type="text/javascript"></script>
+<link rel="stylesheet" href="~/assets/styles/apps/C99640D0-BBD7-4BD4-908C-EBDF85ACE375/webhooks.css" media="screen, projection" />
+
+<div id="configure-page-content" class="margin-20 admin-datatable-holder">
+    <p id="tab-help-message"><strong>»</strong> Maintain list of webhooks that will be called after an item has been created or edited</p>
+    <div class="clearfix"></div>
+
+    <table id="table-admin-webhooks" class="basic webhooks">
+        <thead>
+            <tr>
+                <th data-field="Description">Description</th>
+                <th data-field="Url">Url</th>
+                <th data-field="Create" data-edit-type="checkbox">Fire on Create</th>
+                <th data-field="Update" data-edit-type="checkbox">Fire on Update</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td data-edit="false">@Html.TextBox("Description", string.Empty, new {@class="hook-description"})</td>
+                <td data-edit="false">@Html.TextBox("Url", string.Empty, new {@class="hook-url"})</td>
+                <td data-edit="false">@Html.CheckBox("Create", true, new {@class="hook-create fancy"})</td>
+                <td data-edit="false">@Html.CheckBox("Update", false, new {@class="hook-update fancy"})</td>
+                <td data-edit="false"><a id="action-button-save" class="cursor-pointer" title="@GetResource(ResourceKeys.Save)">Save</a></td>
+            </tr>
+            @{
+                int index = 0;
+            }
+            @foreach (var hook in Model)
+            {
+                <tr data-id="@hook.Url">
+                    <td>@hook.Description</td>
+                    <td>@hook.Url</td>
+                    <td>@(hook.Create ? "Yes" : string.Empty)</td>
+                    <td>@(hook.Update ? "Yes" : string.Empty)</td>
+                    <td data-edit="false"><span class="action-button-delete cursor-pointer" title="@GetResource(ResourceKeys.Delete)" data-method="delete"></span></td>
+                </tr>
+                index++;
+            }
+        </tbody>
+    </table>
+
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        webhooks.init();
+    });
+</script>

@@ -1,0 +1,48 @@
+﻿@model ItemRepeater.GeneratePopupModel
+
+<div id="generate-item">
+    <h2>@Model.Item.IssueKey</h2>
+    <form name="repeating-generate-form" id="repeating-generate-form" class="margin-top-20">
+        @Html.Hidden("itemId", Model.Item.Entity.Id)
+        <input type="text" id="startDate" name="startDate" class="datepicker required input-size4" data-date-format="@Model.GeminiDateFormat" placeholder="Start Date" />
+        <input type="text" id="endDate" name="endDate" class="datepicker right required input-size4" data-date-format="@Model.GeminiDateFormat" placeholder="End Date" />        
+    </form>
+    <p class="help-text">Tasks will be generated between the selected dates.</p>
+    <p class="help-text">Existing occurrences of this task within the date range will be replaced.</p>
+</div>
+  
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        app_repeating.datePicker('#generate-item .datepicker', null);
+
+        $("#popup-button-yes").click(function (e) {
+
+            if ($("#repeating-generate-form").valid()) {
+                gemini_ui.startBusy('#colorbox #cs-popup-center-buttons .button-primary');
+
+                gemini_ajax.postCall("apps/Repeater", "create", function (response) {
+
+                    if (response.success) {
+                        app_repeating.refreshItemGrid();
+
+                        gemini_popup.popupClose(e);                       
+
+                        $('#items-grid').css('opacity', '1');
+                    }
+                    else
+                    {
+                        gemini_popup.toast(response.Message, true);
+                    }
+
+                    gemini_ui.stopBusy('#colorbox #cs-popup-center-buttons .button-primary');
+
+                }, function () { gemini_ui.stopBusy('#colorbox #cs-popup-center-buttons .button-primary'); }, $("#repeating-generate-form").serialize(), null, true);
+            }
+        });
+
+        $("#popup-button-no").click(function (e) { gemini_popup.popupClose(e); });
+    });
+</script>

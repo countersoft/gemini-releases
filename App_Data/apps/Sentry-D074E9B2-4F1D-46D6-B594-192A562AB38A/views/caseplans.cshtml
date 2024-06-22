@@ -1,0 +1,64 @@
+﻿@using System.Web.Mvc.Html;
+@using Countersoft.Gemini.Models;
+@using Countersoft.Gemini;
+@using System.Linq;
+@model Countersoft.Gemini.Models.PlanInfo
+
+<div class="AppStore testing">
+    @if (Model.Plans.Any())
+    {
+
+        <table id="case-details" data-id='@Model.Info.CaseId' class="grid width-100">
+            <tbody class="grid">
+                <tr class="">
+                    <th>@GetResource(ResourceKeys.Plan)</th>
+                    <th>@GetResource(ResourceKeys.Title)</th>
+                    <th>@GetResource(ResourceKeys.Failed)</th>
+                    <th>@GetResource(ResourceKeys.Pending)</th>
+                    <th>@GetResource(ResourceKeys.Passed)</th>
+                    <th>@GetResource(ResourceKeys.Cases)</th>
+                    <th></th>
+                </tr>
+                @foreach (var x in Model.Plans)
+                {
+
+                    <tr id='item-@x.Item.Id'>
+                        <td class='cs-title-link'>@Html.Partial("~/views/testing/_ItemLink.cshtml", x.Item)</td>
+
+                        <td class='cs-title actual-title'>@x.Item.Title</td>
+                        <td class='cs-title'>@x.FailedRuns (@x.FailedRunsPercent%)</td>
+                        <td class='cs-title'>@x.PendingRuns (@x.PendingRunsPercent%)</td>
+                        <td class='cs-title'>@x.PassedRuns (@x.PassedRunsPercent%)</td>
+                        <td class='cs-title'>@x.TestCases.Count</td>
+                        <td class="no-width"> <span id="unlink-testplan" data-delete="@x.Item.Id" class="cursor-pointer action-button-delete"></span></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        
+    }
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#case-details #unlink-testplan').click(function () {
+            var planId = $(this).attr('data-delete');
+            var caseId = $(this).closest('table').attr('data-id');
+            gemini_item.setContentHeight();
+            // do something
+            var message = "@GetResource(ResourceKeys.Delete) : '" + $(this).closest("tr").children("td.actual-title").text() + "'";
+            gemini_popup.modalConfirm(message, null, function () {
+
+                gemini_ajax.call("apps/countersoft/testing/case", "unlink",
+                    function (response) {
+                        $("#case-details").parent().html(response.Result.Data);
+                    }, null, { planid: planId, caseid: caseId, type: "testplan" }, null, true);
+            });
+        });
+
+        $("#section-widget-15627A0F-5AD2-4D35-BF24-60D678F59354 h3").html("@GetResource(ResourceKeys.TestPlans) (@Model.Plans.Count)");
+    });
+   
+</script>

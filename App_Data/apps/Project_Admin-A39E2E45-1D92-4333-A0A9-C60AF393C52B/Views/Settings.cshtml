@@ -1,0 +1,42 @@
+﻿@model ProjectAdmin.Models.ProjectAdminConfigModel
+
+<script src="~/assets/scripts/apps/A39E2E45-1D92-4333-A0A9-C60AF393C52B/ProjectAdmin.js" type="text/javascript"></script>
+<link rel="stylesheet" href="~/assets/styles/apps/A39E2E45-1D92-4333-A0A9-C60AF393C52B/ProjectAdmin.css" media="screen, projection" />
+
+<div id="configure-page-content">
+    <p id="tab-help-message-summary"><strong>»</strong> Exclude groups or users from groups from Project Admin view</p>
+
+    <div id="project-admin-admin">
+        <table class="data-entry-box">
+            <tbody>
+                <tr>
+                    <td>Groups</td>
+                    <td>@Html.ListBox("groupIds", Model.Groups, new { @class = "input-size9 " })</td>
+                </tr>
+                <tr>
+                    <td>Users from groups</td>
+                    <td>@Html.ListBox("userGroupIds", Model.UserGroups, new { @class = "input-size9 " })</td>
+                </tr>
+                <tr>
+                    <td align="right" colspan="2">
+                        <input id="save-app-projectadmin" class="button-primary" type="button" value="Save">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function ()
+    {
+        gemini_ui.chosen("groupIds", null, true);
+
+        $('#save-app-projectadmin').unbind("click").bind("click", function ()
+        {
+            gemini_projectAdmin.SaveConfigScreen();
+        });
+    });
+</script>

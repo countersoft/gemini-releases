@@ -1,0 +1,36 @@
+﻿@model Roadmap.RoadmapAppModel
+
+<script src="~/assets/scripts/apps/1F21A63F-94FF-46D0-8773-9E482EF0CA90/roadmap.js" type="text/javascript"></script>
+<link rel="stylesheet" href="~/assets/styles/apps/1F21A63F-94FF-46D0-8773-9E482EF0CA90/roadmap.css" media="screen, projection" />
+
+<div id='data' class="roadmap">
+
+    @{Html.RenderPartial(GetAppUrl("1F21A63F-94FF-46D0-8773-9E482EF0CA90", "views/StatusBar.cshtml"), Model);}
+    
+    <div class="margin-top-10">@Html.DropDownList("Projects1", Model.ProjectList, new { @class = "input-size6" })</div>
+
+    <div class="data-inner-container">
+        @{Html.RenderPartial(GetAppUrl("1F21A63F-94FF-46D0-8773-9E482EF0CA90", "views/VersionProgress.cshtml"), Model);}
+
+        @{Html.RenderPartial(GetAppUrl("1F21A63F-94FF-46D0-8773-9E482EF0CA90", "views/ProgressGrid.cshtml"), Model);}
+    </div>
+</div>
+<div id='column-picker'></div>
+
+<input type="hidden" id='Sort' value='@Model.Sort' />
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        gemini_roadmap.init(@Model.VersionId);
+        gemini_roadmap.showDelta(@Model.Remain);
+        gemini_roadmap.showDays(@Model.Estimated,@Model.Logged, @Model.TimeLoggedOver);
+        gemini_roadmap.showGrid(@((int)ProjectTemplatePageType.Roadmap),@Model.VersionId,'apps/roadmap/getroadmap?versionId=');
+            
+        gemini_items.initCheckAllItems();
+        $('#tabledata tr td:last-child').addClass('cell-border-right');
+        gemini_roadmap.initInlineEditing();
+
+        $('#items-grid').css('overflow', 'auto');
+    });
+    </script>

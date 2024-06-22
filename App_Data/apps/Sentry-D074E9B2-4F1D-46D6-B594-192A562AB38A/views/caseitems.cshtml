@@ -1,0 +1,117 @@
+﻿@using System.Web.Mvc.Html;
+@using System.Linq;
+@using Countersoft.Gemini.Models;
+@using Countersoft.Gemini;
+@using System.Linq
+@model Countersoft.Gemini.Models.IssuesInfo
+<div class="AppStore testing" id="case-items-container">
+
+    
+    <table id="item-details" data-id='@Model.Info.CaseId' class="grid width-100">
+        <tbody class="grid">
+        @if (Model.Issues.Any())
+        {
+            <tr class="">
+                <th>@GetResource(ResourceKeys.Item)</th>
+                <th>@GetResource(ResourceKeys.ItemsTested)</th>
+                <th>@GetResource(ResourceKeys.Status)</th>
+                <th></th>
+            </tr>
+            foreach (var x in Model.Issues)
+            {
+                <tr id='item-@x.Entity.Id'>
+                    <td class='cs-title-link no-wrap no-width valign-top'>@Html.Partial("~/views/testing/_ItemLink.cshtml", x)</td>
+                    <td class='cs-title valign-top'>@Html.Raw(x.Title)</td>
+                    <td class='cs-item-status valign-top'>@Html.Partial("~/views/testing/_TestItemState.cshtml", new TestType() { Id = x.Entity.StatusId, Type = x.Status, TypeImage = x.StatusImage })</td>
+                    <td class='cs-simple valign-top'>
+                        <span class="action-button-delete" data-delete='@x.Entity.Id' title='@GetResource(ResourceKeys.Delete)'></span>
+                    </td>
+
+                </tr>
+            }
+        }
+
+        <tr id='item-new' class='cs-no-hover'>
+            <td colspan="4">
+                <input type='text' id='item-match' style="width:99.7%;" placeholder='@GetResource(ResourceKeys.Search)' />
+            </td>
+        </tr>
+        @*<tr class='cs-no-hover'>
+        <td colspan='5'><input type='button' class='button button-primary' title='@GetResource(ResourceKeys.Find)' value='@GetResource(ResourceKeys.Find)' id='item-find'></td>
+    </tr>*@
+
+        @if (Model.MatchedIssues != null && Model.MatchedIssues.Any())
+        {
+            foreach (var x in Model.MatchedIssues)
+            {
+                <tr id='item-@x.Entity.Id'>
+                    <td class='cs-simple'><div class='cs-icon' data-add='@x.Entity.Id' ><span class='button fonticon-plus' title='@GetResource(ResourceKeys.Add)'  ></span></div></td>
+                    <td class='cs-title-link'>@Html.Partial("~/views/testing/_ItemLink.cshtml", x)</td>
+                    <td class='cs-title'>@Html.Raw(x.Title)</td>
+                    <td class='cs-item-status'>@Html.Partial("~/views/testing/_TestItemState.cshtml", new TestType() { Id = x.Entity.StatusId, Type = x.Status })</td>
+                    <td class='cs-simple'></td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+
+    
+    
+    </div>
+<script type="text/javascript">
+    var caseId = @(Model.Info.CaseId);
+    $("#item-match", "#item-details").autocomplete({
+        source: function (request, response) {
+            gemini_ajax.call("apps/countersoft/testing/item", "find",
+                function (data) {
+                    var rows = new Array();
+                    for (var i = 0; i < data.Result.Data.length; i++) {
+                        rows[rows.length] = { label: data.Result.Data[i].value + " - " + data.Result.Data[i].label, value: data.Result.Data[i].value };
+                    }
+                    response(rows);
+                }, null, { term: request.term, caseId : caseId }, null, true);
+        },
+        minLength: 2,
+        width: 200,
+        dataType: "json",
+        matchContains: "word",
+        autoFill: false,
+        select: function (e, data) {
+            
+            var caseId = $('#item-details').data('id');
+            var issueId = data.item.value;
+
+            gemini_ajax.call("apps/countersoft/testing/item", "link",
+                function (response) {
+                    $("#case-items-container").replaceWith(response.Result.Data);
+                    $("#item-match").focus();
+                }, null, { caseid: caseId, issueKey: issueId }, null, true);
+        }
+    });
+
+    $("span[data-delete]", "#item-details").click(function (e)
+    {
+        var caseId = $('#item-details').data('id');
+        var issueId = $(this).data('delete');
+
+        //gemini_commons.translateMessage("[[RemoveLink]]?", ['RemoveLink'], doDelete, );
+
+        doDelete("@GetResource(ResourceKeys.RemoveLink)?", { caseId: caseId, issueId: issueId });
+    });
+
+    function doDelete(message, data) {
+
+        gemini_popup.modalConfirm(message, null, function() {
+            gemini_ajax.call("apps/countersoft/testing/item", "unlink",
+                function (response) {
+                    $("#case-items-container").replaceWith(response.Result.Data);
+                }, null, { caseid: data.caseId, issueid: data.issueId }, null, true);
+        });
+    }
+
+    $(document).ready(function () {
+        $("#section-widget-617F1435-C0AA-48E6-B6A9-2C1F756E02A6 h3").html("@GetResource(ResourceKeys.ItemsTested) (@Model.Issues.Count)");
+        });
+
+</script>

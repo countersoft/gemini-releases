@@ -1,0 +1,79 @@
+﻿#QuickEntry #items
+{
+    height: 600px;
+    overflow: auto;
+    border: 5px solid #e2e2e2;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    font-size: 14px;
+}
+
+#QuickEntry #topBar
+{
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+#QuickEntry .command
+{
+    font-size: 11px;
+    border: 1px solid rgb(211, 205, 205);
+    padding: 5px;
+    background-color: #FCFCFC;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    color: #797575;
+    float: right;
+}
+
+#QuickEntry .command-container
+{
+    min-width: 200px;
+    margin-bottom: 20px;
+    font-size: 13px;
+}
+
+#QuickEntry #help-menu
+{
+    position: absolute;
+    right: 80px;
+    background-color: #f5f5f5;
+    padding: 10px;
+    top: 130px;
+    display:none;
+    border: 1px solid #e2e2e2;
+    box-shadow: 1px 1px 3px #888888;
+    -webkit-box-shadow: 1px 1px 3px #888888;
+    -moz-box-shadow: 1px 1px 3px #888888;
+}
+
+#QuickEntry #toggle-help
+{
+    background-color: #f5f5f5;
+    border: 1px solid #e2e2e2;
+    color: #888;
+    font-size: 14px;
+    padding: 7px 10px;
+}
+
+#QuickEntry #shortcut-container:hover #help-menu
+{
+    display: block;
+}
+
+#QuickEntry .project-label
+{
+    font-size: 11px;
+}
+
+#QuickEntry h3
+{
+    color:#686666;
+}
+
+#QuickEntry .input-title
+{
+    width: 99.5%;
+}

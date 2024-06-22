@@ -1,0 +1,11 @@
+﻿<app>
+    <guid>6A6D919B-EC37-41BC-A398-AF755C87DE41</guid>
+    <name>Auto Follower</name>
+    <description>Automatically sets the item resource and creator as follower so they get alerts</description>
+    <version-major>7</version-major>
+    <version-minor>0</version-minor>
+    <version-patch>0</version-patch>
+    <publisher>Countersoft</publisher>
+    <released>2020-04-10T09:00:00Z</released>
+    <debug>false</debug>
+</app>

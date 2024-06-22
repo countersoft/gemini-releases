@@ -1,0 +1,394 @@
+﻿#app-saucery #commits a
+{
+    text-decoration: none;
+}
+
+#app-saucery #commits .committed-files a:hover
+{
+    text-decoration: underline;
+}
+
+#app-saucery .commit
+{
+    float:left;
+    margin: 5px 15px;
+    max-width:275px;
+    position: relative;
+    height: 40px;
+}
+#app-saucery .commit .commit-info
+{
+    display:block;
+    margin-bottom:5px;
+    cursor:pointer;
+    white-space:nowrap;
+    overflow:hidden;
+    width:272px;
+     color: #4c4c4c;
+}
+
+#app-saucery .codereview-diff-line td
+{
+    height:15px;
+    padding-top:2px;
+    padding-bottom:2px;
+}
+
+.commit-box
+{
+    padding: 5px 10px 5px 10px;
+    background-color: whitesmoke;
+    border: 2px solid #e2e2e2;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    color: #4c4c4c;
+    font-size: 14px;
+}
+
+.commit-box .commit-date
+{
+    font-size:11px;
+    margin-top: 5px;
+    float:left;
+}
+
+.committed-files .view-changeset
+{
+    margin-top:4px;  
+}
+
+.committed-files .commit-date-long
+{
+    color:#888;
+    font-size:11px;
+    margin-top: 5px;
+}
+
+.committed-files .related-items
+{
+    color:#888;
+    font-size:11px;
+    margin-bottom:2px;
+    margin-top: 8px;
+}
+.commit-box .commit-counter
+{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #c4c4c4;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+#app-saucery .commit-comment
+{
+    color:black;
+}
+
+#app-saucery .file
+{
+    display:inline-block;
+    cursor:pointer;
+    margin-bottom:5px;
+    width:230px;
+    word-break:break-all;
+    word-wrap: break-word;
+}
+
+#app-saucery .file-dot
+{
+    display: block;
+    width: 10px;
+    float: left;
+}
+
+#app-saucery .legend-color-box
+{
+    margin-left: 15px;
+    width: 20px;
+    height: 20px;
+	border: 1px solid #E2E2E2;
+    display: inline-block;
+}
+
+#app-saucery .legend-color-text
+{
+    font-size: 11px;
+    color: #c4c4c4;
+    display: inline-block;
+    margin: 5px 0 0 5px;
+    height: 20px;
+    vertical-align: top;
+}
+
+#app-saucery .legend-box
+{
+    margin: 20px auto;
+    display: table;
+}
+
+#app-saucery .codereview-header
+{
+    border-top:1px solid #E2E2E2;
+    border-left:1px solid #E2E2E2;
+    border-right:1px solid #E2E2E2;
+    background-color: #f5f5f5;
+    height: 50px;
+    margin-top:30px;
+    padding: 10px 0;
+}
+
+#app-saucery .codereview-header-filename
+{
+    font-size:20px;
+    text-align:center;
+}
+
+#app-saucery .codereview-header-date
+{
+    font-size:11px;
+    text-align:center;
+}
+
+#app-saucery .add-comment textarea
+{
+    overflow:auto;
+    width:390px;
+    height:125px;
+    margin-bottom:5px;
+}
+	#app-saucery #diffBar
+	{
+		width: 3%;
+		height: 100%;
+		float: left;
+		position:relative;
+		background: #DDDDDD;
+	}
+
+	#app-saucery .diffBarLineLeft, #app-saucery .diffBarLineRight
+	{
+		width: 50%;
+		float:left;
+		height:0px;
+		cursor:pointer;
+	}
+
+	#app-saucery .inView
+	{
+		background-image: url("../Content/InView.png");
+		background-repeat: repeat;
+	}
+
+	#app-saucery #activeBar
+	{
+		position:absolute;
+		top:0px;
+		background-color:#6699FF;
+		opacity:0.5;
+		filter:alpha(opacity='50');
+	}
+
+
+	#app-saucery #diffBox
+	{
+		margin-left: auto;
+		margin-right: auto;
+		/*border: solid 2px #000000;*/
+	}
+
+
+	#app-saucery #leftPane, #rightPane
+	{
+		float: left;
+		width: 50%;
+	}
+
+	#app-saucery .diffHeader
+	{
+		font-weight: bold;
+		padding: 6px 0px 8px 10px;
+		text-align: center;
+	    font-size: 16px;
+	    color: #888;
+        border-top:1px solid #E2E2E2;
+        border-left:1px solid #E2E2E2;
+        border-right:1px solid #E2E2E2;
+        background-color: #f5f5f5; 
+	}
+	#app-saucery .diffPane
+	{
+		margin-right: 0px;
+		padding: 0px;
+		overflow: auto;
+		font-family: Courier New;
+		font-size: 1em;
+        max-height:700px;       
+	}
+
+	#app-saucery .diffTable
+	{
+		width: 100%;
+		height: 100%;
+	    border: 1px solid #E2E2E2;
+	}
+
+	#app-saucery .line
+	{
+		padding-left: .2em;
+		white-space: nowrap;
+		width: 100%;
+	}
+
+	#app-saucery .lineNumber
+	{
+		padding: 0 .3em;
+		background-color: #f5f5f5;
+		text-align: right;
+	    cursor: pointer;
+	}
+
+	#app-saucery .InsertedLine
+	{
+		background-color: #FFFF00;
+	}
+
+	#app-saucery .ModifiedLine
+	{
+		background-color: #DCDCFF;
+	}
+
+	#app-saucery .DeletedLine
+	{
+		background-color: #FFC864;
+	}
+
+	#app-saucery .UnchangedLine
+	{
+		background-color: #FFFFFF;
+	}
+
+	#app-saucery .ImaginaryLine
+	{
+		background-color: #C8C8C8;
+	}
+
+	#app-saucery .InsertedCharacter
+	{
+		background-color: #FFFF96;
+	}
+
+	#app-saucery .DeletedCharacter
+	{
+		background-color: #C86464;
+	}
+
+	#app-saucery .UnchangedCharacter
+	{
+	}
+
+	#app-saucery .ImaginaryCharacter
+	{
+	}
+
+    #app-saucery .add-comment
+    {
+        position:absolute;
+        background-color: #FFF7B7;
+        border: 2px solid #FFEC51;
+        display: none;
+        height: 165px;
+        width: 400px;
+        padding: 5px;
+    }
+    #app-saucery .note
+    {
+         background-color: transparent;
+        border: 0 none;
+        box-shadow: none;
+        color: #4C4C4C;
+        font-size: 12px;
+        outline: medium none;
+        resize: none;
+        text-align: left;
+        vertical-align: top;
+    }
+    #app-saucery .fonticon-flag
+    {
+        color:#d42f2f;
+    }
+
+
+#app-saucery .file-title
+{
+    padding-bottom:4px;
+}
+
+#app-saucery .committed-files
+{
+    display:none;
+    width:275px;
+    margin:50px 15px;
+    position:absolute;
+    z-index:100;
+}
+#app-saucery .committed-files .filelist
+{
+    height: 135px;
+    overflow: auto;
+    display: block;
+    margin: 5px 10px 0 10px;
+    font-size: 12px;
+    -moz-outline: none;
+    outline: none;
+    border: 0;
+}
+
+#app-saucery .committed-files .comment
+{
+    border-bottom:1px dotted #4C4C4C;
+    padding-bottom:8px;
+    display:block;
+    margin-bottom:5px;
+}
+
+#app-saucery .files-expanded {
+  padding: 10px 10px 5px 10px;
+  background-color: cornsilk;
+  border-top: 0;
+  border-bottom: 2px solid #ffe4b5;
+  border-left: 2px solid #ffe4b5;
+  border-right: 2px solid #ffe4b5;
+    -webkit-border-bottom-right-radius: 5px;
+    -webkit-border-bottom-left-radius: 5px;
+    -moz-border-radius-bottomright: 5px;
+    -moz-border-radius-bottomleft: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+#app-saucery .commit-expanded
+{
+    background-color: cornsilk;
+    border: 2px solid #ffe4b5;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+
+#app-saucery #authentication_form #username
+{
+    margin:5px 0;
+}
+
+#app-saucery #authentication_form #password
+{
+    margin-right:5px;
+}
+
+#app-saucery #authentication_form
+{
+    margin-bottom:10px;
+}

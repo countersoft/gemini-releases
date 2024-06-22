@@ -1,0 +1,100 @@
+﻿@using Countersoft.Gemini;
+@using Countersoft.Foundation.Commons.Extensions;
+@using System.Web.Mvc.Html;
+@using Countersoft.Gemini.Business;
+@model Countersoft.Gemini.Breeze.BreezeModel
+
+<link rel="stylesheet" href="~/assets/styles/apps/4192EAA7-9D09-4E36-97C3-64FCE039EDB4/breeze.css" media="screen, projection" />
+<script type="text/javascript" src="~/assets/scripts/apps/4192EAA7-9D09-4E36-97C3-64FCE039EDB4/breeze.js"></script>
+
+<form class="breeze-comments-form" action="~/apps/breeze/addreply/@(Model.IssueId)" method="post" enctype="multipart/form-data">
+    <div class="margin-left-20 bold no-wrap" style="width: 430px;">
+        <div class="bold" style="display: inline-block; width: 50px;">To:&nbsp;</div>
+        <input type="text" id="breeze-to" name="breeze-to" class="input-size8" value="@(Model.ToEmail)" />
+        <input type="hidden" name="breeze-to-email" value="@(Model.ToEmail)" />
+        <input type="hidden" name="breeze-to-name" value="@(Model.ToName)" />&nbsp;&nbsp;
+        <a style="text-decoration: none; color: black; vertical-align: middle;"
+           href="@string.Format("mailto:{0}?cc={1}&subject=[{2}] {3}",
+                Model.ToEmail, 
+                string.Concat(Model.CCEmail, ';', Model.MailboxReceived),
+                Uri.EscapeDataString(Model.Item.IssueKey), 
+                Uri.EscapeDataString(Model.Item.Title))"
+            title ="Reply using mail client simon1">
+            <span class="fonticon-email" style="cursor: pointer;"></span>
+        </a>
+    </div>
+    <div class="margin-left-20 margin-top-10 bold" style="width: 425px;">
+        <div class="bold" style="display: inline-block; width: 50px;">Cc:&nbsp;</div>
+        <input type="text" id="breeze-cc" name="breeze-cc" class="input-size8" value="@Model.CCEmail"/>
+    </div>
+    <div class="margin-left-20 margin-top-10 bold" style="width: 425px;">
+        <div class="bold" style="display: inline-block; width: 50px;">Bcc:&nbsp;</div>
+        <input type="text" id="breeze-bcc" name="breeze-bcc" class="input-size8" value=""/>
+    </div>
+    <div class="margin-top-10 margin-bottom-20 margin-left-20">
+        <div class="bold pad-top-5" style="display: inline-block; width: 50px; vertical-align: top;">From:&nbsp;</div>
+        @Html.DropDownList("From", Model.FromEmail, new {@class = "input-size8"})
+    </div>
+
+    @if (Model.History.Count > 0)
+    {
+        <div id="breeze-reply-clickzone" class="margin-left-20">
+            <span class="breeze-reply-pending-changes">@(Model.History.Count) change(s) since last reply</span>
+            <span id="breeze-reply-expander" class="fonticon-arrow-down"></span>
+        </div>
+        <div id="breeze-reply-changes" class="history hide margin-top-10 margin-left-20">
+            <table cellpadding="0" cellspacing="0">
+                <tr>
+                    <th>@GetResource(ResourceKeys.Date)</th>
+                    <th>@GetResource(ResourceKeys.User)</th>
+                    <th>@GetResource(ResourceKeys.Field)</th>
+                    <th>@GetResource(ResourceKeys.Before)</th>
+                    <th>@GetResource(ResourceKeys.After)</th>
+                </tr>
+                @foreach (var history in Model.History)
+                {
+                    <tr>
+                        <td class="no-wrap">@history.Entity.Created.ToString()</td>
+                        <td class="no-wrap">@history.Entity.Fullname</td>
+                        <td class="no-wrap">@history.Field</td>
+                        <td class="before" title="@history.Entity.ValueBefore">@Countersoft.Foundation.Utility.Helpers.HtmlHelper.ConvertHtmlToText(history.Entity.ValueBefore.ToMaxMore(1000), true).ToMaxMore(50)</td>
+                        <td class="after" title="@history.Entity.ValueAfter">@Countersoft.Foundation.Utility.Helpers.HtmlHelper.ConvertHtmlToText(history.Entity.ValueAfter.ToMaxMore(1000), true).ToMaxMore(50)</td>
+                    </tr>
+                }
+            </table>
+        </div>
+        
+    }
+        <div id="new-changes-panel" class="hide">
+
+        </div>
+    <div class="breeze-comments-wysiwyg-container margin-top-20 margin-left-20">
+        <div class='wysiwyg-container'>
+            <textarea id="breeze-comments-wysiwyg-content" name="breeze-comments-wysiwyg-content"></textarea>
+        </div>
+        <div class="comment-extra-options">
+            <div class="option-row margin-top-10">
+                <span class="left comment-label bold" style="margin: 3px 8px 0 8px;">@GetResource(ResourceKeys.Attachments)</span>
+                <input type="file" class="file-upload-button" name="comment-attachment" multiple='multiple' />
+            </div>
+            @if (Model.ShowVisibility)
+            {
+                <div class="option-row margin-top-10">
+                    <span class="left comment-label bold" style="margin:8px;">@GetResource(ResourceKeys.Visibility)</span>
+                    @Html.DropDownList("breeze-visibility", Model.Groups, new { @class = "input-size8" })
+                </div>
+            }
+        </div>
+        <div class="cs-comment-wysiwyg-option">
+            <div class="buttons margin-top-20">
+                <input type="submit" value="@GetResource(ResourceKeys.Send)" class="button-primary button-popup breeze-cs-comment-add-save">
+            </div>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        breezeReply.init(@Model.IssueId, @DateTime.UtcNow.Ticks);
+    });
+</script>

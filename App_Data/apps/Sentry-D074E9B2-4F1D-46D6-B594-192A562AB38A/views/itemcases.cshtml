@@ -1,0 +1,78 @@
+﻿@using System.Web.Mvc.Html;
+@using Countersoft.Gemini.Models;
+@using Countersoft.Gemini;
+@using System.Linq;
+@model Countersoft.Gemini.Models.CaseInfo
+
+@if (Model.Cases.Any())
+{
+    <div class="AppStore testing">
+        <table id="case-details" class="grid" >
+            <tbody>
+                <tr class="">
+                    <th>@GetResource(ResourceKeys.Case)</th>
+                    <th>@GetResource(ResourceKeys.Title)</th>
+            
+                    <th>@GetResource(ResourceKeys.Status)</th>
+                    <th>@GetResource(ResourceKeys.Revised)</th>
+                    <th></th>
+                </tr>
+                @foreach (var x in Model.Cases)
+                {
+                    var state = ResourceKeys.Pending;
+                    if (x.HasPassed.HasValue && x.HasPassed.Value)
+                    {
+                        state = ResourceKeys.Passed;
+                    }
+                    else if (x.HasPassed.HasValue && !x.HasPassed.Value)
+                    {
+                        state = ResourceKeys.Failed;
+                    }
+
+                    <tr id='item-@x.Entity.Id'>
+                        <td class='no-width no-wrap'>@Html.Partial("~/Views/Testing/_ItemLink.cshtml", x.Entity)</td>
+                        <td class='title'>@Html.Raw(x.Entity.Title)</td>
+            
+                        <td class='cs-item-status'>
+                            <div class='@state.ToLower()'>@GetResource(state)</div>
+                            @*@Html.Partial("~/views/testing/_TestItemState.cshtml", new TestType() { Id = x.Entity.StatusId, Type = x.Status })*@
+                        </td>
+                        <td class='minor no-width no-wrap'>@Html.Raw(x.Entity.Revised)</td>
+                        <td class='no-width no-wrap'>
+                            
+                            <span class="cursor-pointer action-button-delete" title="@GetResource(ResourceKeys.Delete)" data-delete='@x.Entity.Id'></span>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+<script type="text/javascript">
+
+    $("span[data-delete]", "#case-details").click(function (e) {
+
+        var caseId = $(this).data('delete');
+        var issueId = gemini_item.issueId;
+
+        doDelete("@GetResource(ResourceKeys.RemoveLink)?", { caseId: caseId, issueId: issueId });
+    });
+
+    function doDelete(message, data) {
+
+        gemini_popup.modalConfirm(message, null, function () {
+         
+            gemini_ajax.call("apps/countersoft/testing/item", "unlink",
+                function (response) {
+                    gemini_popup.toast('Deleted');
+                    gemini_item.getAppControlValue(gemini_item.issueId, 'D074E9B2-4F1D-46D6-B594-192A562AB38A', 'FA6EA42D-8D67-4763-86F5-E8745FBF3DC6', 'value', '');
+                }, null, { caseid: data.caseId, issueid: data.issueId }, null, true);
+        });
+    }
+
+    $(document).ready(function () {
+        $("#section-widget-FA6EA42D-8D67-4763-86F5-E8745FBF3DC6 h3").html("@GetResource(ResourceKeys.ItemCases) (@Model.Cases.Count)");
+        });
+
+</script>

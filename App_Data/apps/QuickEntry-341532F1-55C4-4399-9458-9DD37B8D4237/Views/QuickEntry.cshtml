@@ -1,0 +1,48 @@
+﻿@model QuickEntry.QuickEntryModel
+
+<script src="~/assets/scripts/apps/341532F1-55C4-4399-9458-9DD37B8D4237/QuickEntry.js" type="text/javascript"></script>
+<link rel="stylesheet" href="~/assets/styles/apps/341532F1-55C4-4399-9458-9DD37B8D4237/QuickEntry.css" media="screen, projection" />
+
+<div id="QuickEntry">
+
+    <div id="topBar">
+        <h3 class="margin-bottom-10">Project</h3>
+        @Html.DropDownList("Projects", Model.ProjectList, new { @class = "input-size6" })
+       
+        <div id="shortcut-container" class="right">
+            <div id="toggle-help">Keyboard Shortcuts</div>
+            <div id="help-menu">
+                <div class="command-container">
+                    Create Item
+                    <span class="command">Enter</span>
+                </div>
+
+                <div class="command-container">
+                    Indent Item<span class="command">Tab</span>
+                </div>
+
+                <div class="command-container">
+                    Outdent Item
+                    <span class="command">Shift + Tab</span>
+                </div>
+
+                <div class="command-container">
+                    Move Up
+                    <span class="command">UP ARROW</span>
+                </div>
+
+                <div class="command-container">
+                    Move Down
+                    <span class="command">DOWN ARROW</span>
+                </div>
+
+            </div>
+        </div>
+
+        <h3 class="margin-bottom-10 margin-top-20">Items</h3>
+        <div id="items" class="nestedSortable"></div>
+
+    <div>
+        <input type="button" name="createItems" id="createItems" value="Add" class="button-primary" @if (Model.ProjectList.Count() == 0) {<text>disabled="disabled"</text>}/>
+    </div>
+</div>

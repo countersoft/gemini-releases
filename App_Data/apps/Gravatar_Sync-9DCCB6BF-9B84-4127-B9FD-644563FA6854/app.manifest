@@ -1,0 +1,12 @@
+﻿<app>
+  <guid>9DCCB6BF-9B84-4127-B9FD-644563FA6854</guid>
+  <name>Gravatar Sync</name>
+  <description>Keeps Gravatar images in sync with Gravatar.com</description>
+  <version-major>7</version-major>
+  <version-minor>0</version-minor>
+  <version-patch>0</version-patch>
+  <publisher>Countersoft</publisher>
+  <released>2020-04-10T09:00:00Z</released>
+  <javascript></javascript>
+  <debug>false</debug>
+</app>

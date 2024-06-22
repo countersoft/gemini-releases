@@ -1,0 +1,12 @@
+﻿<app>
+  <guid>1B9CB627-A2F2-4CC5-BE5B-D0FABB489F87</guid> <!-- App Id -->
+  <name>DocStore</name>
+  <description>Countersoft Document Management</description>
+  <version-major>3</version-major>
+  <version-minor>0</version-minor>
+  <version-patch>0</version-patch>
+  <publisher>Countersoft</publisher>
+  <released>2012-10-10T11:31:00Z</released>
+  <javascript>docs.js</javascript> <!-- This will be extracted to assets\scripts\apps\app id\myapp.js -->
+  <debug>false</debug> <!-- During development set this to true to see exceptions in the item content (when they occur) -->
+</app>

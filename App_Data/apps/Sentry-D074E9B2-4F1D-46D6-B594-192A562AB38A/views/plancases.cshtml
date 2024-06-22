@@ -1,0 +1,168 @@
+﻿@using System.Web.Mvc.Html;
+@using Countersoft.Gemini.Models;
+@using Countersoft.Gemini;
+@using System.Linq;
+@model Countersoft.Gemini.Models.CaseInfo
+
+<div id="case-details" class="AppStore testing" data-id='@Model.Info.PlanId'>
+    <table class="grid width-100">
+        <tbody class="grid">
+            @if (Model.Cases.Any())
+            {
+                @*<tr class="cs-grid-column">*@
+                <tr class="">
+                    <th>@GetResource(ResourceKeys.Case)</th>
+                    <th>@GetResource(ResourceKeys.Title)</th>
+                    <th>@GetResource(ResourceKeys.Assigned)</th>
+                    <th>@GetResource(ResourceKeys.Status)</th>
+
+                    @{
+                        var generalTestType = Model.Cases.First().Entity.CustomFields.Find(t => string.Compare(t.Name, "Test Type", StringComparison.InvariantCultureIgnoreCase) == 0);
+                    }
+                    <th>@if (generalTestType != null)  { <text>@generalTestType.Name</text>}</th>
+                   
+                    <th></th>
+                </tr>
+                foreach (var x in Model.Cases)
+                {
+                    var state = ResourceKeys.Pending;
+                    if(x.HasPassed.HasValue && x.HasPassed.Value)
+                    {
+                        state = ResourceKeys.Passed;
+                    }
+                    else if(x.HasPassed.HasValue && !x.HasPassed.Value)
+                    {
+                        state = ResourceKeys.Failed;
+                    }
+                    
+                    <tr id='item-@x.Entity.Id'>
+                        <td class='no-width no-wrap valign-top'>@Html.Partial("~/Views/Testing/_ItemLink.cshtml", x.Entity)</td>
+                        <td class='title valign-top'>@Html.Raw(x.Entity.Title)</td>
+                        <td class='no-width no-wrap valign-top'>@Html.Raw(x.Entity.ResourceNames)</td>
+                        <td class='cs-item-status valign-top'>
+                            <div class='@state.ToLower()'>@GetResource(state)</div>
+                            @*@Html.Partial("~/views/testing/_TestItemState.cshtml", new TestType() { Id = x.Entity.StatusId, Type = x.Status })*@
+                        </td>
+                        
+                        <td class="valign-top">
+                            @{
+                                var testType = x.Entity.CustomFields.Find(t => string.Compare(t.Name, "Test Type", StringComparison.InvariantCultureIgnoreCase) == 0);
+                            
+                                if (testType != null)
+                                {
+                                    <text>@testType.FormattedData</text>
+                                }
+                            }
+                        </td>
+                        
+                       
+                        <td class='no-width no-wrap valign-top'>
+                            
+                            <span class="cursor-pointer action-button-delete" title="@GetResource(ResourceKeys.Delete)" data-delete='@x.Entity.Id'></span>
+
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                
+            }
+
+            @*<tr id='case-new' class='cs-no-hover'>
+                <td colspan="5">
+                    <input type='text' id='item-match' class='input-size5' placeholder='@GetResource(ResourceKeys.Search)' />
+                    <input type="button" class="btn button-primary" name="search" id="search"/>
+                </td>
+            </tr>*/
+                        @* <tr class='cs-no-hover'>
+        <td colspan='5'><input type='button' class='button button-primary' title='@GetResource(ResourceKeys.Find)' value='@GetResource(ResourceKeys.Find)' id='case-find'></td>
+    </tr>*@
+
+        
+        </tbody>
+    </table>
+
+    <div id="search-container" class="margin-top-30">
+        <div id="option">
+            <input type='text' id='item-match' class='input-size7'/>
+            <input type="button" class="btn button-primary" name="search" id="search" value="@GetResource(ResourceKeys.Search)"/>
+        </div>
+        <div id="data"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var planId = @(Model.Info.PlanId);
+    gemini_item.setContentHeight();
+    gemini_commons.inputKeyHandler("#case-details #item-match",  function () { $('#case-details #search').click();   });
+
+    $('#case-details #search').click(function () {        
+        gemini_ui.startBusy('#case-details #search');
+        gemini_ajax.postCall('apps/countersoft/testing/case', 'find', 
+            function(response) {                    
+                $('#case-details #search-container #data').html(response.Result.Data.Html);
+                gemini_ui.stopBusy('#case-details #search');
+
+            }, 
+            function() {gemini_ui.stopBusy('#case-details #search');}, { match: $('#case-details #item-match').val(), planId : planId }, null, true);        
+    });
+
+    function linkCaseToPlan(caseId, planId)
+    {
+        gemini_ajax.call("apps/countersoft/testing/case", "link",
+            function (response)
+            {
+                //$("#case-details").parent().empty();
+                $("#case-details").parent().html(response.Result.Data);
+                $("#item-match").focus();
+            }, null, { planid: planId, caseid: caseId }, null, true);
+    }
+
+    $("#case-find").click(function (e)
+    {
+        var planId = $('#case-details').data('id');
+        var match = $('#case-match', '#case-new').val();
+
+        gemini_ajax.call("apps/countersoft/testing/case", "find",
+            function (response)
+            {
+                $("#case-details").parent().html(response.Result.Data);
+            }, null, { planid: planId, match: match }, null, true);
+    });
+
+    $("span[data-delete]").click(function (e)
+    {
+        var planId = $('#case-details').data('id');
+        var caseId = $(this).data('delete');
+
+        // do something
+        var message = "@GetResource(ResourceKeys.RemoveCase) : '" + $(this).closest("tr").children("td.title").text() + "'";
+        gemini_popup.modalConfirm(message, null, function() {
+
+            gemini_ajax.call("apps/countersoft/testing/case", "unlink",
+                function (response)
+                {
+                    $("#case-details").parent().html(response.Result.Data);
+                }, null, { planid: planId, caseid: caseId }, null, true);
+        });
+    });
+
+    $("div[data-add]").click(function (e)
+    {
+        var planId = $('#case-details').data('id');
+        var caseId = $(this).data('add');
+
+        gemini_ajax.call("apps/countersoft/testing/case", "link",
+            function (response)
+            {
+                $("#case-details").parent().html(response.Result.Data);
+            }, null, { planid: planId, caseid: caseId }, null, true);
+    });
+
+    $(document).ready(function () {
+        $("#section-widget-598B4999-4C31-427D-9BBC-C84AD954E55A h3").html("@GetResource(ResourceKeys.LinkedCases) (@Model.Cases.Count)");
+    });
+
+</script>

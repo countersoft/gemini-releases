@@ -1,0 +1,9 @@
+﻿.roadmap #tabledata tbody tr td:first-child .icheckbox_minimal,.roadmap #tabledata thead tr th:first-child .icheckbox_minimal
+{
+    visibility:hidden;
+}
+
+.roadmap label
+{
+    font-size:80%;
+}

@@ -1,0 +1,10 @@
+﻿@model Roadmap.RoadmapAppModel
+
+<section id="versions" class="verticalaccordion">
+    <div class="margin-top-10">
+    <input type="checkbox" id="includesub" name="includesub" @if(Model.IncludeSubVersions) {<text>checked="checked"</text>} /><label for="includesub" class="no-select">Include subversions</label>
+    </div>
+    <ul style="margin-bottom:60px;">
+       @Html.Raw(Model.VersionCards)
+    </ul>
+</section>

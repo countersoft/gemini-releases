@@ -1,0 +1,35 @@
+﻿@using System.Web.Mvc.Html;
+@using System.Linq;
+@using Countersoft.Gemini.Models;
+@using Countersoft.Gemini;
+@model Countersoft.Gemini.Models.HistoryInfo
+
+<div class='AppStore testing'>
+@if (Model.Runs.Any())
+{
+    @Html.Partial("~/views/testing/_TestRunHistory.cshtml", Model)
+}
+    else
+{
+    @*<div class="no-data">@GetResource(ResourceKeys.NoRuns)</div>*@
+}
+</div>
+
+<script type="text/javascript">
+    
+    // ensure ID and following columns have alignment and the correct padding
+    var runMax = 0;
+    $('td div.id').each(function ()
+    {
+        var width = $(this).width();
+        if (width > runMax) runMax = width;
+    });
+    $('td div.id').each(function ()
+    {
+        $(this).width(runMax);
+    });
+
+    $(document).ready(function () {
+        $("#section-widget-AC93C4F9-B512-4A3D-8B37-BC3D5F83429D h3").html("@GetResource(ResourceKeys.RunHistory) (@Model.Runs.Count)");
+    });
+</script>

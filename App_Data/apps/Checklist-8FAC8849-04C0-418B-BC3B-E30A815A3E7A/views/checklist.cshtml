@@ -1,0 +1,40 @@
+﻿<link rel="stylesheet" href="~/assets/styles/apps/8FAC8849-04C0-418B-BC3B-E30A815A3E7A/Checklist.css" media="screen, projection" />
+<div id="checklist-app-container">
+    @if (Model.Value.Count == 0)
+    {
+        <text>You have no checklist options for this project. Please go to Menu-> Site Admin-> Apps-> Checklist to create at least one checklist option.</text>
+    }
+    else
+    {
+        foreach (var item in Model.Value)
+        {
+            <p>
+                <input class="checklist-app-checkbox fancy" type="checkbox" id="checkbox-@item.CheckId" data-check-id="@item.CheckId" @if (item.Checked) { <text> checked="checked" </text>   } />
+                <label for="checkbox-@item.CheckId">@item.CheckTitle</label>
+                @if (item.Checked)
+                {
+                    <span>@item.CheckedBy, @item.CheckedDate.ToString("d MMM yyyy HH:mm")</span>
+                }
+            </p>
+        }
+    }
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        gemini_ui.fancyInputs('#checklist-app-container .fancy');
+    });
+
+    $(".checklist-app-checkbox", '#checklist-app-container').bind('ifChanged', function (e) {
+        var checked = $(this).is(':checked');
+        var id = $(this).data("check-id");
+
+        gemini_ajax.call("apps/checklist/action", "@Model.IssueId",
+            function (response) {
+                $("#checklist-app-container").html(response.Result.Data);
+            },
+            function (xhr, ajaxOptions, thrownError) {
+                alert('FAILED, Status=' + xhr.status + ' -> ' + thrownError);
+            },
+            { checkId: id, checkedState: checked }, null, true);
+    });
+</script>

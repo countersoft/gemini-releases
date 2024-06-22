@@ -1,0 +1,15 @@
+﻿@model System.Collections.Generic.List<Countersoft.Gemini.Commons.Entity.Project>
+@using Countersoft.Gemini
+@using Countersoft.Foundation.Commons.Extensions
+@using System.Web.Mvc.Html;
+
+    <div id="cs-adhoc-page" class="migration-successful">
+        <p>
+            Following projects were successfully migrated:
+            <br />
+            @foreach (var project in Model)
+            {
+                <br /><text>@project.Name </text>
+            }
+        </p>
+    </div>

@@ -1,0 +1,39 @@
+﻿@model RallyImport.MappingModel
+
+<div id="cs-adhoc-page" class="rally-projects">
+    <p id="tab-help-message"><strong>»</strong>&nbsp;Map Rally projects to Gemini templates and custom fields</p>
+    <form id="rally-mappings-form" action="" method="post" autocomplete="off">
+        <table class="data-entry-box">
+            <tr>
+                <td>Projects</td>
+                <td>@Html.ListBox("Project", Model.Projects, new {@class="input-size9 required"})</td>
+            </tr>
+            <tr>
+                <td>Template</td>
+                <td>@Html.DropDownList("Template", Model.Templates, new {@class="input-size9"})</td>
+            </tr>
+            <tr>
+                <td>Rally Custom Fields Names</td>
+                <td><input type="text" name="customfields" id="customfields" class="input-size9" /></td>
+            </tr>
+            <tr><td colspan="2"><div class="divider"></div></td></tr>
+            <tr>
+                <td colspan="2">
+                    <input id="rally-map-import" type="button" value='Import' class='button-primary right' />
+                </td>
+            </tr>
+        </table>
+        <input type="hidden" name="username" value="@Model.Username" />
+        <input type="hidden" name="password" value="@Model.Password" />
+        <input type="hidden" name="url" value="@Model.Url" />
+    </form>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {        
+
+        app_rallyImport.initMappings();
+
+    });
+    </script>

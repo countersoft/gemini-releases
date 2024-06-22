@@ -1,0 +1,63 @@
+﻿@using System
+@using Countersoft.Gemini
+@model DocStore.App.DocumentsModel
+@using Countersoft.Foundation.Commons.Extensions
+@using Countersoft.Foundation.Commons.Enums
+
+<script src="~/assets/scripts/apps/1B9CB627-A2F2-4CC5-BE5B-D0FABB489F87/docs.js" type="text/javascript"></script>
+<link rel="stylesheet" href="~/assets/styles/apps/1B9CB627-A2F2-4CC5-BE5B-D0FABB489F87/docs.css" media="screen, projection" />
+
+<div id="geminiDocuments">
+    <table class="width-100 full-height">
+        <tr>
+            <td id="doc-pane">
+                <div>
+                    <div class="margin-top-10">@Html.DropDownList("Projects1",  Model.ProjectList,new {@class="input-size6"})</div>
+                    <div id="folders" class="left margin-top-30">
+                        <div id="tree">&nbsp;</div>
+                    </div>
+
+                    <ul id="document-folder-context-menu" class="cs-menu-context">
+                        <li><a href="#edit">@GetResource(ResourceKeys.Rename)</a></li>
+                        <li><a href="#delete">@GetResource(ResourceKeys.Delete, Resourcing.Dotted )</a></li>
+                        <li class="separator"></li>
+                        <li class="highlight"><a href="#new">@GetResource(ResourceKeys.New, Resourcing.Dotted)</a></li>
+                    </ul>
+
+                    <div id="DocumentFolderRenamer">
+                        <input id="NewName" name="NewName" type="text" value="">
+                        <input id="NodeId" name="NodeId" type="hidden" value="">
+                        <input id="ParentNodeId" name="ParentNodeId" type="hidden" value="">
+                    </div>
+                </div>
+            </td>
+            <td  id="doc-content">
+                <div>                
+                    <div id="cs-template" >
+                        <div id="page-documents" >
+                            @if (Model.Projects.Count > 0)
+                            {         
+                                <div><div id="fileupload-hit" class="margin-top-10 margin-left-10"></div></div>
+                                <div class="or-drop-here"><span class="mute margin-left-20">or drop files here</span></div>                   
+                                <div class="clearfix"></div>                           
+                                <div id="files" class="margin-top-30">                            
+                                    <div id="filelist-container"></div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            @{
+            var dropZoneText = String.Format("{0} - {1} {2}", GetResource(ResourceKeys.DropZoneText), Model.MaxFileUpload.ToFileSize(), GetResource(ResourceKeys.Maximum));
+                                
+            }
+            gemini_documentsApp.init('@GetResource(ResourceKeys.Upload)', '@dropZoneText', '@GetResource(ResourceKeys.Delete)', '@Model.SelectedFolder', '@ViewBag.EditPermission', '@GetResource(ResourceKeys.AttachmentSizeExceeded)' );
+        });
+    </script>
+</div>

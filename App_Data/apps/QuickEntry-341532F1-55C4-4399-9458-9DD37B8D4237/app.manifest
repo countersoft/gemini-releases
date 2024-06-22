@@ -1,0 +1,12 @@
+﻿<app>
+    <guid>341532F1-55C4-4399-9458-9DD37B8D4237</guid>
+    <name>QuickEntry</name>
+    <description>QuickEntry</description>
+    <version-major>7</version-major>
+    <version-minor>0</version-minor>
+    <version-patch>0</version-patch>
+    <publisher>Countersoft</publisher>
+    <released>2020-04-10T09:00:00Z</released>
+    <javascript>QuickEntry.js</javascript>
+    <debug>false</debug>
+</app>

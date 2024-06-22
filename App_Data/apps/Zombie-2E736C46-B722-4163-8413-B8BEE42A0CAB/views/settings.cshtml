@@ -1,0 +1,66 @@
+﻿@using System.Web.Mvc.Html;
+@model String
+<p id="tab-help-message"><strong>»</strong>&nbsp;For when things don't behave the right way. Send us a diagnostic report when requested!</p>
+
+<img style="margin-bottom:-4px;" class="margin-top-10 show" height="67" width="566" src="@(Model)/assets/images/apps/2E736C46-B722-4163-8413-B8BEE42A0CAB/zombies-gemini.png" />
+
+<div id="cs-adhoc-page">
+    <form id="backup-form" action="" method="post" autocomplete="off">
+        <table class="data-entry-box">
+            <tr>
+                <td>Items</td>
+                <td><select class="input-size9" id="issues" multiple="multiple"><option value=""></option> </select></td>
+            </tr>
+            <tr>
+                <td class="no-wrap">Anonymize Data</td>
+                <td><input type="checkbox" name="Anonymize" id="anonymize" class="fancy"/></td>
+            </tr>
+            <tr><td colspan="2"><div class="divider"></div></td></tr>
+            <tr>
+                <td colspan="2" align="right">
+                    <input id="backup-save" type="button" value='Generate' class='button-primary' />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        gemini_ui.chosen('#backup-form #issues', null, false);
+        gemini_ui.ajaxChosen('#backup-form #issues', '#backup-form .jspPane:first', false, "apps/Zombie/getissues");
+       
+        gemini_ui.fancyInputs('#backup-form .fancy');
+
+        $("#backup-form").validate();
+
+        $("#backup-save").click(function (e) {
+            gemini_commons.stopClick(e);
+
+            if (!$("#backup-form").valid()) { return; }
+
+            var formData = $("#backup-form").serialize();
+            var issues = $('#issues').val();
+
+            if (issues != null && issues.length > 0)
+            {
+                formData += "&Issues='''" + issues.join("'',''") + "'''";
+            }
+
+            gemini_ui.startBusy('#cs-adhoc-page .data-entry-box #backup-save');
+
+            gemini_ajax.postCall("apps/Zombie", "dobackup",
+            function (response) {
+                gemini_ui.stopBusy('#cs-adhoc-page .data-entry-box #backup-save');
+
+                if (response.success) 
+                    window.location.href = "apps/Zombie/download"; //gemini_popup.toast("Saved");
+                else
+                    gemini_popup.toast(response.Message, true);
+                
+                
+            }, function () { gemini_ui.stopBusy('#cs-adhoc-page .data-entry-box #backup-save'); }, formData, null, true);
+        });
+  
+    });
+</script>

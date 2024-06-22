@@ -1,0 +1,10 @@
+﻿#filter-container
+{
+    float:left;
+    padding:6px;
+}
+
+#page-options-box .options
+{
+    width: 250px;
+}

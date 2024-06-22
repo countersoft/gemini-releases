@@ -1,0 +1,35 @@
+﻿@model ProjectAdmin.Models.ProjectAdminAppModel
+
+<div class="admin-datatable-holder margin-top-20">
+    <table id="project-attribute-table" class="basic">
+        <thead>
+            <tr>
+                <th class="no-width"></th>
+                <th>Name</th>
+                <th>Value</th>
+                <th style="width: 45px;"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var attribute in Model.ProjectAttributes)
+            {
+                <tr data-id="@attribute.Attributeid" id="row-@attribute.Attributeid">
+                    <td><span class="dragHandle fonticon-drag-handle"></span></td>
+                    <td class="name">@attribute.Attributename</td>
+                    <td>@Html.Raw(attribute.Attributevalue)</td>
+                    <td>
+                        <span class="action-button-edit cursor-pointer add-project-attribute" title="Edit" data-method="edit"></span>
+                        <span class="action-button-delete cursor-pointer" title="Delete" data-method="delete"></span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+    });
+</script>
+

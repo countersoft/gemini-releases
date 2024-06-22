@@ -1,0 +1,11 @@
+﻿<app>
+    <guid>A6FE8DE7-700B-4039-AC39-469C6E9A6787</guid>
+    <name>Rally Import</name>
+    <description>Import stories, defects and tasks from Rally</description>
+    <version-major>2</version-major>
+    <version-minor>0</version-minor>
+    <version-patch>0</version-patch>
+    <publisher>Countersoft</publisher>
+    <released>2019-01-10T11:31:00Z</released>
+    <debug>false</debug>
+</app>

@@ -1,0 +1,21 @@
+﻿@model RallyImport.StatusModel
+
+<script src="~/assets/scripts/apps/A6FE8DE7-700B-4039-AC39-469C6E9A6787/RallyImport.js" type="text/javascript"></script>
+<link rel="stylesheet" href="~/assets/styles/apps/A6FE8DE7-700B-4039-AC39-469C6E9A6787/RallyImport.css" media="screen, projection" />
+
+<div id="cs-adhoc-page" class="rally-status">
+    <p id="tab-help-message"><strong>»</strong>&nbsp;@Model.Status</p>
+    @foreach (var msg in Model.Messages)
+    {
+        <div class="@if(msg == Model.Messages[Model.Messages.Count-1]) { <text>margin-top-15</text> } else {<text>margin-top-5</text>} marging-bottom-5 bold">&#10004;&nbsp;@Html.Raw(msg)</div>
+    }
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {        
+
+        app_rallyImport.initStatus();
+
+    });
+    </script>

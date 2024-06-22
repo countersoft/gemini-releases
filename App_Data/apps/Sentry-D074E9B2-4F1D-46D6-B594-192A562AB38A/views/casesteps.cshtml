@@ -1,0 +1,173 @@
+﻿<link rel="stylesheet" href="~/assets/styles/apps/D074E9B2-4F1D-46D6-B594-192A562AB38A/sentry.css" media="screen, projection" />
+@using System.Web.Mvc.Html;
+@using Countersoft.Gemini.Models;
+@using Countersoft.Gemini;
+@model Countersoft.Gemini.Models.StepInfo
+
+<form id="case-step-form" class="AppStore">
+<table id='step-details' class='width-100 grid' data-id='@Model.Info.CaseId' >
+    <thead>
+        <tr class="cs-grid-column">
+            <th></th>
+            <th data-field="step" data-edit-type="textarea">@GetResource(ResourceKeys.Step)</th>
+            <th data-field="expected" data-edit-type="textarea">@GetResource(ResourceKeys.ExpectedResults)</th>
+            <th>@GetResource(ResourceKeys.Status)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody class="ui-sortable grid">
+        @foreach (var x in Model.Steps)
+        {
+            <tr id='step-@x.Id' data-id="@x.Id">
+                <td class="no-width" data-edit="false">
+                    <span class="dragHandle fonticon-drag-handle"></span>
+                </td>
+                <td class='cs-title valign-top'>@Html.Raw(Countersoft.Foundation.Utility.Helpers.HtmlHelper.ConvertTextToHtmlNewLine(System.Web.HttpUtility.HtmlEncode(x.Description)))</td>
+                <td class='cs-text valign-top'>@Html.Raw(Countersoft.Foundation.Utility.Helpers.HtmlHelper.ConvertTextToHtmlNewLine(System.Web.HttpUtility.HtmlEncode(x.ExpectedResult)))</td>
+                <td class='cs-status valign-top' data-edit="false">@Html.Partial("~/views/testing/_TestStatus.cshtml", new TestStatus() { HasPassed = x.HasPassed }, null)</td>
+                <td class='cs-simple valign-top' data-edit="false">
+                    <span class="action-button-delete cursor-pointer" data-delete='@x.Id' title='@GetResource(ResourceKeys.Delete)'></span>
+                </td>
+            </tr>
+        }
+      
+        <tr id='step-new' class='cs-no-hover'>
+            <td data-edit="false"></td>
+            <td data-edit="false"><textarea rows="5" id='step-title' class='width-100 required' placeholder='@GetResource(ResourceKeys.Step)' /></td>
+            <td data-edit="false"><textarea rows="5" id='step-expected' class='width-100 required' placeholder='@GetResource(ResourceKeys.ExpectedResults)' /></td>
+            <td data-edit="false"><input type="button" id="add-new-step" class="button-primary" value="@GetResource(ResourceKeys.Add)"/></td>
+            <td data-edit="false"></td>
+        </tr>
+        @*<tr class='cs-no-hover'>
+            <td colspan='4'>
+                <input type='button' class='button button-primary' title='@GetResource(ResourceKeys.Create)' value='@GetResource(ResourceKeys.Create)' id='step-add' ></td>
+        </tr>*@
+    </tbody>
+</table>
+</form>
+
+<script type="text/javascript">
+    gemini_item.setContentHeight();
+    $("#step-add", "#step-details").click(function (e) {
+        addItem();
+    });
+
+    $('#step-details #add-new-step').click(function () {
+        addItem("#step-details #add-new-step");
+    });
+
+    gemini_commons.inputKeyHandler("#step-title", null,
+        clearText,
+        function () {
+            if ($("#step-title").val() != "") {
+                $("#step-title").removeClass("error");
+            }
+        }
+    );
+    gemini_commons.inputKeyHandler("#step-expected", null, clearText, 
+        function () {
+            if ($("#step-expected").val() != "") {
+                $("#step-expected").removeClass("error");
+            }
+        }
+    );
+       
+    $('#step-new #step-title,#step-new #step-expected').click(function (e) {
+        $(this).focus();
+    });
+
+    function clearText() {
+        $("#step-title", "#step-details").val('');
+        $("#step-expected", "#step-details").val('');
+    }
+
+    function addItem(button) {
+        var caseId = $('#step-details').data('id');
+        var title = $('#step-title', '#step-new');
+        var expected = $('#step-expected', '#step-new');
+
+        if (expected.val() == "") {
+            expected.addClass("error");
+            expected.focus();
+            return;
+        }
+        if (title.val() == "") {
+            title.addClass("error");
+            title.focus();
+            return;
+        }
+
+        if (button) gemini_ui.startBusy(button);        
+
+        // do something
+        gemini_ajax.call("apps/countersoft/testing/step", "add",
+            function (response) {
+                if (button) gemini_ui.stopBusy(button);
+                $("#step-details").parent().parent().html(response.Result.Data);
+                $("#step-title").focus();
+            },
+            function (xhr, ajaxOptions, thrownError) {
+                if (button) gemini_ui.stopBusy(button);
+            }, { caseid: caseId, title: title.val(), expected: expected.val() }, null, true);        
+    }
+
+    $("span[data-delete]", "#step-details").click(function (e) {
+        var caseId = $('#step-details').data('id');
+        var stepId = $(this).data('delete');
+        var stepText = $(this).closest("tr").find(".cs-title").text();
+
+        gemini_commons.translateMessage("[[RemoveStep]] '" + stepText + "' [[FromCase]] ?", ['RemoveStep', 'FromCase'], function (message) {
+            gemini_popup.modalConfirm(message, null, function () {
+
+                gemini_ajax.call("apps/countersoft/testing/step", "delete",
+                    function (response) {
+                        $("#step-details").parent().html(response.Result.Data);
+                    }, null, { caseid: caseId, stepid: stepId }, null, true);
+            });
+        });
+    });
+
+    $('tbody', '#step-details').sortable(
+        {
+            //axis: 'y',
+            opacity: 0.7,
+            containment: '#step-details tbody',         // cannot drag these outside this section
+            revert: false,
+            forcePlaceholderSize: true,
+            distance: 15,
+            //placeholder: 'drag-placeholder',
+            cancel: "tr#step-new, tr textarea, tr .button-primary",
+            start: function (e, ui) {
+                var item = ui.item;                     // the TR (step) that is being dragged
+            },
+
+            stop: function (e, ui) {
+                // the TR (step) that was dragged
+                var caseId = $('#step-details').data('id');
+                ordered = [];
+
+                // read the order that they are in now
+                $('tbody tr', '#step-details').each(function () {
+                    // get the step id
+                    var item = $(this).attr('id');
+                    if (item != undefined && item != 'step-new') {
+                        var id = parseInt(item.replace('step-', ''));
+                        ordered.push(id);
+                    }
+                });
+
+                gemini_ajax.call("apps/countersoft/testing/step", "reorder",
+                    function (response) {
+                        $("#step-details").parent().html(response.Result.Data);
+                    }, null, { caseid: caseId, ordered: JSON.stringify(ordered) }, null, true);
+            }
+        });
+
+
+    gemini_ui.inlineEdit("#step-details td:not([data-edit='false'])", "apps/countersoft/testing/step/propertyget", "apps/countersoft/testing/step/propertysave", "edit-step-form");
+
+    $(document).ready(function () {
+        $("#section-widget-ACE2F8B3-C724-444F-9B72-B8B2137DDA16 h3").html("@GetResource(ResourceKeys.TestSteps) (@Model.Steps.Count)");
+        });
+
+</script>

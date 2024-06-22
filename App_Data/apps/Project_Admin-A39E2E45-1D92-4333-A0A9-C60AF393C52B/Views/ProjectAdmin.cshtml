@@ -1,0 +1,52 @@
+﻿@model ProjectAdmin.Models.ProjectAdminAppModel
+
+<script src="~/assets/scripts/apps/A39E2E45-1D92-4333-A0A9-C60AF393C52B/ProjectAdmin.js" type="text/javascript"></script>
+<link rel="stylesheet" href="~/assets/styles/apps/A39E2E45-1D92-4333-A0A9-C60AF393C52B/ProjectAdmin.css" media="screen, projection" />
+
+<div id='data' class="projectAdmin">
+    @if (Model.ProjectList.Count() > 0)
+    { 
+        <div class="margin-top-10">@Html.DropDownList("Projects1", Model.ProjectList, new { @class = "input-size6" })</div>
+        
+        <div id='project-admin-content-pane' class="contents-pane item-pane margin-top-10">
+
+            <div class="clearfix"></div>
+
+            <div id='cs-template' class="margin-bottom-20">
+                <div id='cs-sections' class="tabs">
+                    <div id="groups-section" data-contentid="groups-content" class="left tab selected" title="Groups">
+                        <h3>Groups</h3>
+                    </div>
+                    <div class="breaker left">&nbsp;</div>
+                    <div id="project-attribute-section" data-contentid="project-attribute-content" class="left tab" title="Project Attributes">
+                        <h3>Project Attributes</h3>
+                    </div>
+                    
+                    <div class="clearfix"></div>
+
+                    <div class="tab-content hide" id="groups-content">
+                        @Html.Partial(GetAppUrl("A39E2E45-1D92-4333-A0A9-C60AF393C52B", "views/_Permissions.cshtml"), Model.ProjectAdminAppPermissions)
+                        @Html.Partial(GetAppUrl("A39E2E45-1D92-4333-A0A9-C60AF393C52B", "views/_ProjectGroups.cshtml"), Model)
+                    </div>                   
+                    <div class="tab-content hide" id="project-attribute-content">
+                        <a href="#" class="add-project-attribute">Add</a>
+                                               
+                        @Html.Partial(GetAppUrl("A39E2E45-1D92-4333-A0A9-C60AF393C52B", "views/_ProjectAttributes.cshtml"), Model)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+    else
+    {
+        <div class="margin-top-10">@GetResource(ResourceKeys.NoData)</div>
+    }
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        gemini_projectAdmin.init();
+    });
+</script>
+

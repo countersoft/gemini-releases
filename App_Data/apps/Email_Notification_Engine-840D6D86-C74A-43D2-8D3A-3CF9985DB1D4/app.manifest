@@ -1,0 +1,11 @@
+﻿<app>
+    <guid>840D6D86-C74A-43D2-8D3A-3CF9985DB1D4</guid>
+    <name>Email Notification Engine</name>
+    <description>Sends email notifications to users</description>
+    <version-major>8</version-major>
+    <version-minor>1</version-minor>
+    <version-patch>0</version-patch>
+    <publisher>Countersoft</publisher>
+    <released>2020-04-10T09:00:00Z</released>
+    <debug>false</debug>
+</app>

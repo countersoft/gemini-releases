@@ -1,0 +1,7 @@
+﻿@using Countersoft.Gemini.Infrastructure.Helpers;
+
+<img src="@ImageHelper.GetFileAttachmentIconPath(GeminiContext.AssetsUrl,
+                                             Countersoft.Gemini.Infrastructure.Helpers.FileHelper.GetFileExtension(Model.Entity.Name))"
+     alt="File Type Logo"/>
+     &nbsp;
+<a href="@NavigationHelper.GetDocumentsDownloadUrl(GeminiContext.Project, Model.Entity, GeminiContext.Url)">@Model.Entity.ShortFileName</a>

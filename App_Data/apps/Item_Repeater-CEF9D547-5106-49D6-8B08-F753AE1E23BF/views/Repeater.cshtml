@@ -1,0 +1,28 @@
+﻿@model ItemRepeater.RepeaterModel
+
+<script src="~/assets/scripts/apps/CEF9D547-5106-49D6-8B08-F753AE1E23BF/Repeater.js" type="text/javascript"></script>
+<link rel="stylesheet" href="~/assets/styles/apps/CEF9D547-5106-49D6-8B08-F753AE1E23BF/Repeater.css" media="screen, projection" />
+
+
+<div id="app-repeating">
+    <div class="filter-container">
+        @{Html.RenderPartial("InstantFilter", Model.Filter);}
+    </div>
+    <div class="clearfix"></div>
+    <div id="data" class="items-data-container">
+        @{Html.RenderPartial(GetAppUrl("CEF9D547-5106-49D6-8B08-F753AE1E23BF", "views/_Grid.cshtml"), Model);}
+    </div>
+</div>
+
+<div id='column-picker'></div>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {        
+        gemini_filter.init(@((int)ProjectTemplatePageType.Custom), @Html.Raw(Model.Filter.AvailableFields.ToJson()));
+
+        app_repeating.init();
+
+    });
+    </script>

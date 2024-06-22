@@ -1,0 +1,16 @@
+﻿#step-details .edit-step-form textarea
+{
+    width: 98.7% !important;
+    height: 97px !important;
+}
+
+#step-details .edit-step-form button
+{
+    margin-left: -1px;
+    margin-top: 5px;
+}
+
+#step-details tbody tr:last-child td
+{
+    border: none;
+}

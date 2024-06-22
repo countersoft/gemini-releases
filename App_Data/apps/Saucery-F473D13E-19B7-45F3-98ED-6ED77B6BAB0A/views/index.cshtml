@@ -1,0 +1,403 @@
+﻿@using System.Web.Mvc.Html;
+<link rel="stylesheet" href="~/assets/styles/apps/F473D13E-19B7-45F3-98ED-6ED77B6BAB0A/saucery.css" media="screen, projection" />
+
+<div id="app-saucery">
+    <div id="commits" class="margin-bottom-20">
+
+        @{
+            var commitCounter = Model.Value.Count;
+          
+            }
+        @if (commitCounter == 0 && (Countersoft.Gemini.GeminiApp.LicenseSummary.IsGeminiTrial() || Countersoft.Gemini.GeminiApp.GeminiLicense.IsFree))
+        {
+            <a target='_blank' href='http://docs.countersoft.com/saucery-code-review/'>
+                <div class="clearfix"></div>
+                <div>
+                    <img src="~/assets/images/empty-state/no-codereview.png" />
+                </div>
+            </a>
+        }
+        @foreach (var commit in Model.Value)
+        {
+            <div class="left">
+            <div class="commit commit-box">
+                <div class="commit-info margin-right-10" href="#" data-repositoryurl="@commit.commits.RepositoryUrl" data-revisionid="@commit.commits.RevisionId" data-provider="@commit.Provider" title="@commit.Fullname @commit.Created">
+                    <div class="code-committed-by">@commit.Fullname </div><div class="commit-date" data-commit-date="@commit.Created.ToString("dd/MM/yyyy HH:mm:ss")">@commit.Created</div>
+                    <div data-counter="@commitCounter" class="commit-counter right">@(commitCounter--)</div>                    
+                </div>
+            </div>    
+                @if (commit.commits.Files.Length > 0)
+                {
+                    <div class="committed-files">
+                        <div class="comment">
+                            <div class="commit-comment">@commit.CommitBlock.Comment</div>
+                            
+                                @if (commit.CommitBlock.Items.Count > 0)
+                                {
+                                    <div class="related-items">
+                                        <span>See also:</span>
+    
+                                        @foreach(var item in commit.CommitBlock.Items)
+                                        {
+                                            <text>@(Html.Raw(item.Value))&nbsp;</text>
+                                        }
+                                    </div>
+                                }
+                           
+                        </div>
+                        <div class="clearfix"></div>
+                        <span class="filelist">
+                            @foreach (var file in commit.commits.Files)
+                            {
+                                <div><span><span class="file-dot">·&nbsp;</span><a href="#" class="file" data-workspace="@file.Workspace" data-fileid="@file.FileId" data-fullfilename="@file.FullFilename" data-filename="@file.Filename">@file.Filename</a></span></div>
+                            }
+                        </span>
+                        @if (commit.Provider.ToString() == "GitHub")
+                        {
+                            <div class="view-changeset"><a target="_blank" href="@string.Concat(@commit.commits.ExtraData,"/","commit","/",@commit.commits.RevisionId)">Github</a></div>
+                        }
+                        <div class="commit-date-long right">@commit.Created</div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+    <div class="clearfix"></div>
+    <div id="file-diff-container"></div>
+
+    <div class="add-comment">
+        <textarea class="note" cols="61" rows="8" style="width:390px;height:125px;"></textarea>
+        <input type="button" id="close-comment" class="button-secondary button-small right margin-left-5" value="Close"/>
+        <input type="button" id="save-comment" class="button-primary button-small right" value="Save"/>
+
+    </div>
+    <div class="filename-container"><input type="hidden" name="filename" id="filename"/></div>
+   
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var icon = $("#section-widget-18FE1D21-77G0-4067-8A10-F452FCB9D090 h3 i");
+        $("#section-widget-18FE1D21-77G0-4067-8A10-F452FCB9D090 h3").html(" Code Review (" + @Model.Value.Count + ")").prepend(icon);
+
+    function removeAuthForm() {
+        $('.files-expanded form').prev().remove();
+        $('.files-expanded form').remove();
+        $('.files-expanded .filelist').show();
+        $('.files-expanded .commit-date-long').show();
+    }
+
+    function contractCommit()
+    {       
+        $('#app-saucery .files-expanded').removeClass('file-title').hide().removeClass('files-expanded');
+    
+        $('#app-saucery .commit-expanded').removeClass('commit-expanded');
+    
+        /*$('#commits .left').each(function (e) {
+            $('.commit', $(this)).removeClass('commit-expanded');
+            $('.committed-files', $(this)).removeClass('file-title').removeClass('files-expanded');
+            $('.committed-files', $(this)).hide();
+        });*/
+    }
+
+    function activateCommit()
+    {
+        $('#app-saucery .files-expanded').hide();
+        $('#app-saucery .files-expanded').removeClass('file-title').removeClass('files-expanded');
+    }
+
+    function expandCommit(element)
+    {
+        $(element).addClass('commit-expanded');
+        $(element).next().addClass('file-title').addClass('files-expanded');
+        $(element).next().show();
+        $('#app-saucery .filelist').jScrollPane({ autoReinitialise: true, autoReinitialiseDelay: 250 });
+    }
+
+    $(".commit-date", "#app-saucery").each(function (e) {
+        $(this).text(moment($(this).attr('data-commit-date'), ["DD/MM/YYYY HH:mm:ss "]).fromNow());
+    });
+
+
+    $(document).off('click', "#app-saucery a.commit-info").on('click', "#app-saucery a.commit-info", function (e) {
+        e.preventDefault();      
+    });
+
+    $(document).off('click', "#app-saucery .commit").on('click', "#app-saucery .commit", function (e) {
+        var hasCommitExpanded = $(this).hasClass('commit-expanded');
+        var hasFileExpanded = $(this).next().hasClass('files-expanded');
+
+        removeAuthForm();
+        contractCommit();
+
+        if (hasCommitExpanded)
+        {
+            if (! hasFileExpanded) expandCommit($(this));
+        }
+        else
+        {
+            expandCommit($(this));
+        }
+        gemini_item.setContentHeight(250);
+    });
+
+    $("#app-saucery .file").click(function (e) {
+        gemini_commons.stopClick(e);
+        var this_object = $(this);
+        var fileName = $(this).data("filename");
+        var fullFilename = $(this).data("fullfilename");
+        var fileId = $(this).attr('data-fileid');
+        var workspace = $(this).attr('data-workspace');
+
+        var commitInfo = $(this).closest('.committed-files').prev().find('.commit-info');
+  
+        var provider = commitInfo.attr("data-provider");
+        var revisionId = commitInfo.attr('data-revisionid');
+        var repositoryurl = commitInfo.attr("data-repositoryurl");
+       
+        $('#app-saucery #filename').val(fileName);
+
+        $('#app-saucery #filename').attr({
+            'data-fileid': fileId,
+            'data-revisionid': revisionId,
+            'data-provider': provider,
+            'data-repositoryurl': repositoryurl
+        });
+
+        var spinner = gemini_ui.getSpinnerProgress2();
+        $(this).closest('.committed-files').prev().find('.commit-counter').html(spinner.Markup);
+        $(this).closest('.committed-files').prev().find('.commit-counter').children('div:eq(0)').css('margin-top','10px');
+        eval(spinner.JS);
+
+        var date = $(this).closest('.committed-files').prev().find('.commit-date').attr('data-commit-date');
+        var username = $(this).closest('.committed-files').prev().find('.code-committed-by').text();
+ 
+        gemini_ajax.postCall("apps/saucery/getfilediff", "@Model.IssueId",
+            function (response) {
+                if (response.success) {                  
+                    //IF authentication failed do this
+                    if (!response.Result.Data.authenticationSuccess) {
+                        if (response.Result.Data.errorMessage != '') gemini_popup.toast(response.Result.Data.errorMessage, true);
+                
+                        if ($('.files-expanded #authentication_form').length == 0) {
+                            $('.files-expanded .filelist').hide();
+                            $('.files-expanded .commit-date-long').hide();
+                            $('.files-expanded').append(response.Result.Data.data);
+
+                            if (response.Result.Data.isFileIdMissing) {
+                                $('#app-saucery #filename').attr('data-fileid', response.Result.Data.fileid);
+                                this_object.attr('data-fileid', response.Result.Data.fileid);
+                            }
+                        }
+                        $("#file-diff-container").html('');   //removes the spinner                   
+
+                    }
+                    else
+                    {
+                        removeAuthForm();
+                        //contractCommits();
+                        activateCommit();
+                        $("#file-diff-container").html(response.Result.Data.data);
+                        $("#diffBox .codereview-header .codereview-header-filename").text($('#app-saucery #filename').val());
+                        $("#diffBox .codereview-header .codereview-header-date").text(username + " @@ " + date);
+                        gemini_item.setContentHeight();
+                    }
+                }
+                else {
+                    $("#file-diff-container").html('');
+                }
+               
+                var number = $(this_object).closest('.committed-files').prev().find('.commit-counter').attr('data-counter');
+                $(this_object).closest('.committed-files').prev().find('.commit-counter').html(number);
+            },
+            function (xhr, ajaxOptions, thrownError) {
+                var number = $(this_object).closest('.committed-files').prev().find('.commit-counter').attr('data-counter');
+                $(this_object).closest('.committed-files').prev().find('.commit-counter').html(number);
+            }, { fullfilename: fullFilename, filename: fileName, provider: provider, revisionid: revisionId, fileid: fileId, repositoryurl: repositoryurl, workspace: workspace }, null, true);
+               
+        $(document).off('click', "#app-saucery #authentication_form .cancel").on('click', "#app-saucery #authentication_form .cancel", function (e) {
+            removeAuthForm();
+        });
+        
+        //Authentication form
+        $(document).off('click', "#app-saucery #authentication_form #svn_login").on('click', "#app-saucery #authentication_form #svn_login", function (e) {
+            var url = $(this).parents("form:eq(0)").attr('action');
+
+            gemini_ajax.postCall(url, "",
+                function (response) {
+                    if (response.success) {
+                        var revisionId = $('#app-saucery .filename-container #filename').attr('data-revisionid');
+                        var filename = $('#app-saucery .filename-container #filename').val();
+                       
+                        $("#app-saucery .commit-info[data-revisionid='" + revisionId + "'] ").parent().next().find(".file[data-filename='" + filename + "'] ").click();
+                    }
+                }, null, $(this).parents("form:eq(0)").serialize(), null, true);
+        });
+
+        //Authentication form
+        $(document).off('click', "#app-saucery #authentication_form #github_login").on('click', "#app-saucery #authentication_form #github_login", function (e) {
+            var url = $(this).parents("form:eq(0)").attr('action');
+
+            gemini_ajax.postCall(url, "",
+                function (response) {
+                    if (response.Result.Data.success) {
+                        window.location  = response.Result.Data.extraData;
+                    }
+                }, null, $(this).parents("form:eq(0)").serialize(), null, true);
+        });
+
+        //Authentication form
+        $(document).off('click', "#app-saucery #authentication_form #tfs_login").on('click', "#app-saucery #authentication_form #tfs_login", function (e) {
+            var url = $(this).parents("form:eq(0)").attr('action');
+
+            if ($(this).parent().find('#username').val() != '' && $(this).parent().find('#password').val() != '') {
+                
+                gemini_ajax.postCall(url, "",
+                    function (response) {
+                        if (response.Result.Data.success) {
+                            var repository = $("#app-saucery #authentication_form #repositoryurl").val();
+                            var filename = $("#app-saucery #authentication_form #filename").val();
+                         
+                            $("#app-saucery .commit-info[data-repositoryurl='" + repository + "'] ").parent().next().find(".file[data-filename='" + filename + "'] ").click();
+                        }
+                    }, null, $(this).parents("form:eq(0)").serialize(), null, true);
+            }
+
+        });
+
+        //Authentication form
+        $(document).off('click', "#app-saucery #authentication_form #git_login").on('click', "#app-saucery #authentication_form #git_login", function (e) {
+            var url = $(this).parents("form:eq(0)").attr('action');
+
+            gemini_ajax.postCall(url, "",
+                function (response) {
+                    if (response.success) {
+                        var revisionId = $('#app-saucery .filename-container #filename').attr('data-revisionid');
+                        var filename = $('#app-saucery .filename-container #filename').val();
+
+                        $("#app-saucery .commit-info[data-revisionid='" + revisionId + "'] ").parent().next().find(".file[data-filename='" + filename + "'] ").click();
+                    }
+                }, null, $(this).parents("form:eq(0)").serialize(), null, true);
+        });
+
+        //Authentication form
+        $(document).off('click', "#app-saucery #authentication_form #bitbucket_login").on('click', "#app-saucery #authentication_form #bitbucket_login", function (e) {
+            var url = $(this).parents("form:eq(0)").attr('action');
+
+            gemini_ajax.postCall(url, "",
+                function (response) {
+                    if (response.success) {
+                        var revisionId = $('#app-saucery .filename-container #filename').attr('data-revisionid');
+                        var filename = $('#app-saucery .filename-container #filename').val();
+
+                        $("#app-saucery .commit-info[data-revisionid='" + revisionId + "'] ").parent().next().find(".file[data-filename='" + filename + "'] ").click();
+                    }
+                }, null, $(this).parents("form:eq(0)").serialize(), null, true);
+        });
+
+        $(document).on({
+            mouseenter: function () {               
+                if ($('.lineNumber .commentexist', $(this)).length == 0 && $.trim($('.lineNumber', $(this)).text()) != '')
+                {
+                    $('.lineNumber', $(this)).html("<span class='add-comment-action'>+</span>");
+                }                
+            },
+            mouseleave: function () {
+                if ($('.lineNumber .commentexist', $(this)).length == 0 && $.trim($('.lineNumber', $(this)).text()) != '')
+                {
+                    $('.lineNumber', $(this)).html($('.lineNumber', $(this)).attr('data-linenumber'));
+                }                
+            }
+        }, "#app-saucery #rightPane tr");
+
+
+
+        $(document).off('click', "#app-saucery #rightPane .lineNumber").on('click', "#app-saucery #rightPane .lineNumber", function (e) {
+          
+            if ($.trim($(this).text()) != '' || $('.commentexist',$(this)).length > 0)
+            {
+                $("#app-saucery .add-comment .note").val('');
+       
+                if ($('.commentexist', $(this)).length > 0)
+                {
+                    var filname = $('#app-saucery #filename').val();
+                    var linenumber = $.trim($(this).attr('data-linenumber'));
+                    var fileid = $('#app-saucery #filename').attr('data-fileid');
+                    var revisionid = $('#app-saucery #filename').attr('data-revisionid');
+                    var provider = $('#app-saucery #filename').attr('data-provider');
+                    var repositoryurlLine = $('#app-saucery #filename').attr('data-repositoryurl');
+                   
+                    gemini_ajax.postCall("apps/saucery/getcomment", "@Model.IssueId",
+                       function (response) {
+                           if (response.success) {
+                               $("#app-saucery .add-comment .note").val(response.Result.Data.comment.Message);
+                           }
+                       }, null, { linenr: linenumber, filename: filname, fileid: fileid, changesetid: revisionid, provider: provider, repositoryurl: repositoryurlLine }, null, true);
+                }
+                show_note($(this));
+            }
+        });
+
+        $(document).off('click', "#app-saucery .add-comment #close-comment").on('click', "#app-saucery .add-comment #close-comment", function (e) {
+            hide_note();
+        });
+
+        $(document).off('click', "#app-saucery .add-comment #save-comment").on('click', "#app-saucery .add-comment #save-comment", function (e) {
+            var linenr = $.trim($("#app-saucery .add-comment .note").attr('data-active-linenumber'));
+            var comment = $.trim($('#app-saucery .add-comment .note').val());
+            var filename = $('#app-saucery #filename').val();
+            var fileid = $('#app-saucery #filename').attr('data-fileid');
+            var revisionid = $('#app-saucery #filename').attr('data-revisionid');
+            var provider = $('#app-saucery #filename').attr('data-provider');
+            var repositoryUrl = $('#app-saucery #filename').attr('data-repositoryurl');
+
+            if (linenr != '' && filename != '') {
+
+                gemini_ajax.postCall("apps/saucery/addcomment", "@Model.IssueId",
+                    function (response) {
+                        if (response.success) {
+
+                            if (response.Result.Data.isdeleted) {
+                                $('#app-saucery #rightPane .active').html($('#app-saucery #rightPane .active').attr('data-linenumber'));
+                            }
+                            else {
+                                $('#app-saucery #rightPane .active').html('<span class="commentexist fonticon-flag"></span>');
+                            }
+                        }
+                        hide_note();
+                    }, 
+                    function (xhr, ajaxOptions, thrownError) {
+                        hide_note();
+                    }, { linenr: linenr, comment: comment, filename: filename, fileid: fileid, changesetid: revisionid, provider: provider, repositoryurl: repositoryUrl }, null, true);
+            }
+            else {
+                hide_note();
+            }
+        });
+
+        function show_note(this_object)
+        {
+            $('#app-saucery .add-comment').show();
+            $('#app-saucery .add-comment .note').attr('data-active-linenumber', this_object.attr('data-linenumber'));
+            $(this_object).addClass('active');
+            $('#app-saucery .add-comment').position({
+                "my": "right bottom",
+                "at": "left bottom",
+                "of": this_object,
+                "offset": "0 0",
+                "collision": "none"
+            });
+            $('#app-saucery .add-comment .note').focus();
+        }
+
+        function hide_note()
+        {
+            $('#app-saucery .add-comment').hide().removeAttr('data-active-linenumber');
+            $('#app-saucery .add-comment .note').val('');
+            $('#app-saucery #rightPane .lineNumber').removeClass('active');
+        }
+
+        });
+    });
+    //# sourceURL=Saucery.js
+</script>
