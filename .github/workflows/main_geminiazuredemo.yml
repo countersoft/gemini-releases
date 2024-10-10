@@ -15,7 +15,7 @@ jobs:
 
      steps:
        - name: Checkout Code
-         uses: actions/checkout@1
+         uses: actions/checkout@v2
          
        - name: Deploy to Azure Web App
          id: deploy-to-webapp
