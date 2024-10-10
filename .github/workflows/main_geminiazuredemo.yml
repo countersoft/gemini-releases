@@ -10,6 +10,22 @@ on:
   workflow_dispatch:
 
 jobs:
+   build_and_deploy_job:
+     runs-on: windows-latest
+
+     steps:
+       - name: Checkout Code
+         uses: actions/checkout@2
+         
+       - name: Deploy to Azure Web App
+         id: deploy-to-webapp
+         uses: azure/webapps-deploy@v3
+         with:
+          app-name: 'GeminiAzureDemo'
+          slot-name: 'Production'
+          package: .
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_55FFAD4EACF9453A8B7C551C4EE26BCC }}
+         
 #  build:
 #    runs-on: windows-latest
 #
@@ -33,24 +49,24 @@ jobs:
 #          name: .net-app
 #          path: ${{env.DOTNET_ROOT}}/myapp
 #
-  deploy:
-    runs-on: windows-latest
+#  deploy:
+#    runs-on: windows-latest
 #    needs: build
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: .net-app
-      
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: 'GeminiAzureDemo'
-          slot-name: 'Production'
-          package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_55FFAD4EACF9453A8B7C551C4EE26BCC }}
+#    environment:
+#      name: 'Production'
+#      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+#    
+#    steps:
+#      - name: Download artifact from build job
+#        uses: actions/download-artifact@v4
+#        with:
+#          name: .net-app
+#      
+#      - name: Deploy to Azure Web App
+#        id: deploy-to-webapp
+#        uses: azure/webapps-deploy@v3
+#        with:
+#          app-name: 'GeminiAzureDemo'
+#          slot-name: 'Production'
+#          package: .
+#          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_55FFAD4EACF9453A8B7C551C4EE26BCC }}
