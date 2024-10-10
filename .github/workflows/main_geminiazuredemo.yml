@@ -53,4 +53,4 @@ jobs:
           app-name: 'GeminiAzureDemo'
           slot-name: 'Production'
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_5C748A4C002D45A2936817BC85F5942B }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_55FFAD4EACF9453A8B7C551C4EE26BCC }}
