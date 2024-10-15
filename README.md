@@ -15,7 +15,11 @@ Follow [install video](https://vimeo.com/87858540).
 
 ## Azure
 
-For deployment to Azure follow the [instructions](Azure.md).
+For deployment to Azure follow the [instructions](Azure.md). 
+
+**Please note you will need to edit the deployment YAML file in GitHub Actions to put in your publish profile GUID.**
+
+Example: publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_<your GUID>}}
 
 ## Licensing
 
