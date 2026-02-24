@@ -31,7 +31,7 @@
                         @Html.DropDownList("OAuthProvider", Model.OAuthProviders, new { @class = "input-size6", id = "oauth-provider" })
                     </td>
                 </tr>
-                <tr>
+                <tr class="not-graph">
                     <td class="field-name">
                         Server
                     </td>
@@ -40,7 +40,7 @@
                                class="input-field required input-size9" value="@Model.SmtpServer.Server" />
                     </td>
                 </tr>
-                <tr>
+                <tr class="not-graph">
                     <td class="field-name">
                         Server Port
                     </td>
@@ -49,7 +49,7 @@
                                class="input-field required input-size2" value="@Model.SmtpServer.ServerPort" />
                     </td>
                 </tr>
-                <tr class="oauth-control">
+                <tr class="oauth-control graph-control">
                     <td class="field-name" title="Microsoft 365 Only">
                         Tenant Id
                     </td>
@@ -58,7 +58,7 @@
                                class="input-field input-size9" value="@Model.SmtpServer.TenantId" />
                     </td>
                 </tr>
-                <tr class="oauth-control">
+                <tr class="oauth-control graph-control">
                     <td class="field-name">
                         Client Id
                     </td>
@@ -67,7 +67,7 @@
                                class="input-field input-size9" value="@Model.SmtpServer.ClientId" />
                     </td>
                 </tr>
-                <tr class="oauth-control">
+                <tr class="oauth-control graph-control">
                     <td class="field-name">
                         Client Secret
                     </td>
@@ -85,18 +85,9 @@
                                class="input-field input-size9" value="@Model.SmtpServer.Scopes" />
                     </td>
                 </tr>
-                @*<tr class="oauth-control hide">
-                        <td class="field-name">
-                            Discovery Document Url
-                        </td>
-                        <td>
-                            <input type="text" id="Discovery" name="Discovery"
-                                   class="input-field input-size9" value="@Model.SmtpServer.DiscoveryUrl" />/.well-known/discovery-endpoint
-                        </td>
-                    </tr>*@
                 <tr>
                     <td class="field-name">
-                        Username
+                        <span id="breeze-username">Username</span>
                     </td>
                     <td>
                         <input type="text" id="Username" name="Username"
@@ -112,7 +103,7 @@
                                class="input-field input-size9" value="@Model.SmtpServer.Password" />
                     </td>
                 </tr>
-                <tr>
+                <tr class="not-graph">
                     <td class="field-name">
                         Encoding
                     </td>
@@ -120,7 +111,7 @@
                         @Html.DropDownList("EncodingType", Model.EncodingTypes, new { @class = "input-size6 required" })
                     </td>
                 </tr>
-                <tr>
+                <tr class="not-graph">
                     <td class="field-name">
                         Use SSL
                     </td>
@@ -208,7 +199,11 @@
         });
 
         function authModeChanged() {
-
+            $('#breeze-username').html('Username')
+            $('.not-graph select').addClass('required');
+            $('.not-graph td>input').addClass('required');
+            $(".not-graph").show();
+            
             if ($("#AuthMode").val() == 'None') {
                 $("#Username").attr('class', 'input-field input-size9');
                 $("#Password").attr('class', 'input-field input-size9');
@@ -219,8 +214,7 @@
                 $("#TenantId").removeClass('required');
                 $("#ClientId").removeClass('required');
                 $("#ClientSecret").removeClass('required');
-            }
-            else if ($("#AuthMode").val() == 'OAuth2') {
+            } else if ($("#AuthMode").val() == 'OAuth2') {
                 $("#Password").closest("tr").hide();
                 $(".oauth-control").show();
                 //oauth-authorize
@@ -228,9 +222,22 @@
                 $("#ClientId").addClass('required');
                 $("#ClientSecret").addClass('required');
                 $("#oauth-provider").addClass('required');
-
-            }
-            else {
+            } else if ($("#AuthMode").val() == 'Graph') {
+                $('#breeze-username').html('Email')
+                $("#Password").closest("tr").hide();
+                $(".oauth-control").hide();
+                $(".not-graph").hide();
+                $(".graph-control").show();
+                //oauth-authorize
+                $("#TenantId").addClass('required');
+                $("#ClientId").addClass('required');
+                $("#ClientSecret").addClass('required');
+                $("#Scopes").removeClass('required');
+                $("#oauth-provider").removeClass('required');
+                $('.not-graph select').removeClass('required');
+                $('.not-graph input').removeClass('required');
+                setValueIfEmpty("#Scopes", "offline_access|https://outlook.office.com/SMTP.Send")
+            } else {
                 $("#Username").attr('class', 'input-field required input-size9');
                 $("#Password").attr('class', 'input-field required input-size9');
                 $("#Password").closest("tr").show();
