@@ -1,6 +1,6 @@
 # Countersoft Gemini
 
-Latest Gemini release is v7.6.1 -- download ZIP release or clone this repo.
+Latest Gemini release is v7.6.2 -- download ZIP release or clone this repo.
 
 Requirements:
 
